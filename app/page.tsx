@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React from "react";
-
+import Link from "next/link";
 const Home = () => {
   const router = useRouter();
   return (
@@ -23,6 +23,8 @@ const Home = () => {
           간호사로 접속
         </Button>
       </div>
+      <Link href="/doctor/home">홈으로</Link>
+      
     </main>
   );
 };
