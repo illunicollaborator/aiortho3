@@ -307,6 +307,7 @@ const JoinMembership = () => {
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted with data:", data);
   };
+  
 
   // Function to close all dropdowns except the one being opened
   const toggleDropdown = (dropdownName: "department" | "specialist") => {
