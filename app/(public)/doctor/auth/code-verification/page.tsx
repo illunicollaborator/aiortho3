@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 
 // Define schema with Zod
 const preRegisterSchema = z.object({
+  code: z.string().min(8, "가입코드 8자리를 입력해주세요").max(8, "가입코드 8자리를 입력해주세요"),
   phoneNumber: z
     .string()
     .min(9, "9자리 이상 입력해주세요")
@@ -20,7 +21,7 @@ const preRegisterSchema = z.object({
   hospitalPhone: z
     .string()
     .min(9, "9자리 이상 입력해주세요")
-    .max(11, "11자�� 이하 입력해주세요"),
+    .max(11, "11자리 이하 입력해주세요"),
 });
 
 type FormValues = z.infer<typeof preRegisterSchema>;
@@ -35,6 +36,7 @@ const PreRegisterPage = () => {
   } = useForm<FormValues>({
     resolver: zodResolver(preRegisterSchema),
     defaultValues: {
+      code: "",
       phoneNumber: "",
       email: "",
       hospitalName: "",

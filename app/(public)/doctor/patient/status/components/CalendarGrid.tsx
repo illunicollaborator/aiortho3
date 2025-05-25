@@ -5,6 +5,12 @@ interface DayProps {
   status?: "normal" | "error" | "warning" | "success" | "disabled";
 }
 
+// 타입 정의 추가
+interface CalendarDay {
+  day: number;
+  status: "normal" | "error" | "warning" | "success" | "disabled";
+}
+
 const Day: React.FC<DayProps> = ({ day, status = "normal" }) => {
   const getStatusColor = () => {
     switch (status) {
@@ -44,8 +50,8 @@ const CalendarGrid: React.FC = () => {
   // Sample data for the calendar
   const weekdays = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
-  // Sample calendar data with status
-  const calendarData = [
+  // Sample calendar data with status - 타입 명시적 정의
+  const calendarData: CalendarDay[][] = [
     [
       { day: 1, status: "normal" },
       { day: 2, status: "error" },
