@@ -18,7 +18,7 @@ const RehabilitationStatus = () => {
           {/* Calendar가 전체 폭을 차지하고 Details는 absolute로 오른쪽에 */}
           <div className="relative mt-5">
             <RehabilitationCalendar />
-            <div className="absolute top-0 right-[-700px]">
+            <div className="absolute top-0 right-[-600px]">
               <RehabilitationDetailsCard />
             </div>
           </div>

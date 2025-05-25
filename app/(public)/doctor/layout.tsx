@@ -12,7 +12,8 @@ const PublicLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
   // 배경색이 white인 경로들 리스트
   const whiteBackgroundRoutes = [
     '/doctor/patient/register',
-    '/doctor/mypage'
+    '/doctor/mypage',
+    '/doctor/program'
   ];
 
   // 현재 pathname이 white 배경을 사용해야 하는지 확인
