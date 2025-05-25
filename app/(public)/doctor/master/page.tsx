@@ -139,6 +139,8 @@ const DoctorMasterPage = () => {
         <Pagination totalPages={197} currentPage={1} />
       </div>
 
+      
+
 
       {/* Issue Registration Code Modal */}
       <IssueCodeModal
