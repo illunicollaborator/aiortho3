@@ -422,87 +422,13 @@ const JoinMembership = () => {
             required
           />
 
-          <OrthoInput
-            label="의료 면허 번호"
-            placeholder="의료 면허 번호을 입력해주세요"
-            registration={register("medicalLicense")}
-            error={errors.medicalLicense?.message}
-            required
-            rightIcon={
-                <div className="flex items-center gap-2 md:gap-5 py-2">
-                  <Button
-                    type="button"
-                    onClick={handlePhoneNumberCheck}
-                    className="text-[color:var(--aiortho-gray-400)] bg-[color:var(--aiortho-gray-100)] hover:bg-[color:var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
-                  >
-                    중복확인
-                  </Button>
-                </div>
-              }
-            
-          />
+          
 
           <MedicalInstitution label="의료 기관명" cta="의료 기관명 검색" />
 
-          {/* Department Dropdown */}
-          <div className="relative">
-            <div
-              onClick={() => toggleDropdown("department")}
-              className="cursor-pointer"
-            >
-              <OrthoInput
-                label="진료과"
-                value={selectedDepartment?.name}
-                placeholder="진료과를 선택해주세요"
-                rightIcon={<ChevronDown size={20} color="#97A8C4" />}
-                required
-              />
-            </div>
 
-            <MultiColumnDropdown
-              isOpen={departmentDropDownIsOpen}
-              onClose={() => setDepartmentDropDownIsOpen(false)}
-              onSelect={handleDepartmentSelect}
-              className="mt-3"
-              array={SPECIALTIES}
-              width="w-full"
-            />
-          </div>
 
-          {/* Specialist Dropdown */}
-          <div className="relative">
-            <div
-              onClick={() => toggleDropdown("specialist")}
-              className="cursor-pointer"
-            >
-              <OrthoInput
-                label="전문의 과목"
-                value={selectedSpecialist?.name}
-                placeholder="전문의 과목을 선택해주세요"
-                rightIcon={<ChevronDown size={20} color="#97A8C4" />}
-                required
-              />
-            </div>
-
-            <MultiColumnDropdown
-              isOpen={specialistDropDownIsOpen}
-              onClose={() => setSpecialistDropDownIsOpen(false)}
-              onSelect={handleSpecialistSelect}
-              className="mt-3"
-              array={SPECIALTIES}
-              width="w-full"
-            />
-          </div>
-
-          <OrthoInput
-            label="전문의 면허 번호"
-            placeholder="전문의 면허 번호을 입력해주세요"
-            registration={register("specialistLicense")}
-            error={errors.specialistLicense?.message}
-            required
-          />
-
-          <NurseManagerWrapper label="담당 간호사" cta="담당 간호사 추가" />
+          
 
           <OrthoInput
             label="휴대폰 번호"

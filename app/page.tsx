@@ -19,12 +19,12 @@ const Home = () => {
         >
           의사로 접속
         </Button>
-        <Button className="text-white bg-[color:var(--aiortho-gray-800)] hover:bg-[color:var(--aiortho-gray-800)] p-6 rounded-md cursor-pointer w-[168px]">
+        <Button onClick={()=>{router.push('/nurse/auth')}} className="text-white bg-[color:var(--aiortho-gray-800)] hover:bg-[color:var(--aiortho-gray-800)] p-6 rounded-md cursor-pointer w-[168px]">
           간호사로 접속
         </Button>
       </div>
-      <Link href="/doctor/home">홈으로</Link>
-      
+      <Link href="/doctor/home">의사 홈으로</Link>
+      <Link href="/nurse/home">간호사 홈으로</Link>
     </main>
   );
 };

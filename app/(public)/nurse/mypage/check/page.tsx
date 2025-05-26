@@ -35,7 +35,7 @@ const MemberInfoCheckPage = () => {
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
     // Here you would typically verify the password and then redirect
-    router.push("/doctor/mypage/change");
+    router.push("/nurse/mypage/change");
   };
 
   const togglePasswordVisibility = () => {
