@@ -19,8 +19,8 @@ const PatientStatusPage = () => {
   };
 
   return (
-    <div className="bg-white flex px-20 pt-14 flex-col overflow-hidden items-start justify-center md:px-5 ">
-      <div className="w-[50vw] max-w-full">
+    <div className="bg-white flex px-20 pt-14 flex-col overflow-hidden items-center justify-center md:px-5 ">
+      <div className="max-w-[540px] w-full">
         {/* Patient Information Card */}
         <div className="rounded-2xl bg-[#F7F9FB] w-full overflow-hidden md:max-w-full p-8">
           <div className="flex w-full items-start gap-5 justify-between md:max-w-full">
@@ -170,7 +170,7 @@ const PatientStatusPage = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-28 w-full font-pretandard text-sm md:max-w-full md:mt-10">
+        <div className="mt-28 w-full font-pretandard text-sm md:max-w-full md:mt-10 mb-24">
           <div className="flex w-full items-start gap-4 text-white font-bold whitespace-nowrap leading-6 justify-end md:max-w-full md:whitespace-normal">
             <button className="self-stretch rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 flex-1 flex-shrink-1 flex-basis-0 md:max-w-full md:whitespace-normal bg-[#0054A6]">
               처방하기
