@@ -236,7 +236,7 @@ const NurseSearchModal: React.FC<NurseSearchModalProps> = ({
 
           {/* Pagination Section */}
           {totalPages > 1 && (
-            <div className="pagination-section flex-shrink-0 flex justify-center py-4 sm:py-6 px-6 sm:px-8 
+            <div className="pagination-section flex-shrink-0 flex justify-start py-4 sm:py-6 px-6 sm:px-8 
                            border-t border-gray-100">
               <Pagination
                 currentPage={currentPage}

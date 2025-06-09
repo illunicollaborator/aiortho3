@@ -15,7 +15,7 @@ export default function DetailPage() {
         <div className="text-[#161621] self-stretch my-auto text-3xl">
           환자 명단
         </div>
-        <button onClick={() => router.push("/doctor/patient/register")} className="self-stretch rounded-[14px] min-h-[48px] px-[22px] py-3 text-sm text-white bg-[#0054A6] sm:px-5">
+        <button onClick={() => router.push("/doctor/patient/register")} className="self-stretch rounded-[14px] min-h-[48px] px-[22px] py-3 text-sm text-white bg-[#0054A6] sm:px-5 cursor-pointer">
           환자 등록하기
         </button>
       </div>

@@ -1,6 +1,6 @@
 import React from "react";
-
-export const AvatarIcon: React.FC = () => (
+import { useRouter } from "next/navigation";
+export const AvatarIcon: React.FC = () => ( 
   <svg
     width="84"
     height="85"
@@ -24,6 +24,7 @@ export const AvatarIcon: React.FC = () => (
 
 export const PrescriptionIcon: React.FC = () => (
   <svg
+    className="cursor-pointer"
     width="60"
     height="60"
     viewBox="0 0 60 60"

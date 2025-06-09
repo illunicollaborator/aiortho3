@@ -155,6 +155,7 @@ const CheckList = () => {
                   <span className="text-[#66798D] font-medium ml-1">(선택)</span>
                 )}
               </Label>
+              
               <span className="text-sm text-[#8395AC] ml-auto cursor-pointer font-normal">보기</span>
             </div>
           );
@@ -328,7 +329,7 @@ const JoinMembership = () => {
 
   return (
     <div className=" flex flex-col items-center bg-white pt-[52px] pl-8">
-      <div className="w-full max-w-[540px] ">
+      <div className="w-full max-w-[960px] ">
         <div className="space-y-3">
           <h1 className="font-bold text-3xl text-[color:var(--aiortho-gray-900)]">
             개인정보 수정

@@ -20,7 +20,7 @@ const PatientStatusPage = () => {
 
   return (
     <div className="bg-white flex px-20 pt-14 flex-col overflow-hidden items-center justify-center md:px-5 ">
-      <div className="max-w-[540px] w-full">
+      <div className="max-w-[960px] w-full">
         {/* Patient Information Card */}
         <div className="rounded-2xl bg-[#F7F9FB] w-full overflow-hidden md:max-w-full p-8">
           <div className="flex w-full items-start gap-5 justify-between md:max-w-full">

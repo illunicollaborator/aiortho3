@@ -1,5 +1,7 @@
 "use client";
 import * as React from "react";
+import { useRouter } from "next/navigation";
+import { RiExpandUpDownFill } from "react-icons/ri";
 
 interface PatientData {
   id: string;
@@ -55,37 +57,20 @@ function StatusBadge({ status, type }: StatusBadgeProps) {
 interface TableHeaderCellProps {
   label: string;
   flex: string;
-  paddingLeft?: string;
 }
 
 function TableHeaderCell({
   label,
   flex,
-  paddingLeft = "px-2.5",
 }: TableHeaderCellProps) {
   return (
     <div
-      className={`flex flex-col justify-center items-center self-stretch ${paddingLeft} py-3 my-auto min-h-12 ${flex}`}
+      className={`flex justify-center items-center px-3 py-3 my-auto min-h-12 ${flex}`}
     >
-      <div className="flex items-center w-full">
-        <h2 className="self-stretch my-auto text-sm font-bold opacity-80 text-zinc-900">
-          {label}
-        </h2>
-        <div className="flex gap-2.5 justify-center items-center self-stretch py-1 pr-2 pl-2 my-auto w-6 min-h-6">
-          <div className="self-stretch my-auto w-[9px]">
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/daf2dd82521443d5bc3a21bfdf9ce9fbcd283287?placeholderIfAbsent=true"
-              className="object-contain w-full aspect-[1.29] fill-zinc-200"
-              alt="Sort ascending"
-            />
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/4eeb6611068f29a92990bf960430d28403469d5f?placeholderIfAbsent=true"
-              className="object-contain w-full aspect-[1.43] fill-zinc-200"
-              alt="Sort descending"
-            />
-          </div>
-        </div>
-      </div>
+      <h2 className="text-sm font-bold opacity-80 text-zinc-900">
+        {label}
+      </h2>
+      <RiExpandUpDownFill className="w-3 h-3 text-zinc-400 ml-1" />
     </div>
   );
 }
@@ -100,16 +85,17 @@ function PatientTableHeader() {
       <TableHeaderCell label="성별" flex="flex-[0.5]" />
       <TableHeaderCell label="S/A" flex="flex-[0.6]" />
       <TableHeaderCell label="담당 의사" flex="flex-[0.7]" />
-      <TableHeaderCell label="치료 처방 기간" flex="flex-[1.5]" />
-      <TableHeaderCell label="환자 등록일" flex="flex-[1.2]" />
-      <TableHeaderCell label="최종 처방일" flex="flex-[1.2]" />
-      <TableHeaderCell label="처방 상태" flex="flex-[0.8]" paddingLeft="pl-3" />
+      <TableHeaderCell label="치료 처방 기간" flex="flex-[1.2]" />
+      <TableHeaderCell label="환자 등록일" flex="flex-[1.0]" />
+      <TableHeaderCell label="최종 처방일" flex="flex-[1.0]" />
+      <TableHeaderCell label="처방 상태" flex="flex-[0.8]" />
     </div>
   );
 }
 
 // PatientTableRow 컴포넌트
 interface PatientTableRowProps {
+  id: string;
   registrationNumber: string;
   patientName: string;
   birthDate: string;
@@ -124,6 +110,7 @@ interface PatientTableRowProps {
 }
 
 function PatientTableRow({
+  id,
   registrationNumber,
   patientName,
   birthDate,
@@ -136,61 +123,68 @@ function PatientTableRow({
   status,
   statusType,
 }: PatientTableRowProps) {
+  const router = useRouter();
+
+  const handleRowClick = () => {
+    router.push(`/doctor/patient/status/${id}`);
+  };
+
   return (
-    <div className="flex items-center w-full min-h-[68px] text-sm text-zinc-900">
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.8] whitespace-nowrap min-h-[68px]">
-        <div className="self-stretch my-auto opacity-80 text-zinc-900 truncate">
+    <div 
+      className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors"
+      onClick={handleRowClick}
+    >
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.8] whitespace-nowrap min-h-[68px]">
+        <div className="opacity-80 text-zinc-900 truncate">
           {registrationNumber}
         </div>
       </div>
 
-      <div className="gap-2.5 self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] text-ellipsis text-zinc-900 flex-[0.7] truncate">
-        {patientName}
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] text-ellipsis text-zinc-900 flex-[0.7]">
+        <div className="truncate">{patientName}</div>
       </div>
 
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.8]">
-        <div className="self-stretch my-auto opacity-80 text-zinc-900 truncate">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.8]">
+        <div className="opacity-80 text-zinc-900 truncate">
           {birthDate}
         </div>
       </div>
 
-      <div className="flex flex-col justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.5]">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.5]">
         <div className="opacity-80 text-zinc-900">{gender}</div>
       </div>
 
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.6] whitespace-nowrap min-h-[68px]">
-        <div className="self-stretch my-auto opacity-80 text-zinc-900 truncate">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.6] whitespace-nowrap min-h-[68px]">
+        <div className="opacity-80 text-zinc-900 truncate">
           {sa}
         </div>
       </div>
 
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.7]">
-        <div className="self-stretch my-auto opacity-80 text-ellipsis text-zinc-900 truncate">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.7]">
+        <div className="opacity-80 text-ellipsis text-zinc-900 truncate">
           {doctor}
         </div>
       </div>
 
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.5]">
-        <div className="self-stretch my-auto opacity-80 text-zinc-900 truncate">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.2]">
+        <div className="opacity-80 text-zinc-900 truncate">
           {treatmentPeriod}
         </div>
       </div>
 
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto min-h-[68px] flex-[1.2]">
-        <div className="self-stretch my-auto opacity-80 text-zinc-900 truncate">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto min-h-[68px] flex-[1.0]">
+        <div className="opacity-80 text-zinc-900 truncate">
           {registrationDate}
         </div>
       </div>
 
-      <div className="flex gap-2.5 justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.2]">
-        <div className="self-stretch my-auto opacity-80 text-zinc-900 truncate">
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.0]">
+        <div className="opacity-80 text-zinc-900 truncate">
           {lastPrescriptionDate}
         </div>
       </div>
 
-      <div
-        className={`flex flex-col justify-center items-start self-stretch py-5 pl-3 my-auto font-bold leading-none text-center whitespace-nowrap min-h-[68px] flex-[0.8] ${statusType === "prescription" ? "pr-1" : ""}`}
-      >
+      <div className="flex justify-center items-center self-stretch py-5 px-3 my-auto font-bold leading-none text-center whitespace-nowrap min-h-[68px] flex-[0.8]">
         <StatusBadge status={status} type={statusType} />
       </div>
     </div>
@@ -323,6 +317,7 @@ function PatientTable() {
         {dummyPatients.map((patient, index) => (
           <React.Fragment key={patient.id}>
             <PatientTableRow
+              id={patient.id}
               registrationNumber={patient.registrationNumber}
               patientName={patient.patientName}
               birthDate={patient.birthDate}

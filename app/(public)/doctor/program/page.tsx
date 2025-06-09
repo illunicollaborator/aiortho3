@@ -202,7 +202,7 @@ export default function ProgramPage() {
 
   return (
     <div className="bg-white flex px-20 pt-[52px] pb-[168px] flex-col overflow-hidden items-center justify-center md:px-5">
-      <div className="flex w-full max-w-[636px] flex-col items-stretch">
+      <div className="flex w-full max-w-[960px] flex-col items-stretch">
         <h1 className="text-[#161621] self-start gap-4 font-pretendard text-[32px] font-bold leading-none">
           표준 치료 프로그램
         </h1>

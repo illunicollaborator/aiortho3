@@ -75,10 +75,6 @@ const SidebarNavigation: React.FC = () => {
               label="표준 치료 프로그램"
               onClick={() => router.push("/doctor/program")}
             />
-            <SubNavItem
-              label="퀵메뉴(임시)"
-              onClick={() => router.push("/doctor/quick")}
-            />
           </NavSection>
           <NavItem
             icon={<DoctorsIcon />}

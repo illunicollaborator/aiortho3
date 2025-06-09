@@ -1,142 +1,149 @@
-import React from "react";
+"use client";
+import * as React from "react";
+import { useState } from "react";
+import { RiExpandUpDownFill } from "react-icons/ri";
+import IssueCodeModal from "./IssueCodeModal";
+import { 
+  Doctor, 
+  DoctorTableProps, 
+  StatusBadgeProps, 
+  TableHeaderCellProps, 
+  DoctorTableRowProps 
+} from "./types";
 
-interface Doctor {
-  id: string;
-  code: string;
-  name: string;
-  email: string;
-  date: string;
-  isAdmin: boolean;
-}
-
-interface DoctorTableProps {
-  doctors: Doctor[];
-}
-
-const DoctorTable: React.FC<DoctorTableProps> = ({ doctors }) => {
+// StatusBadge 컴포넌트 (관리자 여부 표시)
+function StatusBadge({ isAdmin }: StatusBadgeProps) {
+  if (isAdmin) {
+    return (
+      <div className="flex gap-1 justify-center items-center px-3 py-1 rounded-2xl bg-[#0054A6]/20 min-h-7">
+        <div className="flex shrink-0 self-stretch my-auto w-2 h-2 bg-[#0054A6] rounded-full" aria-hidden="true" />
+        <div className="self-stretch my-auto text-[#0054A6]">관리자</div>
+      </div>
+    );
+  }
+  
   return (
-    <div className="mt-7 w-full md:max-w-full">
-      {/* Table Header */}
-      <div className="rounded-xl bg-[rgba(241,244,249,0.5)] flex min-h-[48px] w-full items-center justify-start md:max-w-full">
-        <div className="flex min-h-[48px] px-4 py-3 flex-col items-start justify-center w-[124px]">
-          <div className="flex w-16 items-center justify-start">
-            <div className="text-[#161621] font-pretendard text-sm font-bold opacity-80">
-              No
-            </div>
-            <div className="flex min-h-6 px-2 py-1 items-center justify-center w-6">
-              <div className="w-[9px]">
-                <img
-                  src="/icons/sort-up.svg"
-                  alt="Sort"
-                  className="aspect-[1.29] object-contain w-full"
-                />
-                <img
-                  src="/icons/sort-down.svg"
-                  alt="Sort"
-                  className="aspect-[1.43] object-contain w-full"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="flex gap-1 justify-center items-center px-3 py-1 rounded-2xl bg-[#73E484]/20 min-h-7">
+      <div className="flex shrink-0 self-stretch my-auto w-2 h-2 bg-[#0CA147] rounded-full" aria-hidden="true" />
+      <div className="self-stretch my-auto text-[#0CA147]">일반의사</div>
+    </div>
+  );
+}
 
-        <div className="flex min-h-[48px] px-3 py-4 items-center gap-[10px] font-pretendard text-sm text-[#161621] font-bold justify-start w-[188px]">
-          <div className="text-[#161621] opacity-80 w-[72px]">코드 번호</div>
-        </div>
+// TableHeaderCell 컴포넌트
+function TableHeaderCell({ label, flex }: TableHeaderCellProps) {
+  return (
+    <div className={`flex justify-center items-center px-3 py-3 my-auto min-h-12 ${flex}`}>
+      <h2 className="text-sm font-bold opacity-80 text-zinc-900">
+        {label}
+      </h2>
+      <RiExpandUpDownFill className="w-3 h-3 text-zinc-400 ml-1" />
+    </div>
+  );
+}
 
-        <div className="flex min-h-[48px] px-3 py-3 flex-col items-start justify-center w-[176px]">
-          <div className="flex w-16 items-center justify-start">
-            <div className="text-[#161621] font-pretendard text-sm font-bold opacity-80">
-              의사명
-            </div>
-            <div className="flex min-h-6 px-2 py-1 items-center justify-center w-6">
-              <div className="w-[9px]">
-                <img
-                  src="/icons/sort-up.svg"
-                  alt="Sort"
-                  className="aspect-[1.29] object-contain w-full"
-                />
-                <img
-                  src="/icons/sort-down.svg"
-                  alt="Sort"
-                  className="aspect-[1.43] object-contain w-full"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+// DoctorTableHeader 컴포넌트
+function DoctorTableHeader() {
+  return (
+    <div className="flex items-center w-full rounded-xl bg-slate-100 bg-opacity-50 min-h-12">
+      <TableHeaderCell label="No" flex="flex-[0.6]" />
+      <TableHeaderCell label="코드 번호" flex="flex-[0.9]" />
+      <TableHeaderCell label="의사명" flex="flex-[0.8]" />
+      <TableHeaderCell label="아이디(이메일)" flex="flex-[1.6]" />
+      <TableHeaderCell label="가입일" flex="flex-[1.2]" />
+      <TableHeaderCell label="권한" flex="flex-[0.9]" />
+    </div>
+  );
+}
 
-        <div className="flex min-w-[240px] min-h-[48px] px-3 py-4 items-center gap-[10px] font-pretendard text-sm text-[#161621] font-bold whitespace-nowrap justify-start w-[328px] md:whitespace-normal">
-          <div className="text-[#161621] opacity-80 w-[176px]">
-            아이디(이메일)
-          </div>
-        </div>
+// DoctorTableRow 컴포넌트
+function DoctorTableRow({ doctor, onRowClick }: DoctorTableRowProps) {
+  const handleRowClick = () => {
+    onRowClick(doctor);
+  };
 
-        <div className="flex min-w-[240px] min-h-[48px] px-3 py-3 flex-col items-center justify-center w-[256px]">
-          <div className="flex w-full max-w-[226px] items-center justify-start">
-            <div className="text-[#161621] font-pretendard text-sm font-bold opacity-80">
-              가입일
-            </div>
-            <div className="flex min-h-6 px-2 py-1 items-center justify-center w-6">
-              <div className="w-[9px]">
-                <img
-                  src="/icons/sort-up.svg"
-                  alt="Sort"
-                  className="aspect-[1.29] object-contain w-full"
-                />
-                <img
-                  src="/icons/sort-down.svg"
-                  alt="Sort"
-                  className="aspect-[1.43] object-contain w-full"
-                />
-              </div>
-            </div>
-          </div>
+  return (
+    <div 
+      className={`flex items-center w-full min-h-[68px] text-sm cursor-pointer hover:bg-gray-50 transition-colors ${
+        doctor.isAdmin ? "text-[#0054A6] font-semibold" : "text-zinc-900 font-normal"
+      }`}
+      onClick={handleRowClick}
+    >
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.6] whitespace-nowrap min-h-[68px]">
+        <div className={`opacity-80 truncate ${doctor.isAdmin ? "font-semibold" : ""}`}>
+          {doctor.id}
         </div>
-
-        <div className="w-[124px] h-[48px]"></div>
       </div>
 
-      {/* Table Body */}
-      <div className="w-full md:max-w-full">
-        {doctors.map((doctor, index) => (
-          <React.Fragment key={index}>
-            <div
-              className={`w-full font-pretendard text-sm ${doctor.isAdmin ? "text-[#0054A6]" : "text-[#161621]"} font-normal md:max-w-full`}
-            >
-              <div className="flex min-h-[68px] w-full items-center justify-start flex-wrap md:max-w-full">
-                <div className="flex min-h-[68px] px-4 py-[26px] flex-col items-stretch whitespace-nowrap justify-center w-[124px] md:whitespace-normal">
-                  <div
-                    className={`opacity-80 ${doctor.isAdmin ? "font-semibold" : ""}`}
-                  >
-                    {doctor.id}
-                  </div>
-                </div>
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.9]">
+        <div className="opacity-80 truncate">
+          {doctor.code}
+        </div>
+      </div>
 
-                <div className="flex min-h-[68px] px-3 py-[26px] items-center gap-[10px] whitespace-nowrap justify-start w-[188px] md:whitespace-normal">
-                  <div className="opacity-80 w-[72px]">{doctor.code}</div>
-                </div>
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] text-ellipsis flex-[0.8]">
+        <div className="truncate">{doctor.name}</div>
+      </div>
 
-                <div className="flex min-h-[68px] px-3 py-[26px] gap-[10px] whitespace-nowrap w-[176px] md:whitespace-normal overflow-hidden text-ellipsis">
-                  {doctor.name}
-                </div>
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.6]">
+        <div className="opacity-80 truncate">
+          {doctor.email}
+        </div>
+      </div>
 
-                <div className="flex min-w-[240px] min-h-[68px] px-3 py-[26px] items-center gap-[10px] whitespace-nowrap justify-start w-[328px] md:whitespace-normal">
-                  <div className="opacity-80 w-[176px]">{doctor.email}</div>
-                </div>
+      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto min-h-[68px] flex-[1.2]">
+        <div className="opacity-80 truncate">
+          {doctor.date}
+        </div>
+      </div>
 
-                <div className="flex min-w-[240px] min-h-[68px] px-3 py-[26px] items-center gap-[10px] justify-start w-[256px]">
-                  <div className="opacity-80 w-[116px]">{doctor.date}</div>
-                </div>
-
-                <div className="w-[124px] min-h-[68px]"></div>
-              </div>
-              <div className="w-full h-[1px] bg-[#8395AC] opacity-20"></div>
-            </div>
-          </React.Fragment>
-        ))}
+      <div className="flex justify-center items-center self-stretch py-5 px-3 my-auto font-bold leading-none text-center whitespace-nowrap min-h-[68px] flex-[0.9]">
+        <StatusBadge isAdmin={doctor.isAdmin} />
       </div>
     </div>
+  );
+}
+
+// 메인 DoctorTable 컴포넌트
+const DoctorTable: React.FC<DoctorTableProps> = ({ doctors }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+
+  const handleRowClick = (doctor: Doctor) => {
+    setSelectedDoctor(doctor);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedDoctor(null);
+  };
+
+  return (
+    <>
+      <div className="mt-7 w-full overflow-x-auto">
+        <DoctorTableHeader />
+        
+        <div className="w-full">
+          {doctors.map((doctor, index) => (
+            <React.Fragment key={doctor.id}>
+              <DoctorTableRow
+                doctor={doctor}
+                onRowClick={handleRowClick}
+              />
+              {index < doctors.length - 1 && (
+                <div className="w-full h-[1px] bg-[#8395AC] opacity-20"></div>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+
+      <IssueCodeModal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+      />
+    </>
   );
 };
 

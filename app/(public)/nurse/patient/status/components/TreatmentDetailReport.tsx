@@ -39,7 +39,7 @@ const TreatmentDetailReport: React.FC<TreatmentDetailReportProps> = ({
   ],
 }) => {
   return (
-    <div className="rounded-xl border border-[rgba(218,223,233,0.6)] max-w-[540px] px-6 py-6 flex flex-col font-pretendard md:px-5">
+    <div className="rounded-xl border border-[rgba(218,223,233,0.6)] max-w-[960px] px-6 py-6 flex flex-col font-pretendard md:px-5">
       <div className="w-full">
         {/* Date Header */}
         <div className="flex w-full items-center gap-4 text-base text-[#161621] font-medium text-center flex-wrap">

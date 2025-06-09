@@ -328,7 +328,7 @@ const JoinMembership = () => {
 
   return (
     <div className=" flex flex-col items-center bg-white pt-[52px] pl-8">
-      <div className="w-full max-w-[540px] ">
+      <div className="w-full max-w-[960px] ">
         <div className="space-y-3">
           <h1 className="font-bold text-3xl text-[color:var(--aiortho-gray-900)]">
             개인정보 수정

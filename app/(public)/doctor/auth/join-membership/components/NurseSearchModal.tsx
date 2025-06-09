@@ -250,7 +250,7 @@ const NurseSearchModal: React.FC<NurseSearchModalProps> = ({
           </div>
 
           {/* Pagination Section - Always visible at bottom */}
-          <div className="pagination-section flex-shrink-0 flex justify-center py-3 sm:py-4 px-6 sm:px-8 
+          <div className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 px-6 sm:px-8 
                          border-t border-gray-100 bg-white">
             {totalPages > 1 ? (
               <Pagination
