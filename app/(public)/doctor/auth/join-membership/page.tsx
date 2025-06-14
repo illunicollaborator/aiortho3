@@ -302,7 +302,7 @@ const JoinMembership = () => {
                 <Button
                   type="button"
                   onClick={handleEmailCheck}
-                  className="text-[color:var(--aiortho-gray-400)] bg-[color:var(--aiortho-gray-100)] hover:bg-[color:var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
+                  className="text-white bg-[#8395AC] hover:bg-[#8395AC] rounded-md h-8 font-normal text-[13px] cursor-pointer"
                 >
                   인증번호 전송
                 </Button>
@@ -399,7 +399,6 @@ const JoinMembership = () => {
                 value={selectedSpecialist?.name}
                 placeholder="전문의 과목을 선택해주세요"
                 rightIcon={<ChevronDown size={20} color="#97A8C4" />}
-                required
               />
             </div>
 
@@ -418,7 +417,6 @@ const JoinMembership = () => {
             placeholder="전문의 면허 번호을 입력해주세요"
             registration={register("specialistLicense")}
             error={errors.specialistLicense?.message}
-            required
           />
 
           <NurseManagerWrapper label="담당 간호사" cta="담당 간호사 추가" />
@@ -445,7 +443,7 @@ const JoinMembership = () => {
                 <Button
                   type="button"
                   onClick={handlePhoneNumberCheck}
-                  className="text-[color:var(--aiortho-gray-400)] bg-[color:var(--aiortho-gray-100)] hover:bg-[color:var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
+                  className="text-white bg-[#8395AC] hover:bg-[#8395AC] rounded-md h-8 font-normal text-[13px] cursor-pointer"
                 >
                   인증번호 전송
                 </Button>
@@ -481,12 +479,8 @@ const JoinMembership = () => {
                 <Button
                   type="button"
                   onClick={handleCertificationNumberCheck}
-                  disabled={!certSent || !isActive}
-                  className={`text-white ${
-                    !certSent || !isActive
-                      ? "bg-[color:var(--aiortho-gray-500)] hover:bg-[color:var(--aiortho-gray-500)]"
-                      : "bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)]"
-                  } rounded-md h-8 font-medium text-[13px]`}
+                  // disabled={!certSent || !isActive}
+                  className={`text-white bg-[#8395AC] hover:bg-[#8395AC] rounded-md h-8 font-medium text-[13px]`}
                 >
                   확인
                 </Button>

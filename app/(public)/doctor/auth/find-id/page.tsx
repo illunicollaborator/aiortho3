@@ -97,7 +97,6 @@ const DoctorAuthFindId = () => {
                 placeholder="이름을 입력해주세요"
                 registration={registerId("name")}
                 error={errorsId.name?.message}
-                required
               />
 
               <OrthoInput
@@ -106,12 +105,11 @@ const DoctorAuthFindId = () => {
                 // type="number"
                 registration={registerId("phoneNumber")}
                 error={errorsId.phoneNumber?.message}
-                required
               />
 
               <Button
                 type="submit"
-                className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 rounded-full cursor-pointer"
+                className="w-full bg-[#0054A6] hover:bg-[#0054A6] text-white py-5 mt-4 rounded-full cursor-pointer h-12"
               >
                 다음
               </Button>
@@ -149,7 +147,7 @@ const DoctorAuthFindId = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+                className="w-full bg-[#0054A6] hover:bg-[#0054A6] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer h-12"
               >
                 다음
               </Button>

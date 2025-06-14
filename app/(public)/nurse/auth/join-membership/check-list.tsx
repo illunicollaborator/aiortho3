@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Check } from 'lucide-react';
 import { Label } from '@/components/ui/label';
+import Link from 'next/link';
 
 const termsData = [
-  { id: 1, label: '만 14세 이상입니다.', required: true },
-  { id: 2, label: '서비스 이용약관에 동의합니다.', required: true },
-  { id: 3, label: '개인정보 수집 및 이용에 동의합니다.', required: true },
-  { id: 4, label: '이벤트 및 할인 혜택 안내에 동의합니다.', required: false },
+  { id: 1, label: '만 14세 이상입니다.', required: true, link: null },
+  { id: 2, label: '서비스 이용약관에 동의합니다.', required: true, link: '/nurse/auth/join-membership/service' },
+  { id: 3, label: '개인정보 수집 및 이용에 동의합니다.', required: true, link: '/nurse/auth/join-membership/agree' },
+  { id: 4, label: '이벤트 및 할인 혜택 안내에 동의합니다.', required: false, link: '/nurse/auth/join-membership/event' },
 ];
 
 export default function TermsAgreement() {
@@ -51,19 +52,25 @@ export default function TermsAgreement() {
           return (
             <div
               key={item.id}
-              className="flex items-center gap-2 cursor-pointer"
+              className="flex items-center justify-between cursor-pointer"
               onClick={() => toggleItem(item.id)}
             >
-              {renderCheckBox(isChecked)}
-              <Label className="text-[color:var(--aiortho-gray-900)] text-sm font-medium">
-                {item.label}
-                {item.required ? (
-                  <span className="text-[color:var(--aiortho-primary)] text-sm font-medium ml-1">*</span>
-                ) : (
-                  <span className="text-[#66798D] font-medium ml-1">(선택)</span>
-                )}
-              </Label>
-              <span className="text-sm text-[#8395AC] ml-auto cursor-pointer font-normal">보기</span>
+              <div className="flex items-center gap-2">
+                {renderCheckBox(isChecked)}
+                <Label className="text-[color:var(--aiortho-gray-900)] text-sm font-medium">
+                  {item.label}
+                  {item.required ? (
+                    <span className="text-[color:var(--aiortho-primary)] text-sm font-medium ml-1">*</span>
+                  ) : (
+                    <span className="text-[#66798D] font-medium ml-1">(선택)</span>
+                  )}
+                </Label>
+              </div>
+              {item.link && (
+                <Link href={item.link} target='_blank'>
+                  <span className="text-sm text-[#8395AC] cursor-pointer font-normal">보기</span>
+                </Link>
+              )}
             </div>
           );
         })}

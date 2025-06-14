@@ -96,7 +96,7 @@ const DoctorAuth = () => {
           <div className="flex justify-between items-center w-full ">
             <div className="flex items-center gap-2">
               <Checkbox
-                className="w-4 h-4 data-[state=checked]:bg-[color:var(--aiortho-primary)]"
+                className="w-4 h-4 border-gray-400 bg-white data-[state=checked]:bg-[#0054A6] data-[state=checked]:border-[#0054A6] data-[state=checked]:text-white"
                 checked={isChecked}
                 onCheckedChange={(e) => setIsChecked(!isChecked)}
               />
@@ -114,13 +114,13 @@ const DoctorAuth = () => {
 
           <Button
             type="submit"
-            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 rounded-full"
+            className="w-full bg-[#0054A6] hover:bg-[#0054A6] text-white py-5 rounded-full h-12"
           >
             로그인
           </Button>
         </form>
         <p
-          onClick={() => router.push("/doctor/auth/join-membership")}
+          onClick={() => router.push("/doctor/auth/code-verification")}
           className="font-medium text-center text-sm text-[color:var(--aiortho-gray-800)] my-4 underline cursor-pointer"
         >
           회원가입

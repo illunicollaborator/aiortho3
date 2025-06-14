@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import OrthoInput from "@/components/OrthoInput";
 import { Button } from "@/components/ui/button";
+import { showSuccessToast } from "@/components/ui/toast-notification";
 
 // Define schema with Zod
 const preRegisterSchema = z.object({
@@ -20,7 +21,7 @@ const preRegisterSchema = z.object({
   hospitalPhone: z
     .string()
     .min(9, "9자리 이상 입력해주세요")
-    .max(11, "11자�� 이하 입력해주세요"),
+    .max(11, "11자리 이하 입력해주세요"),
 });
 
 type FormValues = z.infer<typeof preRegisterSchema>;
@@ -45,9 +46,14 @@ const PreRegisterPage = () => {
   });
 
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-    // Here you would typically send the data to your backend
-    // Then redirect or show success message
+    // 등록 신청 완료 토스트 표시
+    showSuccessToast(
+      "등록 신청 완료",
+      "병원 정보 등록 신청이 완료되었습니다."
+    );
+    
+    // 홈페이지로 이동
+    router.push("/");
   };
 
   return (
@@ -102,10 +108,10 @@ const PreRegisterPage = () => {
             />
           </div>
 
-          <div className="flex justify-end mt-12 sm:mt-8">
+          <div className="flex mb-12 ">
             <Button
               type="submit"
-              className={`w-full rounded-full py-3.5 text-white text-sm font-bold ${
+              className={`w-full rounded-full py-3.5 text-white text-sm font-bold h-12 ${
                 isValid
                   ? "bg-[#0054A6] hover:bg-[#0054A6]"
                   : "bg-[#BDD5FF] hover:bg-[#BDD5FF] cursor-not-allowed"

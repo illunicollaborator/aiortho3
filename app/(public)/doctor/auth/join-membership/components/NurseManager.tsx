@@ -59,7 +59,6 @@ const NurseManager: React.FC<NurseManagerProps> = ({
       <div className="flex justify-between items-center mb-2">
         <label className="text-sm font-medium text-[#8395AC]">
           {label}
-          {required && <span className="text-[#0054A6]"> *</span>}
         </label>
       </div>
 
@@ -82,21 +81,21 @@ const NurseManager: React.FC<NurseManagerProps> = ({
           </div>
         ) : (
           selectedNurses.map((nurse) => (
-            <div
-              key={nurse.id}
-              className="flex h-12 px-4 py-3.5 items-center justify-between self-stretch rounded-xl border border-[#DADFE9] bg-white"
-            >
-              <div className="flex flex-col">
-                <span className="text-[#161621] text-base font-medium">
-                  {nurse.name}
-                </span>
-                <span className="text-[#8395AC] text-sm">
-                  {nurse.department} • {nurse.experience || "정보 없음"}
-                </span>
+            <div className="flex items-center gap-2 w-full">
+              <div
+                key={nurse.id}
+                className="flex h-12 px-4 py-3.5 items-center justify-between self-stretch rounded-xl border border-[#DADFE9] bg-[#F0F3FA]/60 w-full"
+              >
+                <div className="flex items-center gap-2">
+                  <div className="text-[#66798D] text-base font-medium">
+                    {nurse.name}
+                  </div>
+                </div>
+                <div className="flex items-center"></div>
               </div>
               <button
                 onClick={() => handleRemoveNurse(nurse.id)}
-                className="flex items-center justify-center w-6 h-6 rounded-full hover:bg-[#F8F9FA] transition-colors"
+                className="flex items-center justify-center w-6 h-6 rounded-full bg-[#F0F3FA]/60 "
               >
                 <X className="w-4 h-4 text-[#8395AC]" />
               </button>
@@ -115,4 +114,4 @@ const NurseManager: React.FC<NurseManagerProps> = ({
   );
 };
 
-export default NurseManager; 
+export default NurseManager;

@@ -9,7 +9,7 @@ const ServiceTermsPage = () => {
           {/* Header Section */}
           <div className="flex flex-col items-start gap-5 w-full">
             <h1 className="text-[#161621] font-['Pretendard Variable',-apple-system,Roboto,Helvetica,sans-serif] text-[32px] font-bold leading-10 w-full max-w-[542px] md:text-[28px] md:leading-9 sm:text-2xl sm:leading-8">
-              서비스 이용약관 동의
+              이벤트 및 할인 혜택 안내 동의
             </h1>
             <div className="flex justify-center items-center gap-[10px] w-full">
               <p className="font-['Pretendard Variable',-apple-system,Roboto,Helvetica,sans-serif] font-normal text-[17px] text-[#66798D] flex-1 leading-[165%] md:text-base sm:text-[15px]">
@@ -130,4 +130,4 @@ const ServiceTermsPage = () => {
   );
 };
 
-export default ServiceTermsPage;
+export default ServiceTermsPage; 

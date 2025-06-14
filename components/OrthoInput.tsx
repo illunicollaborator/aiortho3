@@ -42,7 +42,7 @@ const OrthoInput: FC<OrthoInputProps> = ({
   ...props
 }) => {
   return (
-    <div className={`space-y-2 ${width}`}>
+    <div className={`space-y-2 ${width} `}>
       {label && (
         <Label className="text-sm font-medium text-[color:var(--aiortho-gray-500)] relative">
           <span className="-mr-2 -mb-1">{label}</span>
@@ -64,7 +64,7 @@ const OrthoInput: FC<OrthoInputProps> = ({
           type={type}
           placeholder={placeholder}
           className={cn(
-            "w-full placeholder:text-[color:var(--aiortho-gray-400)] h-10",
+            "w-full placeholder:text-[color:var(--aiortho-gray-400)] h-12",
             error && "border-[1px] border-[color:var(--aiortho-danger)]",
             className
           )}

@@ -114,7 +114,7 @@ const DoctorAuth = () => {
 
           <Button
             type="submit"
-            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 rounded-full"
+            className="w-full bg-[#0054A6] hover:bg-[#0054A6] text-white py-5 rounded-full h-12"
           >
             로그인
           </Button>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronDown, ChevronUp, Trash, Minus, Plus, Edit } from "lucide-react";
+import { ChevronDown, ChevronUp, Trash, Minus, Plus, Edit, X } from "lucide-react";
 import {
   Collapsible,
   CollapsibleContent,
@@ -33,7 +33,9 @@ interface ProgramCardProps {
   onDelete?: () => void;
   onEdit?: () => void;
   onExerciseDelete?: (exerciseId: string) => void;
+  onExerciseAdd?: () => void;
   onRepetitionChange?: (count: number) => void;
+  onComplete?: () => void;
 }
 
 export default function ProgramCard({
@@ -43,7 +45,9 @@ export default function ProgramCard({
   onDelete,
   onEdit,
   onExerciseDelete,
+  onExerciseAdd,
   onRepetitionChange,
+  onComplete,
 }: ProgramCardProps) {
   const [isOpen, setIsOpen] = useState(true);
   const [currentRepetition, setCurrentRepetition] = useState(repetitionCount);
@@ -108,7 +112,7 @@ export default function ProgramCard({
                           className="flex-shrink-0 p-0 h-auto"
                           onClick={() => onExerciseDelete?.(exercise.id)}
                         >
-                          <Trash className="w-6 h-6 text-[#8395AC]" />
+                          <X className="w-6 h-6 text-[#8395AC]" />
                         </Button>
                       </div>
 
@@ -197,6 +201,18 @@ export default function ProgramCard({
                       </div>
                     </div>
                   ))}
+
+                  {/* 항목 추가 버튼 */}
+                  <div className="w-full md:max-w-full">
+                    <Button
+                      variant="default"
+                      className="w-[80px] h-[40px] rounded-[12px] bg-[#BDD5FF]/50 text-[#0054A6] "
+                      onClick={onExerciseAdd}
+                    >
+                     
+                      항목 추가
+                    </Button>
+                  </div>
                 </div>
               </div>
 
@@ -237,6 +253,24 @@ export default function ProgramCard({
                       disabled={currentRepetition >= 12}
                     >
                       <Plus className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* 생성 완료 버튼 */}
+              <div className="mt-12 w-full font-pretendard md:max-w-full md:mt-10 p-6">
+                <div className="w-full h-px bg-[#F0F3FA] rounded-[20px] md:max-w-full" />
+                <div className="flex mt-6 w-full items-start gap-[104px] justify-start flex-wrap md:max-w-full">
+                  
+                  <div className="flex items-center gap-2 text-sm text-[#66798D] font-normal justify-end">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-[108px] h-[44px] text-white bg-[#0054A6] rounded-[12px] hover:bg-[#0054A6]/80 hover:text-white"
+                      onClick={onComplete}
+                    >
+                      생성 완료
                     </Button>
                   </div>
                 </div>

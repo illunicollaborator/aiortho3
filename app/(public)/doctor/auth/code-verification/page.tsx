@@ -9,53 +9,39 @@ import OrthoInput from "@/components/OrthoInput";
 import { Button } from "@/components/ui/button";
 
 // Define schema with Zod
-const preRegisterSchema = z.object({
+const codeVerificationSchema = z.object({
   code: z.string().min(8, "가입코드 8자리를 입력해주세요").max(8, "가입코드 8자리를 입력해주세요"),
-  phoneNumber: z
-    .string()
-    .min(9, "9자리 이상 입력해주세요")
-    .max(11, "11자리 이하 입력해주세요"),
-  email: z.string().email({ message: "올바르지 않은 이메일 형식이에요." }),
-  hospitalName: z.string().min(1, { message: "병원명을 입력해주세요" }),
-  hospitalAddress: z.string().min(1, { message: "병원 주소를 입력해주세요" }),
-  hospitalPhone: z
-    .string()
-    .min(9, "9자리 이상 입력해주세요")
-    .max(11, "11자리 이하 입력해주세요"),
 });
 
-type FormValues = z.infer<typeof preRegisterSchema>;
+type FormValues = z.infer<typeof codeVerificationSchema>;
 
-const PreRegisterPage = () => {
+const CodeVerificationPage = () => {
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    watch,
+    formState: { errors },
   } = useForm<FormValues>({
-    resolver: zodResolver(preRegisterSchema),
+    resolver: zodResolver(codeVerificationSchema),
     defaultValues: {
       code: "",
-      phoneNumber: "",
-      email: "",
-      hospitalName: "",
-      hospitalAddress: "",
-      hospitalPhone: "",
     },
     mode: "onChange",
   });
 
+  const codeValue = watch("code");
+  const isCodeValid = codeValue && codeValue.length === 8;
+
   const onSubmit = (data: FormValues) => {
-    console.log(data);
-    // Here you would typically send the data to your backend
-    // Then redirect or show success message
+    // 코드 검증 로직을 여기에 추가할 수 있습니다
+    router.push("/doctor/auth/join-membership");
   };
 
   return (
     <div className="flex flex-col items-center bg-white w-full justify-start h-full pt-[10vh]">
       {/* Breadcrumb navigation */}
-
 
       {/* Main content */}
       <div className="w-full max-w-[960px] px-4 pt-[100px] md:pt-10 sm:pt-5">
@@ -74,21 +60,17 @@ const PreRegisterPage = () => {
               registration={register("code")}
               error={errors.code?.message}
             />
-
-            
-
-           
           </div>
 
-          <div className="flex justify-end mt-12 sm:mt-8">
+          <div className="flex justify-end mt-18">
             <Button
               type="submit"
-              className={`w-full rounded-full py-3.5 text-white text-sm font-bold ${
-                isValid
+              className={`w-full rounded-full py-3.5 text-white text-sm font-bold h-12 ${
+                isCodeValid
                   ? "bg-[#0054A6] hover:bg-[#0054A6]"
                   : "bg-[#BDD5FF] hover:bg-[#BDD5FF] cursor-not-allowed"
               }`}
-              disabled={!isValid}
+              disabled={!isCodeValid}
             >
              다음
             </Button>
@@ -99,4 +81,4 @@ const PreRegisterPage = () => {
   );
 };
 
-export default PreRegisterPage;
+export default CodeVerificationPage;

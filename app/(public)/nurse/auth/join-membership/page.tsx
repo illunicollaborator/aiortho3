@@ -434,7 +434,7 @@ const JoinMembership = () => {
 
           <Button
             type="submit"
-            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+            className="w-full bg-[#0054A6] hover:bg-[#0054A6] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer h-12"
           >
             회원가입
           </Button>

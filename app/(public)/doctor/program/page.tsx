@@ -243,7 +243,7 @@ export default function ProgramPage() {
                 <div className="mt-4 font-pretendard md:max-w-full">
                   <div className="w-full md:max-w-full">
                     <div className="min-h-[72px] w-full md:max-w-full">
-                      <div className="w-full md:max-w-full">
+                      <div className="w-[820px]">
                         <Button
                           onClick={handleAddProgram}
                           className="justify-center items-center rounded-xl border border-[#0054A6] bg-transparent hover:bg-[#0054A6]/10 flex min-h-[48px] w-full py-3 gap-1 text-base text-[#0054A6] font-semibold text-center flex-wrap md:max-w-full"
