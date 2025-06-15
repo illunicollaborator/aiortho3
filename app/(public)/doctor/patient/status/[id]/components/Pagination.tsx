@@ -2,7 +2,7 @@ import React from "react";
 
 const Pagination = () => {
   return (
-    <div className="self-start flex mt-6 items-start gap-1 justify-start">
+    <div className="self-start flex items-start gap-1 justify-start w-full mt-4">
       {/* Previous Page Button */}
       <div className="rounded-lg flex min-h-8 px-2 py-2 flex-col items-center justify-center w-8">
         <svg
@@ -40,21 +40,6 @@ const Pagination = () => {
       {/* Page 4 */}
       <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
         4
-      </div>
-
-      {/* Page 5 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        5
-      </div>
-
-      {/* Page 6 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        6
-      </div>
-
-      {/* Page 7 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        7
       </div>
 
       {/* Ellipsis */}

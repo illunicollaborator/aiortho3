@@ -84,6 +84,7 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
     <div
       className={cn(
         "rounded-full flex items-center font-pretandard font-medium whitespace-nowrap text-center leading-none justify-end",
+        "md:w-auto w-full",
         sizeClasses[size],
         variantClasses[variant],
         disabled && "opacity-50 pointer-events-none",
@@ -106,6 +107,7 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
             disabled={isDisabled}
             className={cn(
               "self-stretch rounded-full my-auto transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1",
+              "md:flex-none flex-1",
               buttonSizeClasses[size],
               isActive
                 ? "bg-[#0D8EFF] text-white font-bold shadow-sm"

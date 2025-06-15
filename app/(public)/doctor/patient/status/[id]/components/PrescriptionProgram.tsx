@@ -70,12 +70,12 @@ const PrescriptionProgram: React.FC<PrescriptionProgramProps> = ({
   };
 
   return (
-    <div className="w-full max-w-none">
+    <div className="w-full ">
       <div className="text-[#66798D] text-base font-normal mb-5 font-pretendard">
         {date}
       </div>
       
-      <Card className="border border-[#F0F3FA] shadow-none">
+      <Card className="border border-[#F0F3FA] shadow-none w-full">
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <CollapsibleTrigger asChild>
             <div className="w-full px-5 cursor-pointer">
@@ -119,12 +119,14 @@ const PrescriptionProgram: React.FC<PrescriptionProgramProps> = ({
                     </Label>
                     <Select value={selectedExercise} onValueChange={setSelectedExercise}>
                       <SelectTrigger className="w-full bg-[rgba(240,243,250,0.6)] border-[#DADFE9] text-[#66798D]">
-                        <SelectValue />
+                        <SelectValue className="truncate" />
                       </SelectTrigger>
                       <SelectContent>
                         {exerciseOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                          <SelectItem key={option.value} value={option.value} className="truncate">
+                            <span className="truncate block" title={option.label}>
+                              {option.label}
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -177,12 +179,14 @@ const PrescriptionProgram: React.FC<PrescriptionProgramProps> = ({
                     </Label>
                     <Select value={selectedTime} onValueChange={setSelectedTime}>
                       <SelectTrigger className="w-full bg-[rgba(240,243,250,0.6)] border-[#DADFE9] text-[#66798D]">
-                        <SelectValue />
+                        <SelectValue className="truncate" />
                       </SelectTrigger>
                       <SelectContent>
                         {timeOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
+                          <SelectItem key={option.value} value={option.value} className="truncate">
+                            <span className="truncate block" title={option.label}>
+                              {option.label}
+                            </span>
                           </SelectItem>
                         ))}
                       </SelectContent>

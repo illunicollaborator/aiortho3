@@ -242,8 +242,8 @@ export default function ProgramPage() {
               {index === programs.length - 1 && (
                 <div className="mt-4 font-pretendard w-full">
                   <div className="w-full">
-                    <div className="min-h-[72px] w-full">
-                      <div className="w-full md:w-[820px]">
+                    <div className="min-h-[72px] w-full max-w-[960px]">
+                      <div className="w-full md:w-5/6 my-4">
                         <Button
                           onClick={handleAddProgram}
                           className="justify-center items-center rounded-xl border border-[#0054A6] bg-transparent hover:bg-[#0054A6]/10 flex min-h-[48px] w-full py-3 gap-1 text-base text-[#0054A6] font-semibold text-center flex-wrap"

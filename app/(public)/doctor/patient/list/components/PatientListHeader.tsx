@@ -6,7 +6,7 @@ export default function PatientListHeader() {
   const router = useRouter();
 
   return (
-    <div className="flex w-full items-stretch gap-5 font-bold flex-wrap justify-between">
+    <div className="flex w-full md:flex-row flex-col items-stretch gap-5 font-bold flex-wrap justify-between">
       <div className="text-[#161621] self-stretch my-auto text-2xl lg:text-3xl">
         환자 명단
       </div>
