@@ -16,7 +16,7 @@ const Navbar = () => {
           AIOrtho
         </div>
       </Link>
-      <div className="inline-flex items-center gap-5 absolute right-[20px] top-4 w-[100px] h-10 lg:right-[20px] md:right-[20px] sm:right-4 sm:gap-4">
+      <div className="inline-flex items-center justify-end gap-5 absolute right-[20px] top-4 w-[100px] h-10 lg:right-[20px] md:right-[20px] sm:right-4 sm:gap-4">
         
         <Popover>
           <PopoverTrigger asChild>

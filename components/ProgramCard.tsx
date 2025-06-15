@@ -285,18 +285,18 @@ export default function ProgramCard({
         <Button
           variant="ghost"
           size="sm"
-          className="flex-shrink-0 p-0 h-auto"
+          className="flex-shrink-0 p-0 h-auto cursor-pointer hover:bg-transparent"
           onClick={onDelete}
         >
-          <Trash className="w-6 h-6 text-[#8395AC]" />
+          <Trash className="w-6 h-6 text-[#8395AC] cursor-pointer" />
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          className="flex-shrink-0 p-0 h-auto"
+          className="flex-shrink-0 p-0 h-auto cursor-pointer hover:bg-transparent"
           onClick={onEdit}
         >
-          <Edit className="w-6 h-6 text-[#8395AC]" />
+          <Edit className="w-6 h-6 text-[#8395AC] cursor-pointer" />
         </Button>
       </div>
     </div>

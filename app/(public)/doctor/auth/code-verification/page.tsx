@@ -62,7 +62,7 @@ const CodeVerificationPage = () => {
             />
           </div>
 
-          <div className="flex justify-end mt-18">
+          <div className="flex justify-end mt-18 mb-12">
             <Button
               type="submit"
               className={`w-full rounded-full py-3.5 text-white text-sm font-bold h-12 ${

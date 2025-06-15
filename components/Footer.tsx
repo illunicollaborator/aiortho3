@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="bg-[#f3f6fb] h-[240px] w-full shrink-0 flex">
-      <div className="w-[95%] md:w-[70%] mx-auto flex items-center gap-5 md:gap-20">
+    <div className="bg-[#f3f6fb] min-h-[240px] w-full shrink-0 flex">
+      <div className="w-[95%] md:w-[70%] mx-auto flex flex-col md:flex-row items-start md:items-center gap-5 md:gap-20 py-8 md:py-0">
         <div className="space-y-2">
           <h1 className="text-sm font-semibold text-[color:var(--aiortho-gray-500)]">
             고객 문의센터
