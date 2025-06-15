@@ -48,18 +48,18 @@ const MemberInfoCheckPage = () => {
 
   return (
     <div className="flex justify-center items-start min-h-screen bg-white w-full ">
-      <div className="w-full max-w-[960px] relative bg-white pt-[52px] pl-[32px]">
+      <div className="w-full max-w-[960px] relative bg-white md:pt-[52px] md:pl-[32px] px-4 my-4">
         <h1 className="text-[#161621] font-bold text-[32px] leading-[40px] mb-5 md:text-[28px] md:leading-[36px] sm:text-[24px] sm:leading-[32px]">
           회원정보 확인
         </h1>
 
-        <p className="text-[#66798D] text-[17px] font-normal leading-[22px] mb-[72px] w-[960px] md:w-full md:text-base md:leading-5 md:mb-12 sm:text-[15px] sm:leading-[18px] sm:mb-8">
+        <p className="text-[#66798D] text-[17px] font-normal leading-[22px] mb-[72px] md:w-full md:text-base md:leading-5 md:mb-12 sm:text-[15px] sm:leading-[18px] sm:mb-8">
           홍길동님의 정보를 안전하게 보호하기 위해 비밀번호를 확인합니다.
         </p>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-6 w-[960px] mb-10 md:w-full md:mb-8 sm:mb-6"
+          className="flex flex-col gap-6 w-full max-w-[960px] mb-10 md:w-full md:mb-8 sm:mb-6"
         >
           <div className="flex flex-col gap-3">
             <label className="text-[#8395AC] text-sm font-normal">
@@ -88,17 +88,17 @@ const MemberInfoCheckPage = () => {
             onRightIconClick={togglePasswordVisibility}
             required
           />
-          <div className="flex flex-row gap-5">
+          <div className="flex flex-col md:flex-row gap-5 w-full ">
             <Button
               type="button"
               onClick={handleCancel}
-              className="h-12 px-5 py-[14px] rounded-full text-sm font-bold text-[#465463] bg-[#DADFE999]/60 hover:bg-[#F0F3FA] w-1/2"
+              className="h-12 px-5 py-[14px] rounded-full text-sm font-bold text-[#465463] bg-[#DADFE999]/60 hover:bg-[#F0F3FA] w-full md:w-1/2"
           >
             취소
           </Button>
           <Button
             type="submit"
-            className="h-12 px-5 py-[14px] rounded-full text-sm font-bold text-white bg-[#BDD5FF] hover:bg-[#0054A6] w-1/2"
+            className="h-12 px-5 py-[14px] rounded-full text-sm font-bold text-white bg-[#BDD5FF] hover:bg-[#0054A6] w-full md:w-1/2"
             
           >
             확인

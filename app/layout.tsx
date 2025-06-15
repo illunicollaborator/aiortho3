@@ -16,7 +16,7 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
   return (
     <html lang="en">
       <body
-      className={`${pretandard.className} antialiased`}
+      className={`${pretandard.className} antialiased `}
       >
         {children}
         <Toaster position="top-center" />

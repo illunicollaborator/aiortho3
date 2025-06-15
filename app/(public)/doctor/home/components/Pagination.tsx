@@ -42,21 +42,6 @@ const Pagination = () => {
         4
       </div>
 
-      {/* Page 5 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        5
-      </div>
-
-      {/* Page 6 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        6
-      </div>
-
-      {/* Page 7 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        7
-      </div>
-
       {/* Ellipsis */}
       <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
         ...

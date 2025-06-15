@@ -59,7 +59,7 @@ const MemberInfoCheckPage = () => {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-6 w-[960px] mb-10 md:w-full md:mb-8 sm:mb-6"
+          className="flex flex-col gap-6 w-full max-w-[960px] mb-10 md:w-full md:mb-8 sm:mb-6"
         >
           <div className="flex flex-col gap-3">
             <label className="text-[#8395AC] text-sm font-normal">

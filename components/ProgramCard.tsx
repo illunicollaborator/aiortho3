@@ -78,8 +78,8 @@ export default function ProgramCard({
   const durations = ["1분", "2분", "3분", "4분", "5분"];
 
   return (
-    <div className="flex w-full items-start gap-7 flex-wrap ">
-      <div className="rounded-[20px] border border-[#F0F3FA] flex-grow flex-shrink-0 flex-basis-0 w-fit md:max-w-full">
+    <div className="flex w-full items-start gap-7 flex-wrap overflow-x-hidden">
+      <div className="rounded-[20px] border border-[#F0F3FA] flex-grow flex-shrink-0 flex-basis-0 w-fit md:max-w-full min-w-0">
         <Collapsible open={isOpen} onOpenChange={setIsOpen}>
           <div className="w-full md:max-w-full">
             <CollapsibleTrigger className="flex w-full items-center gap-9 font-pretendard text-[18px] text-[#161621] font-semibold leading-[1.4] justify-between flex-wrap md:max-w-full h-[84px]">
@@ -96,14 +96,14 @@ export default function ProgramCard({
             </CollapsibleTrigger>
 
             <CollapsibleContent>
-              <div className="mt-5 w-full md:max-w-full p-6">
+              <div className="mt-5 w-full md:max-w-full p-6 overflow-x-hidden">
                 <div className="w-full h-px bg-[#F0F3FA] md:max-w-full" />
 
                 <div className="mt-5 w-full md:max-w-full space-y-9">
                   {exercises.map((exercise, index) => (
                     <div key={exercise.id} className="w-full md:max-w-full">
-                      <div className="flex w-full items-center gap-10 font-pretendard text-base text-[#161621] font-semibold leading-[2.5] justify-start flex-wrap md:max-w-full">
-                        <div className="text-[#161621] self-stretch my-auto flex-grow flex-shrink basis-0 w-[415px]">
+                      <div className="flex w-full items-center gap-4 md:gap-10 font-pretendard text-base text-[#161621] font-semibold leading-[2.5] justify-start flex-wrap md:max-w-full">
+                        <div className="text-[#161621] self-stretch my-auto flex-grow flex-shrink basis-0 min-w-0 max-w-[calc(100%-40px)] md:w-[415px] md:max-w-none">
                           {exercise.name}
                         </div>
                         <Button
@@ -127,9 +127,14 @@ export default function ProgramCard({
                               <SelectTrigger className="w-full min-h-[48px] rounded-xl border-[#DADFE9] bg-[rgba(240,243,250,0.60)] text-[#66798D]">
                                 <SelectValue placeholder="운동 종류를 선택하세요" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent 
+                                className="max-w-[calc(100vw-2rem)] w-full"
+                                side="bottom"
+                                align="start"
+                                sideOffset={4}
+                              >
                                 {exerciseTypes.map((type) => (
-                                  <SelectItem key={type} value={type}>
+                                  <SelectItem key={type} value={type} className="text-sm">
                                     {type}
                                   </SelectItem>
                                 ))}
@@ -146,7 +151,7 @@ export default function ProgramCard({
                           <div className="mt-3">
                             <RadioGroup
                               defaultValue={exercise.muscleDirection || "left"}
-                              className="flex items-center gap-8"
+                              className="flex items-center gap-4 md:gap-8 flex-wrap"
                             >
                               <div className="flex items-center space-x-1">
                                 <RadioGroupItem
@@ -188,9 +193,14 @@ export default function ProgramCard({
                               <SelectTrigger className="w-full min-h-[48px] rounded-xl border-[#DADFE9] bg-[rgba(240,243,250,0.60)] text-[#66798D]">
                                 <SelectValue placeholder="시간을 선택하세요" />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent 
+                                className="max-w-[calc(100vw-2rem)] w-full"
+                                side="bottom"
+                                align="start"
+                                sideOffset={4}
+                              >
                                 {durations.map((duration) => (
-                                  <SelectItem key={duration} value={duration}>
+                                  <SelectItem key={duration} value={duration} className="text-sm">
                                     {duration}
                                   </SelectItem>
                                 ))}
@@ -219,8 +229,8 @@ export default function ProgramCard({
               {/* 프로그램 반복 수 */}
               <div className="mt-12 w-full font-pretendard md:max-w-full md:mt-10 p-6">
                 <div className="w-full h-px bg-[#F0F3FA] rounded-[20px] md:max-w-full" />
-                <div className="flex mt-6 w-full items-start gap-[104px] justify-start flex-wrap md:max-w-full">
-                  <div className="min-w-[240px] flex-grow flex-shrink basis-0 w-[266px]">
+                <div className="flex mt-6 w-full items-start gap-4 md:gap-[104px] justify-between flex-wrap md:max-w-full">
+                  <div className="min-w-[200px] flex-grow flex-shrink basis-0 max-w-full md:w-[266px]">
                     <div className="min-h-12 w-full">
                       <div className="w-full">
                         <div className="text-[#161621] leading-tight text-lg font-bold leading-[1.4] md:max-w-full">
@@ -261,9 +271,8 @@ export default function ProgramCard({
               {/* 생성 완료 버튼 */}
               <div className="mt-12 w-full font-pretendard md:max-w-full md:mt-10 p-6">
                 <div className="w-full h-px bg-[#F0F3FA] rounded-[20px] md:max-w-full" />
-                <div className="flex mt-6 w-full items-start gap-[104px] justify-start flex-wrap md:max-w-full">
-                  
-                  <div className="flex items-center gap-2 text-sm text-[#66798D] font-normal justify-end">
+                <div className="flex mt-6 w-full items-center justify-end md:max-w-full">
+                  <div className="flex items-center gap-2 text-sm text-[#66798D] font-normal">
                     <Button
                       variant="ghost"
                       size="sm"

@@ -2,27 +2,12 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { RiExpandUpDownFill } from "react-icons/ri";
-
-interface PatientData {
-  id: string;
-  registrationNumber: string;
-  patientName: string;
-  birthDate: string;
-  gender: string;
-  sa: string;
-  doctor: string;
-  treatmentPeriod: string;
-  registrationDate: string;
-  lastPrescriptionDate: string;
-  status: string;
-  statusType: "waiting" | "prescription" | "completed";
-}
-
-// StatusBadge 컴포넌트
-interface StatusBadgeProps {
-  status: string;
-  type: "waiting" | "prescription" | "completed";
-}
+import { 
+  PatientData, 
+  StatusBadgeProps, 
+  TableHeaderCellProps, 
+  PatientTableRowProps 
+} from "../types";
 
 function StatusBadge({ status, type }: StatusBadgeProps) {
   const colorClasses = {
@@ -59,11 +44,6 @@ function StatusBadge({ status, type }: StatusBadgeProps) {
 }
 
 // TableHeaderCell 컴포넌트
-interface TableHeaderCellProps {
-  label: string;
-  flex: string;
-}
-
 function TableHeaderCell({
   label,
   flex,
@@ -83,7 +63,7 @@ function TableHeaderCell({
 // PatientTableHeader 컴포넌트
 function PatientTableHeader() {
   return (
-    <div className="flex items-center w-full rounded-xl bg-slate-100 bg-opacity-50 min-h-12">
+    <div className="flex items-center w-full rounded-xl bg-slate-100 bg-opacity-50 min-h-12 sticky top-0 z-10">
       <TableHeaderCell label="등록번호" flex="flex-[0.8]" />
       <TableHeaderCell label="환자명" flex="flex-[0.7]" />
       <TableHeaderCell label="생년월일" flex="flex-[0.8]" />
@@ -99,21 +79,6 @@ function PatientTableHeader() {
 }
 
 // PatientTableRow 컴포넌트
-interface PatientTableRowProps {
-  id: string;
-  registrationNumber: string;
-  patientName: string;
-  birthDate: string;
-  gender: string;
-  sa: string;
-  doctor: string;
-  treatmentPeriod: string;
-  registrationDate: string;
-  lastPrescriptionDate: string;
-  status: string;
-  statusType: "waiting" | "prescription" | "completed";
-}
-
 function PatientTableRow({
   id,
   registrationNumber,
@@ -136,7 +101,7 @@ function PatientTableRow({
 
   return (
     <div 
-      className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors duration-200"
+      className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-blue-50 hover:shadow-sm transition-all duration-200 rounded-lg"
       onClick={handleRowClick}
     >
       <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.8] whitespace-nowrap min-h-[68px]">
@@ -315,35 +280,33 @@ const patients: PatientData[] = [
 // 메인 PatientList 컴포넌트
 function PatientList() {
   return (
-    <div className="mt-7 w-full overflow-x-auto">
-      <PatientTableHeader />
-      
-      <div className="w-full">
-        {patients.map((patient, index) => (
-          <React.Fragment key={patient.id}>
-            <PatientTableRow
-              id={patient.id}
-              registrationNumber={patient.registrationNumber}
-              patientName={patient.patientName}
-              birthDate={patient.birthDate}
-              gender={patient.gender}
-              sa={patient.sa}
-              doctor={patient.doctor}
-              treatmentPeriod={patient.treatmentPeriod}
-              registrationDate={patient.registrationDate}
-              lastPrescriptionDate={patient.lastPrescriptionDate}
-              status={patient.status}
-              statusType={patient.statusType}
-            />
-            {index < patients.length - 1 && (
-              <img
-                src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/c914df031f0a54b8061f5d8235a95b70eec4cdf0?placeholderIfAbsent=true"
-                className="object-contain w-full stroke-[0.4px] stroke-slate-400"
-                alt=""
+    <div className="mt-7 w-full">
+      <div className="min-w-[1080px] md:min-w-0">
+        <PatientTableHeader />
+        
+        <div className="w-full">
+          {patients.map((patient, index) => (
+            <React.Fragment key={patient.id}>
+              <PatientTableRow
+                id={patient.id}
+                registrationNumber={patient.registrationNumber}
+                patientName={patient.patientName}
+                birthDate={patient.birthDate}
+                gender={patient.gender}
+                sa={patient.sa}
+                doctor={patient.doctor}
+                treatmentPeriod={patient.treatmentPeriod}
+                registrationDate={patient.registrationDate}
+                lastPrescriptionDate={patient.lastPrescriptionDate}
+                status={patient.status}
+                statusType={patient.statusType}
               />
-            )}
-          </React.Fragment>
-        ))}
+              {index < patients.length - 1 && (
+                <div className="w-full h-px bg-slate-200" />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );

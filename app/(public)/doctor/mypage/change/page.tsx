@@ -9,8 +9,8 @@ import { Eye, EyeOff, ChevronDown } from "lucide-react";
 import MultiColumnDropdown, {
   ArrayItem,
 } from "@/components/ui/multi-column-dropdown";
-import { Check } from 'lucide-react';
-import { Label } from '@/components/ui/label';
+import { Check } from "lucide-react";
+import { Label } from "@/components/ui/label";
 import MedicalInstitutionSelector from "./components/MedicalInstitutionSelector";
 import NurseManager from "./components/NurseManager";
 
@@ -66,20 +66,37 @@ const SPECIALTIES = [
   ],
 ];
 
-const schema = z.object({
-  email: z.string().email({ message: "올바르지 않은 아이디 (이메일) 형식이에요." }),
-  password: z.string().min(8, { message: "8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요." }).max(16, { message: "8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요." }),
-  confirmPassword: z.string(),
-  name: z.string().min(1, { message: "이름을 입력해주세요" }),
-  medicalLicense: z.string(),
-  specialistLicense: z.string(),
-  doctorCode: z.string(),
-  phoneNumber: z.string().min(9, "9자리 이상 입력해주세요").max(11, "11자리 이하 입력해주세요"),
-  certificationNumber: z.string().min(6, "6자리 이상 입력해주세요").max(6, "6자리 이하 입력해주세요"),
-}).refine((data) => data.password === data.confirmPassword, {
-  path: ["confirmPassword"],
-  message: "비밀번호가 일치하지 않습니다.",
-});
+const schema = z
+  .object({
+    email: z
+      .string()
+      .email({ message: "올바르지 않은 아이디 (이메일) 형식이에요." }),
+    password: z
+      .string()
+      .min(8, {
+        message: "8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.",
+      })
+      .max(16, {
+        message: "8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.",
+      }),
+    confirmPassword: z.string(),
+    name: z.string().min(1, { message: "이름을 입력해주세요" }),
+    medicalLicense: z.string(),
+    specialistLicense: z.string(),
+    doctorCode: z.string(),
+    phoneNumber: z
+      .string()
+      .min(9, "9자리 이상 입력해주세요")
+      .max(11, "11자리 이하 입력해주세요"),
+    certificationNumber: z
+      .string()
+      .min(6, "6자리 이상 입력해주세요")
+      .max(6, "6자리 이하 입력해주세요"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "비밀번호가 일치하지 않습니다.",
+  });
 
 type FormValues = z.infer<typeof schema>;
 
@@ -89,30 +106,38 @@ const MedicalInstitution = ({ label, cta }: { label: string; cta: string }) => {
 };
 
 // Nurse Manager Component
-const NurseManagerWrapper = ({ label, cta }: { label: string; cta: string }) => {
+const NurseManagerWrapper = ({
+  label,
+  cta,
+}: {
+  label: string;
+  cta: string;
+}) => {
   return <NurseManager label={label} cta={cta} required />;
 };
 
 // Terms Agreement Component
 const CheckList = () => {
   const termsData = [
-    { id: 1, label: '만 14세 이상입니다.', required: true },
-    { id: 2, label: '서비스 이용약관에 동의합니다.', required: true },
-    { id: 3, label: '개인정보 수집 및 이용에 동의합니다.', required: true },
-    { id: 4, label: '이벤트 및 할인 혜택 안내에 동의합니다.', required: false },
+    { id: 1, label: "만 14세 이상입니다.", required: true },
+    { id: 2, label: "서비스 이용약관에 동의합니다.", required: true },
+    { id: 3, label: "개인정보 수집 및 이용에 동의합니다.", required: true },
+    { id: 4, label: "이벤트 및 할인 혜택 안내에 동의합니다.", required: false },
   ];
 
-  const [checkedItems, setCheckedItems] = useState<number[]>(termsData.map(t => t.id));
+  const [checkedItems, setCheckedItems] = useState<number[]>(
+    termsData.map((t) => t.id)
+  );
 
   const isAllChecked = checkedItems.length === termsData.length;
 
   const toggleAll = () => {
-    setCheckedItems(isAllChecked ? [] : termsData.map(t => t.id));
+    setCheckedItems(isAllChecked ? [] : termsData.map((t) => t.id));
   };
 
   const toggleItem = (id: number) => {
-    setCheckedItems(prev =>
-      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
+    setCheckedItems((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
     );
   };
 
@@ -120,8 +145,8 @@ const CheckList = () => {
     <div
       className={`w-5 h-5 flex items-center justify-center rounded-full border`}
       style={{
-        borderColor: '#DADFE9',
-        backgroundColor: checked ? '#0054A6' : '#DADFE9',
+        borderColor: "#DADFE9",
+        backgroundColor: checked ? "#0054A6" : "#DADFE9",
       }}
     >
       {<Check size={14} color="white" strokeWidth={3} />}
@@ -131,14 +156,19 @@ const CheckList = () => {
   return (
     <div className="space-y-4 p-4">
       {/* Select All */}
-      <div className="flex items-center gap-2 cursor-pointer" onClick={toggleAll}>
+      <div
+        className="flex items-center gap-2 cursor-pointer"
+        onClick={toggleAll}
+      >
         {renderCheckBox(isAllChecked)}
-        <Label className="font-bold text-[color:var(--aiortho-gray-900)] text-sm">약관 전체 동의</Label>
+        <Label className="font-bold text-[color:var(--aiortho-gray-900)] text-sm">
+          약관 전체 동의
+        </Label>
       </div>
 
       {/* Terms List */}
       <div className="border-t pt-4 space-y-4">
-        {termsData.map(item => {
+        {termsData.map((item) => {
           const isChecked = checkedItems.includes(item.id);
           return (
             <div
@@ -150,13 +180,19 @@ const CheckList = () => {
               <Label className="text-[color:var(--aiortho-gray-900)] text-sm font-medium">
                 {item.label}
                 {item.required ? (
-                  <span className="text-[color:var(--aiortho-primary)] text-sm font-medium ml-1">*</span>
+                  <span className="text-[color:var(--aiortho-primary)] text-sm font-medium ml-1">
+                    *
+                  </span>
                 ) : (
-                  <span className="text-[#66798D] font-medium ml-1">(선택)</span>
+                  <span className="text-[#66798D] font-medium ml-1">
+                    (선택)
+                  </span>
                 )}
               </Label>
-              
-              <span className="text-sm text-[#8395AC] ml-auto cursor-pointer font-normal">보기</span>
+
+              <span className="text-sm text-[#8395AC] ml-auto cursor-pointer font-normal">
+                보기
+              </span>
             </div>
           );
         })}
@@ -308,7 +344,6 @@ const JoinMembership = () => {
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted with data:", data);
   };
-  
 
   // Function to close all dropdowns except the one being opened
   const toggleDropdown = (dropdownName: "department" | "specialist") => {
@@ -328,14 +363,15 @@ const JoinMembership = () => {
   };
 
   return (
-    <div className=" flex flex-col items-center bg-white pt-[52px] pl-8">
+    <div className=" flex flex-col items-center bg-white md:pt-[52px] md:pl-8 px-4 my-4">
       <div className="w-full max-w-[960px] ">
         <div className="space-y-3">
           <h1 className="font-bold text-3xl text-[color:var(--aiortho-gray-900)]">
             개인정보 수정
           </h1>
           <p className="font-normal text-base text-[color:var(--aiortho-gray-600)]">
-            의사 면허 번호, 의료 기관명 변경 시 관리자의 재승인 절차가 필요할 수 있어요
+            의사 면허 번호, 의료 기관명 변경 시 관리자의 재승인 절차가 필요할 수
+            있어요
           </p>
         </div>
         <form className="space-y-10 mt-8" onSubmit={handleSubmit(onSubmit)}>
@@ -361,7 +397,6 @@ const JoinMembership = () => {
                 : undefined
             }
             error={errors.email?.message}
-            
             required
           />
 
@@ -430,17 +465,16 @@ const JoinMembership = () => {
             error={errors.medicalLicense?.message}
             required
             rightIcon={
-                <div className="flex items-center gap-2 md:gap-5 py-2">
-                  <Button
-                    type="button"
-                    onClick={handlePhoneNumberCheck}
-                    className="text-[color:var(--aiortho-gray-400)] bg-[color:var(--aiortho-gray-100)] hover:bg-[color:var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
-                  >
-                    중복확인
-                  </Button>
-                </div>
-              }
-            
+              <div className="flex items-center gap-2 md:gap-5 py-2">
+                <Button
+                  type="button"
+                  onClick={handlePhoneNumberCheck}
+                  className="text-[color:var(--aiortho-gray-400)] bg-[color:var(--aiortho-gray-100)] hover:bg-[color:var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
+                >
+                  중복확인
+                </Button>
+              </div>
+            }
           />
 
           <MedicalInstitution label="의료 기관명" cta="의료 기관명 검색" />
@@ -536,21 +570,19 @@ const JoinMembership = () => {
             required
           />
 
-          
-
-        <div className="flex w-full gap-x-5">
-        <Button
-            type="submit"
-            className="w-1/2 bg-[#DADFE999]/60 hover:bg-[color:var(--aiortho-primary)] text-black py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
-          >
-            다음
-          </Button>
-          <Button
-            type="submit"
-            className="w-1/2 bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
-          >
-            수정 완료
-          </Button>
+          <div className="flex flex-col md:flex-row w-full gap-x-5">
+            <Button
+              type="submit"
+              className="w-full md:w-1/2 bg-[#DADFE999]/60 hover:bg-[color:var(--aiortho-primary)] text-black py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+            >
+              다음
+            </Button>
+            <Button
+              type="submit"
+              className="w-full md:w-1/2 bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+            >
+              수정 완료
+            </Button>
           </div>
         </form>
       </div>

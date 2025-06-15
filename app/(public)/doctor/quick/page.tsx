@@ -43,8 +43,8 @@ export default function QuickPage() {
 
   return (
     <div className="w-full h-full bg-white">
-      <div className="w-full h-full flex flex-col justify-start items-center px-4 py-13">
-        <div className="w-full  flex flex-col items-center">
+      <div className="w-full h-full flex flex-col justify-start items-center px-4 py-4 md:py-13">
+        <div className="w-full flex flex-col items-center">
           {/* 제목 */}
           <div className="w-full">
             <div className="font-['Pretendard',sans-serif] font-bold text-[32px] text-[#161621] leading-10 md:text-[28px] sm:text-2xl sm:leading-8">
@@ -62,7 +62,8 @@ export default function QuickPage() {
           {/* 검색 폼 */}
           <div className="flex flex-col items-start gap-3 w-full mt-7">
             <div className="flex flex-col items-start gap-2 w-full">
-              <div className="flex items-center gap-4 w-full">
+              {/* PC 레이아웃 - 가로 배치 */}
+              <div className="hidden md:flex items-center gap-4 w-full">
                 <div className="flex h-12 py-[14px] px-4 items-center gap-3 flex-1 rounded-xl border border-[#DADFE9]">
                   <input
                     type="text"
@@ -83,6 +84,30 @@ export default function QuickPage() {
                   </span>
                 </Button>
               </div>
+
+              {/* 모바일 레이아웃 - 세로 배치 */}
+              <div className="flex md:hidden flex-col gap-3 w-full">
+                <div className="flex h-12 py-[14px] px-4 items-center gap-3 w-full rounded-xl border border-[#DADFE9]">
+                  <input
+                    type="text"
+                    value={patientName}
+                    onChange={handleInputChange}
+                    onKeyPress={handleKeyPress}
+                    placeholder="환자명을 입력하세요"
+                    className="font-['Pretendard',sans-serif] font-normal text-base text-[#161621] flex-1 bg-transparent border-none outline-none placeholder:text-[#97A8C3]"
+                  />
+                </div>
+                <Button
+                  onClick={handleSearch}
+                  className="flex w-full h-12 py-[14px] px-6 justify-center items-center gap-[10px] 
+                             rounded-xl bg-[#0054A6] hover:bg-[#0054A6]/90 border-none"
+                >
+                  <span className="font-['Pretendard',sans-serif] font-bold text-sm text-white leading-6">
+                    환자 검색
+                  </span>
+                </Button>
+              </div>
+
               {error && (
                 <div className="font-['Pretendard',sans-serif] font-normal text-sm text-[#FF0D4E] w-full leading-4">
                   {error}
@@ -90,10 +115,29 @@ export default function QuickPage() {
               )}
             </div>
           </div>
-          <PatientList />
-          <Pagination />
+
+          {/* 테이블 섹션 */}
+          <div className="w-full mt-7">
+            {/* PC 레이아웃 */}
+            <div className="hidden md:block w-full">
+              <PatientList />
+            </div>
+            
+            {/* 모바일 레이아웃 - 가로 스크롤 */}
+            <div className="block md:hidden w-full">
+              <div className="w-full overflow-x-auto">
+                <div className="min-w-[1080px]">
+                  <PatientList />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* 페이지네이션 */}
+          <div className="w-full mt-4">
+            <Pagination />
+          </div>
         </div>
-        
       </div>
     </div>
   );

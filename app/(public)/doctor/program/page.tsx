@@ -201,7 +201,7 @@ export default function ProgramPage() {
   };
 
   return (
-    <div className="bg-white flex px-20 pt-[52px] pb-[168px] flex-col overflow-hidden items-center justify-center md:px-5">
+    <div className="bg-white px-4 flex pt-4 md:pt-[52px] pb-[168px] flex-col overflow-x-hidden items-center justify-center md:px-5">
       <div className="flex w-full max-w-[960px] flex-col items-stretch">
         <h1 className="text-[#161621] self-start gap-4 font-pretendard text-[32px] font-bold leading-none">
           표준 치료 프로그램
@@ -240,13 +240,13 @@ export default function ProgramPage() {
 
               {/* 마지막 카드에만 프로그램 추가 버튼 표시 */}
               {index === programs.length - 1 && (
-                <div className="mt-4 font-pretendard md:max-w-full">
-                  <div className="w-full md:max-w-full">
-                    <div className="min-h-[72px] w-full md:max-w-full">
-                      <div className="w-[820px]">
+                <div className="mt-4 font-pretendard w-full">
+                  <div className="w-full">
+                    <div className="min-h-[72px] w-full">
+                      <div className="w-full md:w-[820px]">
                         <Button
                           onClick={handleAddProgram}
-                          className="justify-center items-center rounded-xl border border-[#0054A6] bg-transparent hover:bg-[#0054A6]/10 flex min-h-[48px] w-full py-3 gap-1 text-base text-[#0054A6] font-semibold text-center flex-wrap md:max-w-full"
+                          className="justify-center items-center rounded-xl border border-[#0054A6] bg-transparent hover:bg-[#0054A6]/10 flex min-h-[48px] w-full py-3 gap-1 text-base text-[#0054A6] font-semibold text-center flex-wrap"
                         >
                           <Plus className="w-6 h-6 text-[#0054A6] flex-shrink-0 self-stretch my-auto" />
                           <span className="text-[#0054A6] self-stretch my-auto">
