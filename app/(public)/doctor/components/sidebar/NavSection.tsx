@@ -11,7 +11,9 @@ const NavSection: React.FC<NavSectionProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(initialExpanded);
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     const newState = !isExpanded;
     setIsExpanded(newState);
     if (onToggle) onToggle();

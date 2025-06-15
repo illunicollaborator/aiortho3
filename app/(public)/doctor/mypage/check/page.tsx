@@ -23,6 +23,7 @@ const MemberInfoCheckPage = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(passwordCheckSchema),
@@ -31,6 +32,10 @@ const MemberInfoCheckPage = () => {
       password: "",
     },
   });
+
+  // Watch password field to detect changes
+  const password = watch("password");
+  const isPasswordEntered = password && password.length > 0;
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     console.log(data);
@@ -93,16 +98,19 @@ const MemberInfoCheckPage = () => {
               type="button"
               onClick={handleCancel}
               className="h-12 px-5 py-[14px] rounded-full text-sm font-bold text-[#465463] bg-[#DADFE999]/60 hover:bg-[#F0F3FA] w-full md:w-1/2"
-          >
-            취소
-          </Button>
-          <Button
-            type="submit"
-            className="h-12 px-5 py-[14px] rounded-full text-sm font-bold text-white bg-[#BDD5FF] hover:bg-[#0054A6] w-full md:w-1/2"
-            
-          >
-            확인
-          </Button>
+            >
+              취소
+            </Button>
+            <Button
+              type="submit"
+              className={`h-12 px-5 py-[14px] rounded-full text-sm font-bold text-white w-full md:w-1/2 ${
+                isPasswordEntered
+                  ? "bg-[#0054A6] hover:bg-[#003d7a]"
+                  : "bg-[#BDD5FF] hover:bg-[#BDD5FF]"
+              }`}
+            >
+              확인
+            </Button>
           </div>
         </form>
       </div>

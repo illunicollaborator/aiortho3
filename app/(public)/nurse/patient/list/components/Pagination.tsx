@@ -2,9 +2,9 @@ import React from "react";
 
 const Pagination = () => {
   return (
-    <div className="self-start flex mt-6 items-start gap-1 justify-start">
+    <div className="flex items-center gap-1 justify-start w-full mx-auto w-full">
       {/* Previous Page Button */}
-      <div className="rounded-lg flex min-h-8 px-2 py-2 flex-col items-center justify-center w-8">
+      <button className="rounded-lg flex min-h-8 px-2 py-2 flex-col items-center justify-center w-8 hover:bg-gray-100 transition-colors cursor-pointer">
         <svg
           width="16"
           height="16"
@@ -20,42 +20,27 @@ const Pagination = () => {
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </button>
 
       {/* Page 1 (Active) */}
-      <div className="text-[#465463] rounded-full min-h-8 px-2.5 text-sm font-bold whitespace-nowrap w-8 h-8 flex items-center justify-center bg-[#DADFE9] sm:whitespace-normal">
+      <button className="text-[#465463] rounded-full min-h-8 px-2.5 text-sm font-bold whitespace-nowrap w-8 h-8 flex items-center justify-center bg-[#DADFE9] sm:whitespace-normal">
         1
-      </div>
+      </button>
 
       {/* Page 2 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
+      <button className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer sm:whitespace-normal">
         2
-      </div>
+      </button>
 
       {/* Page 3 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
+      <button className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer sm:whitespace-normal">
         3
-      </div>
+      </button>
 
       {/* Page 4 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
+      <button className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer sm:whitespace-normal">
         4
-      </div>
-
-      {/* Page 5 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        5
-      </div>
-
-      {/* Page 6 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        6
-      </div>
-
-      {/* Page 7 */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
-        7
-      </div>
+      </button>
 
       {/* Ellipsis */}
       <div className="text-[#8395AC] rounded-lg min-h-8 px-2.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
@@ -63,12 +48,12 @@ const Pagination = () => {
       </div>
 
       {/* Last Page */}
-      <div className="text-[#8395AC] rounded-lg min-h-8 px-1.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center sm:whitespace-normal">
+      <button className="text-[#8395AC] rounded-lg min-h-8 px-1.5 py-2 text-sm font-semibold whitespace-nowrap w-8 flex items-center justify-center hover:bg-gray-100 transition-colors cursor-pointer sm:whitespace-normal">
         197
-      </div>
+      </button>
 
       {/* Next Page Button */}
-      <div className="transform rotate-180 rounded-lg flex min-h-8 px-2 py-2 flex-col items-center justify-center w-8">
+      <button className="transform rotate-180 rounded-lg flex min-h-8 px-2 py-2 flex-col items-center justify-center w-8 hover:bg-gray-100 transition-colors cursor-pointer">
         <svg
           width="16"
           height="16"
@@ -84,7 +69,7 @@ const Pagination = () => {
             strokeLinejoin="round"
           />
         </svg>
-      </div>
+      </button>
     </div>
   );
 };

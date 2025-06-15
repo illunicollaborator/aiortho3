@@ -41,15 +41,11 @@ const PublicLayout = ({ children }: Readonly<{ children: ReactNode }>) => {
       
       <div className={`flex flex-col w-full ${shouldUseWhiteBackground ? 'bg-white' : 'bg-[#F5F9FF]'}`}>
         {/* 모바일 헤더 */}
-        {shouldShowSidebar && (
-          <div className="md:hidden">
-            <Navbar />
-          </div>
-        )}
+        
         
         {/* 데스크톱 브레드크럼 */}
         {shouldShowSidebar && (
-          <div className="hidden md:block px-8 w-full h-12 flex items-center text-[#66798D]">
+          <div className="px-4 md:px-8 w-full h-12 flex items-center text-[#66798D] flex justify-start   ">
               여기여기 {">"} 거기거기
           </div>
         )}

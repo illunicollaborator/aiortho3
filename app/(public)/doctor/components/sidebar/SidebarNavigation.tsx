@@ -84,6 +84,11 @@ const SidebarNavigation: React.FC = () => {
     }
   };
 
+  // 드롭다운 토글 시에는 사이드바를 닫지 않는 별도 함수
+  const handleDropdownToggle = () => {
+    // 드롭다운 토글만 수행, 사이드바는 닫지 않음
+  };
+
   return (
     <>
       {/* 모바일 오버레이 */}
@@ -126,6 +131,7 @@ const SidebarNavigation: React.FC = () => {
               icon={prescriptionIcon}
               label="처방 관리"
               isExpanded={true}
+              onToggle={handleDropdownToggle}
             >
               <SubNavItem
                 label="환자 명단"
@@ -149,7 +155,7 @@ const SidebarNavigation: React.FC = () => {
               }
             />
 
-            <NavSection icon={myPageIcon} label="마이페이지">
+            <NavSection icon={myPageIcon} label="마이페이지" onToggle={handleDropdownToggle}>
               <SubNavItem
                 label="개인정보 수정"
                 onClick={() =>
