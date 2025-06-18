@@ -41,25 +41,6 @@ export interface PatientTableRowProps {
   columnOrder: string[];
 }
 
-export interface PatientListTitleProps {
-  title: string;
-  count: number;
-}
-
-export interface PatientListSearchProps {
-  showOnlyMyPatients: boolean;
-  setShowOnlyMyPatients: (value: boolean) => void;
-  searchQuery: string;
-  setSearchQuery: (value: string) => void;
-}
-
-export interface PatientListSheetProps {
-  showOnlyMyPatients: boolean;
-  setShowOnlyMyPatients: (value: boolean) => void;
-  searchQuery: string;
-  setSearchQuery: (value: string) => void;
-}
-
 // 드래그 앤 드롭 기능을 위한 새로운 타입
 export interface PatientTableColumn {
   id: string;

@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import PatientList from "../patient/list/components/PatientList";
-import Pagination from "../patient/list/components/Pagination";
+import UpdatedQuickPatientList from "./components/UpdatedQuickPatientList";
+import Pagination from "./components/Pagination";
 
 export default function QuickPage() {
   const router = useRouter();
@@ -120,14 +120,14 @@ export default function QuickPage() {
           <div className="w-full mt-7">
             {/* PC 레이아웃 */}
             <div className="hidden md:block w-full">
-              <PatientList />
+              <UpdatedQuickPatientList />
             </div>
             
             {/* 모바일 레이아웃 - 가로 스크롤 */}
             <div className="block md:hidden w-full">
               <div className="w-full overflow-x-auto">
                 <div className="min-w-[1080px]">
-                  <PatientList />
+                  <UpdatedQuickPatientList />
                 </div>
               </div>
             </div>

@@ -44,7 +44,7 @@ const CodeVerificationPage = () => {
       {/* Breadcrumb navigation */}
 
       {/* Main content */}
-      <div className="w-full max-w-[960px] px-4 pt-[100px] md:pt-10 sm:pt-5">
+      <div className="w-full max-w-[540px] pt-[100px] md:pt-10 sm:pt-5">
         <h1 className="text-[32px] font-bold text-[#161621] leading-10 mb-5 md:text-[28px] md:leading-9 sm:text-[24px] sm:leading-8">
           의사 가입 코드 인증
         </h1>

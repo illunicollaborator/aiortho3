@@ -67,7 +67,7 @@ const PatientRegisterPage = () => {
 
   return (
     <div className="bg-white flex w-full pt-[1px] pb-[74px] flex-col items-center">
-      <div className="flex mt-[52px] ml-8 md:ml-8 w-full max-w-[960px] flex-col">
+      <div className="flex mt-[52px] ml-8 md:ml-8 w-full max-w-[540px] flex-col">
         <h1 className="text-[#161621] text-3xl font-bold">환자 정보</h1>
         <p className="text-[#66798D] text-[17px] font-normal mt-5">
           환자 정보을 위해 아래 항목들을 입력해주세요.

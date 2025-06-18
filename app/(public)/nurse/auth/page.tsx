@@ -22,14 +22,14 @@ const loginSchema = z.object({
     .max(16, {
       message: "8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.",
     })
-    .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, {
-      message: "영문, 숫자, 특수문자를 모두 포함해야 합니다.",
+    .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_\-+={\[}\]:;"'<,>.?/~])/, {
+      message: "8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요",
     }),
 });
 
 type FormValues = z.infer<typeof loginSchema>;
 
-const DoctorAuth = () => {
+const NurseAuth = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -38,6 +38,7 @@ const DoctorAuth = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(loginSchema),
@@ -47,6 +48,10 @@ const DoctorAuth = () => {
     },
   });
 
+  // 입력 필드 값 실시간 감시
+  const emailValue = watch("email");
+  const passwordValue = watch("password");
+
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     console.log(data);
   };
@@ -55,9 +60,30 @@ const DoctorAuth = () => {
     setShowPassword(!showPassword);
   };
 
+  // 각 필드별 에러 메시지 또는 빈 필드 안내 문구 생성
+  const getEmailError = () => {
+    if (errors.email?.message) {
+      return errors.email.message;
+    }
+    if (!emailValue || emailValue.trim() === "") {
+      return "아이디를 입력해주세요.";
+    }
+    return undefined;
+  };
+
+  const getPasswordError = () => {
+    if (errors.password?.message) {
+      return errors.password.message;
+    }
+    if (!passwordValue || passwordValue.trim() === "") {
+      return "비밀번호를 입력해주세요.";
+    }
+    return undefined;
+  };
+
   return (
     <div className=" flex flex-col items-center pt-10 bg-white w-full h-full justify-center">
-      <div className="w-[95%] md:w-[40%] mx-auto">
+      <div className="w-full max-w-[540px] mx-auto">
         <div className="space-y-4">
           <h1 className="font-bold text-3xl text-[color:var(--aiortho-gray-900)]">
              간호사 로그인
@@ -72,7 +98,8 @@ const DoctorAuth = () => {
             label="이메일"
             placeholder="이메일을 입력하세요"
             registration={register("email")}
-            error={errors.email?.message}
+            error={getEmailError()}
+            value={emailValue}
             required
           />
 
@@ -81,7 +108,8 @@ const DoctorAuth = () => {
             placeholder="비밀번호를 입력하세요"
             type={showPassword ? "text" : "password"}
             registration={register("password")}
-            error={errors.password?.message}
+            error={getPasswordError()}
+            value={passwordValue}
             required
             rightIcon={
               showPassword ? (
@@ -96,7 +124,7 @@ const DoctorAuth = () => {
           <div className="flex justify-between items-center w-full ">
             <div className="flex items-center gap-2">
               <Checkbox
-                className="w-4 h-4 data-[state=checked]:bg-[color:var(--aiortho-primary)]"
+                className="w-4 h-4 border-gray-400 bg-white data-[state=checked]:bg-[#0054A6] data-[state=checked]:border-[#0054A6] data-[state=checked]:text-white"
                 checked={isChecked}
                 onCheckedChange={(e) => setIsChecked(!isChecked)}
               />
@@ -130,4 +158,4 @@ const DoctorAuth = () => {
   );
 };
 
-export default DoctorAuth;
+export default NurseAuth;

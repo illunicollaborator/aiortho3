@@ -68,7 +68,7 @@ const DoctorAuthFindId = () => {
 
   return (
     <div className="flex flex-col items-center pt-10 bg-white w-full h-full justify-center">
-      <div className="w-[95%] md:w-[40%] mx-auto">
+      <div className="w-full max-w-[540px] mx-auto">
         <div className="space-y-3">
           <h1 className="font-bold text-3xl text-[color:var(--aiortho-gray-900)]">
             계정정보 찾기

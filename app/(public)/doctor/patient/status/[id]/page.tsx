@@ -119,9 +119,9 @@ const PatientStatusPage = () => {
                 </div>
               </div>
               <div className="w-full md:w-auto">
-                <button className="justify-center items-stretch rounded-xl flex min-h-10 text-sm text-white font-semibold whitespace-nowrap text-center md:whitespace-normal bg-[#0054A6] mt-4 md:mt-0 w-full md:w-auto">
-                  <div className="self-stretch flex-1 flex-shrink-1 flex-basis-0 rounded-xl bg-[rgba(246,248,252,0)] min-h-10 w-full px-4 py-3 md:whitespace-normal">
-                    처방하기
+                <button className="justify-center items-center rounded-xl flex text-sm text-white font-semibold whitespace-nowrap text-center md:whitespace-normal bg-[#BDD5FF80] mt-4 md:mt-0 w-16 h-10">
+                  <div className="rounded-xl bg-[rgba(246,248,252,0)]">
+                    수정
                   </div>
                 </button>
               </div>

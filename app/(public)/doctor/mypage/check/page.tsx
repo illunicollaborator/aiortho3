@@ -53,7 +53,7 @@ const MemberInfoCheckPage = () => {
 
   return (
     <div className="flex justify-center items-start min-h-screen bg-white w-full ">
-      <div className="w-full max-w-[960px] relative bg-white md:pt-[52px] md:pl-[32px] px-4 my-4">
+      <div className="w-full max-w-[540px] relative bg-white md:pt-[52px] md:pl-[32px] px-4 my-4">
         <h1 className="text-[#161621] font-bold text-[32px] leading-[40px] mb-5 md:text-[28px] md:leading-[36px] sm:text-[24px] sm:leading-[32px]">
           회원정보 확인
         </h1>

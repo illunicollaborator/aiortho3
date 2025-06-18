@@ -1,5 +1,5 @@
 import { UseFormRegisterReturn } from "react-hook-form";
-import React, { FC, InputHTMLAttributes } from "react";
+import React, { FC, InputHTMLAttributes, useState, useEffect } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,7 @@ interface OrthoInputProps
   maxLength?: number;
   minLength?: number;
   className?: string;
+  value?: string;
 }
 
 const OrthoInput: FC<OrthoInputProps> = ({
@@ -39,8 +40,18 @@ const OrthoInput: FC<OrthoInputProps> = ({
   maxLength,
   minLength,
   className,
+  value,
   ...props
 }) => {
+  const [hasValue, setHasValue] = useState(false);
+
+  // 초기값 및 value prop 변화 감지
+  useEffect(() => {
+    if (value !== undefined) {
+      setHasValue(value.length > 0);
+    }
+  }, [value]);
+
   return (
     <div className={`space-y-2 ${width} `}>
       {label && (
@@ -65,16 +76,19 @@ const OrthoInput: FC<OrthoInputProps> = ({
           placeholder={placeholder}
           className={cn(
             "w-full placeholder:text-[color:var(--aiortho-gray-400)] h-12",
-            error && "border-[1px] border-[color:var(--aiortho-danger)]",
+            error && "border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0",
+            hasValue && !error && "border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]",
             className
           )}
           {...registration}
           onChange={(e) => {
+            setHasValue(e.target.value.length > 0);
             registration?.onChange && registration.onChange(e);
             onChange && onChange(e);
           }}
           maxLength={maxLength}
           minLength={minLength}
+          value={value}
           {...props}
         />
         {rightIcon && (

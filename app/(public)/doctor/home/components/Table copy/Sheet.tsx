@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 import TitleSection from "./TitleSection";
-import UpdatedPatientTable from "./UpdatedPatientTable";
+import PatientTable from "./PatientTable";
 import SearchSection from "./SearchSection";
 
 function Sheet() {
@@ -10,7 +10,7 @@ function Sheet() {
       {/* PC 레이아웃 */}
       <div className="hidden md:flex z-0 flex-col w-full">
         <TitleSection title="미처방" count={2712} />
-        <UpdatedPatientTable />
+        <PatientTable />
       </div>
       
       {/* 모바일 레이아웃 */}
@@ -52,7 +52,7 @@ function Sheet() {
         {/* 테이블 스크롤 컨테이너 */}
         <div className="w-full overflow-x-auto">
           <div className="min-w-[1080px]">
-            <UpdatedPatientTable />
+            <PatientTable />
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link"; 
 
 const Footer = () => {
   return (
@@ -23,12 +24,16 @@ const Footer = () => {
             서비스 기본약관
           </h1>
           <div className="flex flex-col gap-1">
-            <p className="text-xs font-normal text-[color:var(--aiortho-gray-500)]">
-              서비스 이용약관
-            </p>
+            <Link href="/doctor/auth/join-membership/service" target="_blank">
+              <p className="text-xs font-normal text-[color:var(--aiortho-gray-500)]">
+                서비스 이용약관
+              </p>
+            </Link>
+            <Link href="/doctor/auth/join-membership/agree" target="_blank">
             <p className="text-xs font-normal text-[color:var(--aiortho-gray-500)]">
               개인정보 처리방침
             </p>
+            </Link>
           </div>
         </div>
         <div className="space-y-2">

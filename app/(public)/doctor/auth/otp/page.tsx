@@ -82,7 +82,7 @@ const Otp = () => {
             error={errors.otp?.message}
             maxLength={6}
             apiResponse={error}
-            apiResponseMessage={"인증 번호가 일치하지 않아요"}
+            // apiResponseMessage={"인증 번호가 일치하지 않아요"}
             required
             rightIcon={
               <div className="flex items-center gap-2 md:gap-5 py-2">

@@ -108,7 +108,6 @@ const PrescriptionProgram: React.FC<PrescriptionProgramProps> = ({
                   <h4 className="text-[#161621] text-base font-semibold font-pretendard">
                     재활 운동 1
                   </h4>
-                  <IoClose className="h-4 w-4 text-[#66798D] cursor-pointer" />
                 </div>
 
                 <div className="space-y-6">
