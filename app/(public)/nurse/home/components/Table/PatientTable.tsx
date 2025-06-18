@@ -1,22 +1,14 @@
 "use client";
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { RiExpandUpDownFill } from "react-icons/ri";
-
-interface PatientData {
-  id: string;
-  registrationNumber: string;
-  patientName: string;
-  birthDate: string;
-  gender: string;
-  sa: string;
-  doctor: string;
-  treatmentPeriod: string;
-  registrationDate: string;
-  lastPrescriptionDate: string;
-  status: string;
-  statusType: "waiting" | "prescription";
-}
+import { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import DraggableTableHeader from "./DraggableTableHeader";
+import DynamicPatientTableRow from "./DynamicPatientTableRow";
+import { PatientData, TableColumn } from "./types";
+import { 
+  loadNurseHomePatientTableColumnOrder, 
+  saveNurseHomePatientTableColumnOrder,
+  DEFAULT_COLUMNS 
+} from "./PatientTableUtils";
 
 // StatusBadge 컴포넌트
 interface StatusBadgeProps {
@@ -70,7 +62,6 @@ function TableHeaderCell({
       <h2 className="text-sm font-bold opacity-80 text-zinc-900">
         {label}
       </h2>
-      <RiExpandUpDownFill className="w-3 h-3 text-zinc-400 ml-1" />
     </div>
   );
 }
@@ -89,104 +80,6 @@ function PatientTableHeader() {
       <TableHeaderCell label="환자 등록일" flex="flex-[1.0]" />
       <TableHeaderCell label="최종 처방일" flex="flex-[1.0]" />
       <TableHeaderCell label="처방 상태" flex="flex-[0.8]" />
-    </div>
-  );
-}
-
-// PatientTableRow 컴포넌트
-interface PatientTableRowProps {
-  id: string;
-  registrationNumber: string;
-  patientName: string;
-  birthDate: string;
-  gender: string;
-  sa: string;
-  doctor: string;
-  treatmentPeriod: string;
-  registrationDate: string;
-  lastPrescriptionDate: string;
-  status: string;
-  statusType: "waiting" | "prescription";
-}
-
-function PatientTableRow({
-  id,
-  registrationNumber,
-  patientName,
-  birthDate,
-  gender,
-  sa,
-  doctor,
-  treatmentPeriod,
-  registrationDate,
-  lastPrescriptionDate,
-  status,
-  statusType,
-}: PatientTableRowProps) {
-  const router = useRouter();
-
-  const handleRowClick = () => {
-    router.push(`/nurse/patient/status/${id}`);
-  };
-
-  return (
-    <div 
-      className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors"
-      onClick={handleRowClick}
-    >
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.8] whitespace-nowrap min-h-[68px]">
-        <div className="opacity-80 text-zinc-900 truncate">
-          {registrationNumber}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] text-ellipsis text-zinc-900 flex-[0.7]">
-        <div className="truncate">{patientName}</div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.8]">
-        <div className="opacity-80 text-zinc-900 truncate">
-          {birthDate}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.5]">
-        <div className="opacity-80 text-zinc-900">{gender}</div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto flex-[0.6] whitespace-nowrap min-h-[68px]">
-        <div className="opacity-80 text-zinc-900 truncate">
-          {sa}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[0.7]">
-        <div className="opacity-80 text-ellipsis text-zinc-900 truncate">
-          {doctor}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.2]">
-        <div className="opacity-80 text-zinc-900 truncate">
-          {treatmentPeriod}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto min-h-[68px] flex-[1.0]">
-        <div className="opacity-80 text-zinc-900 truncate">
-          {registrationDate}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch px-2.5 py-7 my-auto whitespace-nowrap min-h-[68px] flex-[1.0]">
-        <div className="opacity-80 text-zinc-900 truncate">
-          {lastPrescriptionDate}
-        </div>
-      </div>
-
-      <div className="flex justify-center items-center self-stretch py-5 px-3 my-auto font-bold leading-none text-center whitespace-nowrap min-h-[68px] flex-[0.8]">
-        <StatusBadge status={status} type={statusType} />
-      </div>
     </div>
   );
 }
@@ -308,15 +201,49 @@ const dummyPatients: PatientData[] = [
 ];
 
 // 메인 PatientTable 컴포넌트
-function PatientTable() {
+export interface PatientTableRef {
+  resetColumnOrder: () => void;
+}
+
+interface PatientTableProps {}
+
+const PatientTable = forwardRef<PatientTableRef, PatientTableProps>((props, ref) => {
+  const [columns, setColumns] = useState<TableColumn[]>(DEFAULT_COLUMNS);
+
+  // 컴포넌트 마운트 시 저장된 컬럼 순서 불러오기
+  useEffect(() => {
+    const savedColumns = loadNurseHomePatientTableColumnOrder();
+    setColumns(savedColumns);
+  }, []);
+
+  // 컬럼 순서 변경 핸들러
+  const handleColumnOrderChange = (newColumns: TableColumn[]) => {
+    setColumns(newColumns);
+    saveNurseHomePatientTableColumnOrder(newColumns);
+  };
+
+  // 컬럼 순서 초기화 핸들러
+  const handleResetColumnOrder = () => {
+    setColumns(DEFAULT_COLUMNS);
+    saveNurseHomePatientTableColumnOrder(DEFAULT_COLUMNS);
+  };
+
+  // ref로 외부에서 접근 가능한 함수들 노출
+  useImperativeHandle(ref, () => ({
+    resetColumnOrder: handleResetColumnOrder,
+  }));
+
   return (
     <div className="mt-7 w-full overflow-x-auto">
-      <PatientTableHeader />
+      <DraggableTableHeader 
+        columns={columns}
+        onColumnOrderChange={handleColumnOrderChange}
+      />
       
       <div className="w-full">
         {dummyPatients.map((patient, index) => (
           <React.Fragment key={patient.id}>
-            <PatientTableRow
+            <DynamicPatientTableRow
               id={patient.id}
               registrationNumber={patient.registrationNumber}
               patientName={patient.patientName}
@@ -329,6 +256,7 @@ function PatientTable() {
               lastPrescriptionDate={patient.lastPrescriptionDate}
               status={patient.status}
               statusType={patient.statusType}
+              columnOrder={columns}
             />
             {index < dummyPatients.length - 1 && (
               <img
@@ -342,6 +270,8 @@ function PatientTable() {
       </div>
     </div>
   );
-}
+});
+
+PatientTable.displayName = 'PatientTable';
 
 export default PatientTable; 

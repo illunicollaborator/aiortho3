@@ -5,16 +5,16 @@ const PATIENT_LIST_COLUMN_ORDER_KEY = "doctorPatientListColumnOrder";
 
 // 기본 컬럼 설정
 export const defaultPatientListColumns: PatientTableColumn[] = [
-  { id: "registrationNumber", label: "등록번호", flex: "flex-[0.8]" },
-  { id: "patientName", label: "환자명", flex: "flex-[0.7]" },
-  { id: "birthDate", label: "생년월일", flex: "flex-[0.8]" },
-  { id: "gender", label: "성별", flex: "flex-[0.5]" },
-  { id: "sa", label: "S/A", flex: "flex-[0.6]" },
-  { id: "doctor", label: "담당 의사", flex: "flex-[0.7]" },
-  { id: "treatmentPeriod", label: "치료 처방 기간", flex: "flex-[1.2]" },
-  { id: "registrationDate", label: "환자 등록일", flex: "flex-[1.0]" },
-  { id: "lastPrescriptionDate", label: "최종 처방일", flex: "flex-[1.0]" },
-  { id: "status", label: "처방 상태", flex: "flex-[0.8]" },
+  { id: "registrationNumber", label: "등록번호", flex: "flex-[0.8]", isVisible: true },
+  { id: "patientName", label: "환자명", flex: "flex-[0.7]", isVisible: true },
+  { id: "birthDate", label: "생년월일", flex: "flex-[0.8]", isVisible: true },
+  { id: "gender", label: "성별", flex: "flex-[0.5]", isVisible: true },
+  { id: "sa", label: "S/A", flex: "flex-[0.6]", isVisible: true },
+  { id: "doctor", label: "담당 의사", flex: "flex-[0.7]", isVisible: true },
+  { id: "treatmentPeriod", label: "치료 처방 기간", flex: "flex-[1.2]", isVisible: true },
+  { id: "registrationDate", label: "환자 등록일", flex: "flex-[1.0]", isVisible: true },
+  { id: "lastPrescriptionDate", label: "최종 처방일", flex: "flex-[1.0]", isVisible: true },
+  { id: "status", label: "처방 상태", flex: "flex-[0.8]", isVisible: true },
 ];
 
 // localStorage에서 컬럼 순서 불러오기

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import PatientListTitle from "./PatientListTitle";
-import PatientList from "./PatientList";
+import UpdatedPatientList from "./UpdatedPatientList";
 import PatientListSearch from "./PatientListSearch";
 import { PatientListSheetProps } from "../types";
 
@@ -16,7 +16,7 @@ export default function PatientListSheet({
       {/* PC 레이아웃 */}
       <div className="hidden md:flex z-0 flex-col w-full">
         <PatientListTitle title="환자 명단" count={12874} />
-        <PatientList />
+        <UpdatedPatientList />
       </div>
       
       {/* 모바일 레이아웃 */}
@@ -91,7 +91,7 @@ export default function PatientListSheet({
         {/* 테이블 스크롤 컨테이너 */}
         <div className="w-full overflow-x-auto">
           <div className="min-w-[1080px]">
-            <PatientList />
+            <UpdatedPatientList />
           </div>
         </div>
       </div>

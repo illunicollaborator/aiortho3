@@ -45,6 +45,7 @@ function StatusBadge({ status, type }: StatusBadgeProps) {
 
 // TableHeaderCell 컴포넌트
 function TableHeaderCell({
+  id,
   label,
   flex,
 }: TableHeaderCellProps) {
@@ -64,16 +65,16 @@ function TableHeaderCell({
 function PatientTableHeader() {
   return (
     <div className="flex items-center w-full rounded-xl bg-slate-100 bg-opacity-50 min-h-12 sticky top-0 z-10">
-      <TableHeaderCell label="등록번호" flex="flex-[0.8]" />
-      <TableHeaderCell label="환자명" flex="flex-[0.7]" />
-      <TableHeaderCell label="생년월일" flex="flex-[0.8]" />
-      <TableHeaderCell label="성별" flex="flex-[0.5]" />
-      <TableHeaderCell label="S/A" flex="flex-[0.6]" />
-      <TableHeaderCell label="담당 의사" flex="flex-[0.7]" />
-      <TableHeaderCell label="치료 처방 기간" flex="flex-[1.2]" />
-      <TableHeaderCell label="환자 등록일" flex="flex-[1.0]" />
-      <TableHeaderCell label="최종 처방일" flex="flex-[1.0]" />
-      <TableHeaderCell label="처방 상태" flex="flex-[0.8]" />
+      <TableHeaderCell id="registrationNumber" label="등록번호" flex="flex-[0.8]" />
+      <TableHeaderCell id="patientName" label="환자명" flex="flex-[0.7]" />
+      <TableHeaderCell id="birthDate" label="생년월일" flex="flex-[0.8]" />
+      <TableHeaderCell id="gender" label="성별" flex="flex-[0.5]" />
+      <TableHeaderCell id="sa" label="S/A" flex="flex-[0.6]" />
+      <TableHeaderCell id="doctor" label="담당 의사" flex="flex-[0.7]" />
+      <TableHeaderCell id="treatmentPeriod" label="치료 처방 기간" flex="flex-[1.2]" />
+      <TableHeaderCell id="registrationDate" label="환자 등록일" flex="flex-[1.0]" />
+      <TableHeaderCell id="lastPrescriptionDate" label="최종 처방일" flex="flex-[1.0]" />
+      <TableHeaderCell id="status" label="처방 상태" flex="flex-[0.8]" />
     </div>
   );
 }
@@ -277,6 +278,20 @@ const patients: PatientData[] = [
   },
 ];
 
+// 기본 컬럼 순서
+const defaultColumnOrder = [
+  "registrationNumber",
+  "patientName", 
+  "birthDate",
+  "gender",
+  "sa",
+  "doctor",
+  "treatmentPeriod",
+  "registrationDate",
+  "lastPrescriptionDate",
+  "status"
+];
+
 // 메인 PatientList 컴포넌트
 function PatientList() {
   return (
@@ -300,6 +315,7 @@ function PatientList() {
                 lastPrescriptionDate={patient.lastPrescriptionDate}
                 status={patient.status}
                 statusType={patient.statusType}
+                columnOrder={defaultColumnOrder}
               />
               {index < patients.length - 1 && (
                 <div className="w-full h-px bg-slate-200" />

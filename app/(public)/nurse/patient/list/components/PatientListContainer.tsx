@@ -26,7 +26,7 @@ export default function PatientListContainer() {
       </div>
       
       {/* Pagination */}
-      <div className="flex justify-center">
+      <div className="flex justify-center w-full">
         <Pagination />
       </div>
     </div>

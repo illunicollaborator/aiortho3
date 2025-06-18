@@ -1,21 +1,28 @@
 "use client";
 import * as React from "react";
+import { useRef } from "react";
 import TitleSection from "./TitleSection";
-import PatientTable from "./PatientTable";
+import PatientTable, { PatientTableRef } from "./PatientTable";
 import SearchSection from "./SearchSection";
 
 function Sheet() {
+  const patientTableRef = useRef<PatientTableRef>(null);
+
+  const handleResetColumnOrder = () => {
+    patientTableRef.current?.resetColumnOrder();
+  };
+
   return (
     <section className="flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5 w-full">
       {/* PC 레이아웃 */}
       <div className="hidden md:flex z-0 flex-col w-full">
-        <TitleSection title="미처방" count={2712} />
-        <PatientTable />
+        <TitleSection title="미처방" count={2712} onResetColumnOrder={handleResetColumnOrder} />
+        <PatientTable ref={patientTableRef} />
       </div>
       
       {/* 모바일 레이아웃 */}
       <div className="flex md:hidden z-0 flex-col w-full space-y-4">
-        <TitleSection title="미처방" count={2712} />
+        <TitleSection title="미처방" count={2712} onResetColumnOrder={handleResetColumnOrder} />
         
         {/* 내환자만보기 필터 - 모바일에서 세로 배치 */}
         <div className="flex gap-2 items-center text-sm font-medium leading-none text-slate-400">
@@ -52,7 +59,7 @@ function Sheet() {
         {/* 테이블 스크롤 컨테이너 */}
         <div className="w-full overflow-x-auto">
           <div className="min-w-[1080px]">
-            <PatientTable />
+            <PatientTable ref={patientTableRef} />
           </div>
         </div>
       </div>
