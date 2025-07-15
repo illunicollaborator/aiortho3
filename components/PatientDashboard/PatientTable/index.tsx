@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import PatientTableHeader from './PatientTableHeader';
 import PatientTableRow from './PatientTableRow';
 import { TableColumn } from './types';
@@ -19,6 +19,7 @@ const PER_PAGE_SIZE = 10;
 const PatientTable = () => {
   const router = useRouter();
   const tableRef = useRef<HTMLDivElement>(null);
+
   const [columns, setColumns] = useState<TableColumn[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
@@ -29,58 +30,86 @@ const PatientTable = () => {
   const [currentSortedColumnId, setCurrentSortedColumnId] =
     useState<TableColumn['id']>('createdAt');
   const [isDataChanging, setIsDataChanging] = useState(false);
-  const debouncedSearch = useDebounce(search, 2000);
+  const [shouldScroll, setShouldScroll] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
+  const debouncedSearch = useDebounce(search, 1000);
 
-  const patientsQuery = usePatients({
-    pageNumber,
-    count: PER_PAGE_SIZE,
-    findMyPatient: isFindMyPatient,
-    ascending: sortDirection === 'asc' ? true : false,
-    sortBy,
-    ...(debouncedSearch && { searchKey: debouncedSearch }),
-  });
+  const queryParams = useMemo(
+    () => ({
+      pageNumber,
+      count: PER_PAGE_SIZE,
+      findMyPatient: isFindMyPatient,
+      ascending: sortDirection === 'asc' ? true : false,
+      sortBy,
+      ...(debouncedSearch && { searchKey: debouncedSearch }),
+    }),
+    [pageNumber, isFindMyPatient, sortDirection, sortBy, debouncedSearch]
+  );
 
-  // 컴포넌트 마운트 시 localStorage에서 컬럼 순서 불러오기
+  const patientsQuery = usePatients(queryParams);
+
   useEffect(() => {
     const savedColumns = loadColumnOrder();
     setColumns(savedColumns);
     setIsLoading(false);
   }, []);
 
-  // 검색 키워드나 필터 변경 시 페이지 초기화
+  // 검색/필터 변경 시 페이지 리셋 및 스크롤 활성화
   useEffect(() => {
-    setPageNumber(1);
+    // 검색이나 필터가 변경되었을 때만 페이지 리셋
+    if (hasUserInteracted) {
+      setPageNumber(1);
+      setShouldScroll(true);
+    }
   }, [debouncedSearch, isFindMyPatient]);
 
-  // 데이터 변경 시 테이블 전체가 보이도록 스크롤
   useEffect(() => {
     if (patientsQuery.isFetching) {
       setIsDataChanging(true);
     } else if (patientsQuery.isSuccess && isDataChanging) {
-      // 데이터 로딩 완료 시 테이블 전체가 보이도록 스크롤
       setTimeout(() => {
-        if (tableRef.current) {
-          const rect = tableRef.current.getBoundingClientRect();
-          const offset = rect.top - 100; // 테이블 상단에서 100px 위로 스크롤
-
-          window.scrollBy({
-            top: offset,
-            behavior: 'smooth',
-          });
-        }
         setIsDataChanging(false);
-      }, 100);
+
+        // 스크롤 실행
+        if (shouldScroll) {
+          setTimeout(() => {
+            if (tableRef.current) {
+              const rect = tableRef.current.getBoundingClientRect();
+              const currentScrollY = window.scrollY;
+
+              // 현재 스크롤 위치 기준으로 테이블 상단으로 스크롤
+              if (rect.top > 0) {
+                // 테이블이 화면 아래에 있으면 테이블 상단으로 스크롤
+                const tableTop = rect.top + currentScrollY;
+                const targetScrollY = tableTop - 100;
+                window.scrollTo({
+                  top: targetScrollY,
+                  behavior: 'smooth',
+                });
+              } else if (rect.bottom < window.innerHeight) {
+                // 테이블이 화면 위에 있으면 테이블 상단으로 스크롤
+                const tableTop = rect.top + currentScrollY;
+                const targetScrollY = tableTop - 100;
+                window.scrollTo({
+                  top: targetScrollY,
+                  behavior: 'smooth',
+                });
+              }
+              // 테이블이 화면 중앙에 있으면 스크롤하지 않음
+            }
+          }, 200);
+          setShouldScroll(false); // 스크롤 완료 후 비활성화
+        }
+      }, 400);
     }
-  }, [patientsQuery.isFetching, patientsQuery.isSuccess, isDataChanging]);
+  }, [
+    patientsQuery.isFetching,
+    patientsQuery.isSuccess,
+    isDataChanging,
+    shouldScroll,
+    hasUserInteracted,
+  ]);
 
-  if (patientsQuery.isError || !patientsQuery.data) return null;
-
-  const {
-    data: { patients, totalCount },
-    isFetching,
-  } = patientsQuery;
-
-  // 컬럼 순서 변경 핸들러
   const handleColumnOrderChange = (newColumns: TableColumn[]) => {
     setColumns(newColumns);
     saveColumnOrder(newColumns);
@@ -90,8 +119,13 @@ const PatientTable = () => {
     newSortBy: TableColumn['sortKey'],
     columnId: TableColumn['id']
   ) => {
+    setShouldScroll(true); // 정렬 변경 시 스크롤 활성화
+
+    if (!hasUserInteracted) {
+      setHasUserInteracted(true); // 첫 상호작용 표시
+    }
+
     if (currentSortedColumnId === columnId) {
-      // 같은 컬럼을 클릭한 경우: null -> asc -> desc -> asc -> desc ...
       if (sortDirection === null) {
         setSortDirection('asc');
       } else if (sortDirection === 'asc') {
@@ -100,19 +134,47 @@ const PatientTable = () => {
         setSortDirection('asc');
       }
     } else {
-      // 다른 컬럼을 클릭한 경우: 해당 컬럼으로 정렬하고 오름차순으로 설정
       setSortBy(newSortBy);
       setCurrentSortedColumnId(columnId);
       setSortDirection('asc');
     }
   };
 
+  const handleFindMyPatientToggle = () => {
+    if (!hasUserInteracted) {
+      setHasUserInteracted(true); // 첫 상호작용 표시
+    }
+    setIsFindMyPatient(!isFindMyPatient);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!hasUserInteracted) {
+      setHasUserInteracted(true); // 첫 상호작용 표시
+    }
+    setSearch(e.target.value);
+  };
+
+  const handlePageChange = (page: number) => {
+    setShouldScroll(true); // 페이지네이션 변경 시 스크롤 활성화
+    setPageNumber(page);
+  };
+
+  if (patientsQuery.isError || !patientsQuery.data) {
+    return null;
+  }
+
+  const {
+    data: { patients, totalCount },
+  } = patientsQuery;
+
+  console.log(pageNumber);
+
   return (
     <div className="flex flex-col gap-6">
       <div
         ref={tableRef}
         className={cn(
-          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5 w-full transition-all duration-5000 ease-in-out',
+          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5 w-full',
           isDataChanging && 'opacity-90'
         )}
       >
@@ -131,7 +193,7 @@ const PatientTable = () => {
                 type="button"
                 className="self-stretch my-auto flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                 aria-label="내 환자만 보기 필터 적용"
-                onClick={() => setIsFindMyPatient(!isFindMyPatient)}
+                onClick={handleFindMyPatientToggle}
               >
                 <SquareCheck
                   className={cn(
@@ -151,7 +213,7 @@ const PatientTable = () => {
                 type="text"
                 placeholder="검색"
                 value={search}
-                onChange={e => setSearch(e.target.value)}
+                onChange={handleSearchChange}
                 className="flex-1 bg-transparent border-none outline-none text-slate-400 placeholder:text-slate-400 focus:text-[#161621]"
                 aria-label="환자 검색"
               />
@@ -172,8 +234,12 @@ const PatientTable = () => {
 
           {/* 테이블 본문 */}
           <div className="w-full">
-            {patients.length === 0 ? (
-              <div className="flex flex-col items-center w-full mt-10 xl:mt-15">
+            {isDataChanging ? (
+              <div className="flex items-center justify-center w-full h-full">
+                <Spinner className="my-10 w-16 h-16" />
+              </div>
+            ) : patients.length === 0 ? (
+              <div className="flex flex-col items-center w-full mt-10 xl:mt-15 justify-center">
                 <p className="text-[var(--aiortho-gray-600)] mb-4 ">
                   ‘환자 등록’ 후 처방이 가능합니다.
                 </p>
@@ -185,14 +251,10 @@ const PatientTable = () => {
                   환자 등록하기
                 </Button>
               </div>
-            ) : isFetching ? (
-              <div className="flex items-center justify-center w-full h-full">
-                <Spinner className="my-10 w-16 h-16" />
-              </div>
             ) : (
               <div
                 className={cn(
-                  'transition-all duration-300 ease-in-out',
+                  'transition-all duration-700 ease-in-out',
                   isDataChanging && 'opacity-75'
                 )}
               >
@@ -217,7 +279,7 @@ const PatientTable = () => {
       <Pagination
         currentPage={pageNumber}
         totalPages={totalCount ? Math.ceil(totalCount / PER_PAGE_SIZE) : 1}
-        onPageChange={page => setPageNumber(page)}
+        onPageChange={handlePageChange}
       />
 
       <Divider className="mt-3 bg-transparent" />
