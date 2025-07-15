@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PatientTableHeader from './PatientTableHeader';
 import PatientTableRow from './PatientTableRow';
 import { TableColumn } from './types';
@@ -18,6 +18,7 @@ const PER_PAGE_SIZE = 10;
 
 const PatientTable = () => {
   const router = useRouter();
+  const tableRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState<TableColumn[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [pageNumber, setPageNumber] = useState(1);
@@ -27,6 +28,7 @@ const PatientTable = () => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(null);
   const [currentSortedColumnId, setCurrentSortedColumnId] =
     useState<TableColumn['id']>('createdAt');
+  const [isDataChanging, setIsDataChanging] = useState(false);
   const debouncedSearch = useDebounce(search, 2000);
 
   const patientsQuery = usePatients({
@@ -44,6 +46,32 @@ const PatientTable = () => {
     setColumns(savedColumns);
     setIsLoading(false);
   }, []);
+
+  // 검색 키워드나 필터 변경 시 페이지 초기화
+  useEffect(() => {
+    setPageNumber(1);
+  }, [debouncedSearch, isFindMyPatient]);
+
+  // 데이터 변경 시 테이블 전체가 보이도록 스크롤
+  useEffect(() => {
+    if (patientsQuery.isFetching) {
+      setIsDataChanging(true);
+    } else if (patientsQuery.isSuccess && isDataChanging) {
+      // 데이터 로딩 완료 시 테이블 전체가 보이도록 스크롤
+      setTimeout(() => {
+        if (tableRef.current) {
+          const rect = tableRef.current.getBoundingClientRect();
+          const offset = rect.top - 100; // 테이블 상단에서 100px 위로 스크롤
+
+          window.scrollBy({
+            top: offset,
+            behavior: 'smooth',
+          });
+        }
+        setIsDataChanging(false);
+      }, 100);
+    }
+  }, [patientsQuery.isFetching, patientsQuery.isSuccess, isDataChanging]);
 
   if (patientsQuery.isError || !patientsQuery.data) return null;
 
@@ -81,13 +109,19 @@ const PatientTable = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5 w-full">
+      <div
+        ref={tableRef}
+        className={cn(
+          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5 w-full transition-all duration-5000 ease-in-out',
+          isDataChanging && 'opacity-90'
+        )}
+      >
         <div className="flex w-full flex-col lg:flex-row lg:justify-between lg:items-center gap-5 lg:gap-0">
           <div className="flex flex-row gap-5">
             <div className="flex gap-2 items-center self-start text-2xl font-bold leading-none whitespace-nowrap">
               <h1 className="self-stretch my-auto text-zinc-900">총</h1>
               <div className="flex items-center self-stretch my-auto">
-                <span className="self-stretch my-auto text-sky-700">{totalCount}</span>
+                <span className="self-stretch my-auto text-sky-700">{totalCount ?? 0}</span>
                 <span className="self-stretch my-auto text-zinc-900">명</span>
               </div>
             </div>
@@ -156,18 +190,25 @@ const PatientTable = () => {
                 <Spinner className="my-10 w-16 h-16" />
               </div>
             ) : (
-              patients.map((patient, index) => (
-                <React.Fragment key={`${patient.patientId}-${index}`}>
-                  <PatientTableRow patient={patient} columnOrder={columns} />
-                  {index < patients.length - 1 && (
-                    <img
-                      src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/c914df031f0a54b8061f5d8235a95b70eec4cdf0?placeholderIfAbsent=true"
-                      className="object-contain w-full stroke-[0.4px] stroke-slate-400"
-                      alt=""
-                    />
-                  )}
-                </React.Fragment>
-              ))
+              <div
+                className={cn(
+                  'transition-all duration-300 ease-in-out',
+                  isDataChanging && 'opacity-75'
+                )}
+              >
+                {patients.map((patient, index) => (
+                  <React.Fragment key={`${patient.patientId}-${index}`}>
+                    <PatientTableRow patient={patient} columnOrder={columns} />
+                    {index < patients.length - 1 && (
+                      <img
+                        src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/c914df031f0a54b8061f5d8235a95b70eec4cdf0?placeholderIfAbsent=true"
+                        className="object-contain w-full stroke-[0.4px] stroke-slate-400"
+                        alt=""
+                      />
+                    )}
+                  </React.Fragment>
+                ))}
+              </div>
             )}
           </div>
         </div>
@@ -175,7 +216,7 @@ const PatientTable = () => {
 
       <Pagination
         currentPage={pageNumber}
-        totalPages={Math.ceil(totalCount / PER_PAGE_SIZE)}
+        totalPages={totalCount ? Math.ceil(totalCount / PER_PAGE_SIZE) : 1}
         onPageChange={page => setPageNumber(page)}
       />
 
