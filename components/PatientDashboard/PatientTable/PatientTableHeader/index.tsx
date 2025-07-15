@@ -18,18 +18,21 @@ import {
 import { restrictToHorizontalAxis, restrictToParentElement } from '@dnd-kit/modifiers';
 import PatientTableHeaderCell from '../PatientTableHeaderCell';
 import { TableColumn } from '../types';
-import { Patient, PatientListSortKey } from '@/models';
 
 interface DraggableTableHeaderProps {
   columns: TableColumn[];
-  sortBy: PatientListSortKey;
+  sortBy: TableColumn['sortKey'];
+  sortDirection: 'asc' | 'desc' | null;
+  currentSortedColumnId: TableColumn['id'];
   onColumnOrderChange: (newColumns: TableColumn[]) => void;
-  onColumnSortChange: (newSortBy: PatientListSortKey) => void;
+  onColumnSortChange: (newSortBy: TableColumn['sortKey'], columnId: TableColumn['id']) => void;
 }
 
 function DraggableTableHeader({
   columns,
   sortBy,
+  sortDirection,
+  currentSortedColumnId,
   onColumnOrderChange,
   onColumnSortChange,
 }: DraggableTableHeaderProps) {
@@ -56,10 +59,14 @@ function DraggableTableHeader({
     }
   };
 
-  const handleColumnSortChange = (selectedSortColumn: keyof Patient | 'createdAt') => {
-    onColumnSortChange(
-      columns.find(column => column.id === selectedSortColumn)?.sortKey as PatientListSortKey
-    );
+  const handleColumnSortChange = (
+    newSortBy: TableColumn['sortKey'],
+    columnId: TableColumn['id']
+  ) => {
+    const column = columns.find(column => column.id === columnId);
+    if (column) {
+      onColumnSortChange(newSortBy, columnId);
+    }
   };
 
   return (
@@ -78,7 +85,8 @@ function DraggableTableHeader({
             <PatientTableHeaderCell
               key={column.id}
               column={column}
-              sortBy={sortBy === column.sortKey}
+              sortBy={column.id === currentSortedColumnId}
+              sortDirection={column.id === currentSortedColumnId ? sortDirection : null}
               onColumnSortChange={handleColumnSortChange}
             />
           ))}

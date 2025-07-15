@@ -12,7 +12,7 @@ type TableColumnKey =
   | '처방 상태';
 
 export interface TableColumn {
-  id: keyof Patient;
+  id: keyof Patient | 'createdAt';
   flex: string;
   label: TableColumnKey;
   sortKey: PatientListSortKey;

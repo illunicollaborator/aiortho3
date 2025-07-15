@@ -11,7 +11,6 @@ import { usePatients } from '@/hooks/usePatients';
 import Spinner from '@/components/Spinner';
 import Pagination from '@/components/Pagination';
 import Divider from '@/components/Divider';
-import { PatientListSortKey } from '@/models';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 
@@ -24,15 +23,19 @@ const PatientTable = () => {
   const [pageNumber, setPageNumber] = useState(1);
   const [isFindMyPatient, setIsFindMyPatient] = useState(false);
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState<PatientListSortKey>('createdAt');
+  const [sortBy, setSortBy] = useState<TableColumn['sortKey']>('createdAt');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(null);
+  const [currentSortedColumnId, setCurrentSortedColumnId] =
+    useState<TableColumn['id']>('createdAt');
   const debouncedSearch = useDebounce(search, 2000);
 
   const patientsQuery = usePatients({
     pageNumber,
     count: PER_PAGE_SIZE,
     findMyPatient: isFindMyPatient,
+    ascending: sortDirection === 'asc' ? true : false,
+    sortBy,
     ...(debouncedSearch && { searchKey: debouncedSearch }),
-    ...(sortBy && { sortBy }),
   });
 
   // 컴포넌트 마운트 시 localStorage에서 컬럼 순서 불러오기
@@ -55,8 +58,25 @@ const PatientTable = () => {
     saveColumnOrder(newColumns);
   };
 
-  const handleColumnSortChange = (newSortBy: PatientListSortKey) => {
-    setSortBy(newSortBy);
+  const handleColumnSortChange = (
+    newSortBy: TableColumn['sortKey'],
+    columnId: TableColumn['id']
+  ) => {
+    if (currentSortedColumnId === columnId) {
+      // 같은 컬럼을 클릭한 경우: null -> asc -> desc -> asc -> desc ...
+      if (sortDirection === null) {
+        setSortDirection('asc');
+      } else if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else {
+        setSortDirection('asc');
+      }
+    } else {
+      // 다른 컬럼을 클릭한 경우: 해당 컬럼으로 정렬하고 오름차순으로 설정
+      setSortBy(newSortBy);
+      setCurrentSortedColumnId(columnId);
+      setSortDirection('asc');
+    }
   };
 
   return (
@@ -110,6 +130,8 @@ const PatientTable = () => {
           <PatientTableHeader
             columns={columns}
             sortBy={sortBy}
+            sortDirection={sortDirection}
+            currentSortedColumnId={currentSortedColumnId}
             onColumnSortChange={handleColumnSortChange}
             onColumnOrderChange={handleColumnOrderChange}
           />
