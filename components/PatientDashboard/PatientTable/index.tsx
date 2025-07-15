@@ -167,8 +167,6 @@ const PatientTable = () => {
     data: { patients, totalCount },
   } = patientsQuery;
 
-  console.log(pageNumber);
-
   return (
     <div className="flex flex-col gap-6">
       <div
