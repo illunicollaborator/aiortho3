@@ -33,7 +33,8 @@ export default function HomePage() {
       </section>
 
       {/* Registration Link */}
-      <div className="flex flex-col  items-center w-[540px] max-md:w-full max-md:max-w-[540px] max-sm:box-border max-sm:px-5 max-sm:w-full">
+      {/* FIXME: 기획 보류 */}
+      {/* <div className="flex flex-col  items-center w-[540px] max-md:w-full max-md:max-w-[540px] max-sm:box-border max-sm:px-5 max-sm:w-full">
         <Link
           href="/doctor/auth/pre-register"
           className="text-sm leading-5 text-center underline cursor-pointer decoration-auto decoration-solid text-slate-500 underline-offset-auto w-full hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200 py-2"
@@ -41,21 +42,7 @@ export default function HomePage() {
         >
           처음 방문하셨나요?
         </Link>
-        <Link
-          href="/doctor/home"
-          className="text-sm leading-5 text-center underline cursor-pointer decoration-auto decoration-solid text-slate-500 underline-offset-auto w-full hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200 py-2"
-          aria-label="의사홈으로 이동"
-        >
-          의사홈으로(임시)
-        </Link>
-        <Link
-          href="/nurse/home"
-          className="text-sm leading-5 text-center underline cursor-pointer decoration-auto decoration-solid text-slate-500 underline-offset-auto w-full hover:text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 transition-colors duration-200 py-2"
-          aria-label="간호사홈으로 이동"
-        >
-          간호사홈으로(임시)
-        </Link>
-      </div>
+      </div> */}
     </div>
   );
 }

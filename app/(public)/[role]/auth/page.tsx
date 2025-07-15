@@ -15,7 +15,6 @@ import Spinner from '@/components/Spinner';
 // Define schema with Zod
 const loginSchema = z.object({
   email: z.string().email({ message: '올바르지 않은 아이디 (이메일) 형식이에요.' }),
-
   password: z
     .string()
     .min(8, { message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.' })
@@ -29,11 +28,10 @@ const loginSchema = z.object({
 
 type FormValues = z.infer<typeof loginSchema>;
 
-const AuthPage = () => {
+export default function AuthPage() {
   const router = useRouter();
   const pathname = usePathname();
   const { role } = useParams();
-
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -42,7 +40,7 @@ const AuthPage = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    setError,
     formState: { errors, isValid },
   } = useForm<FormValues>({
     mode: 'onChange',
@@ -53,41 +51,34 @@ const AuthPage = () => {
     },
   });
 
-  // 입력 필드 값 실시간 감시
-  const emailValue = watch('email');
-  const passwordValue = watch('password');
-
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     loginMutation.mutate(data, {
       onSuccess: () => {
         router.push('/home');
+      },
+      onError: err => {
+        setError('email', {
+          type: 'manual',
+          message: ' ', // empty string, error ui
+        });
+
+        if (err.statusSubCode === 4000) {
+          setError('password', {
+            type: 'manual',
+            message: '아이디(이메일) 혹은 비밀번호가 올바르지 않아요',
+          });
+        } else {
+          setError('password', {
+            type: 'manual',
+            message: '로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+          });
+        }
       },
     });
   };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
-  };
-
-  // 각 필드별 에러 메시지 또는 빈 필드 안내 문구 생성
-  const getEmailError = () => {
-    if (errors.email?.message) {
-      return errors.email.message;
-    }
-    if (!emailValue || emailValue.trim() === '') {
-      return '아이디를 입력해주세요.';
-    }
-    return undefined;
-  };
-
-  const getPasswordError = () => {
-    if (errors.password?.message) {
-      return errors.password.message;
-    }
-    if (!passwordValue || passwordValue.trim() === '') {
-      return '비밀번호를 입력해주세요.';
-    }
-    return undefined;
   };
 
   const handleSignUpClick = () => {
@@ -108,20 +99,18 @@ const AuthPage = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-10 mt-8">
           <OrthoInput
-            label="이메일"
-            placeholder="이메일을 입력하세요"
+            label="아이디(이메일)"
+            placeholder="아이디를 입력해주세요"
             registration={register('email')}
-            error={getEmailError()}
-            value={emailValue}
+            error={errors.email?.message}
           />
 
           <OrthoInput
             label="비밀번호"
-            placeholder="비밀번호를 입력하세요"
+            placeholder="비밀번호를 입력해주세요"
             type={showPassword ? 'text' : 'password'}
             registration={register('password')}
-            error={getPasswordError()}
-            value={passwordValue}
+            error={errors.password?.message}
             rightIcon={
               showPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
@@ -168,6 +157,4 @@ const AuthPage = () => {
       </div>
     </div>
   );
-};
-
-export default AuthPage;
+}
