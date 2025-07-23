@@ -26,7 +26,7 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
     return null;
   }
 
-  const { prescriptions, totalCount } = prescriptionHistoryQuery.data;
+  const { prescriptions, pageCount } = prescriptionHistoryQuery.data;
 
   return (
     <div className="w-full">
@@ -41,7 +41,7 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
         </div>
       </div>
 
-      <div className="flex flex-col gap-7">
+      <div className="flex flex-col gap-7 mb-9">
         {prescriptions.length > 0 ? (
           prescriptions.map((prescription, idx) => (
             <div key={`prescription-history-${idx}`} className="flex flex-col gap-3">
@@ -49,7 +49,7 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
                 {formatDate(prescription.startDate, true)}
               </span>
 
-              <PrescriptionProgramCard prescription={prescription} />
+              <PrescriptionProgramCard prescription={prescription} disabled />
             </div>
           ))
         ) : (
@@ -59,12 +59,8 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
         )}
       </div>
 
-      {totalCount > 0 && (
-        <Pagination
-          currentPage={page}
-          totalPages={totalCount ? Math.ceil(totalCount / PER_PAGE_SIZE) : 1}
-          onPageChange={handlePageChange}
-        />
+      {pageCount > 0 && (
+        <Pagination currentPage={page} totalPages={pageCount} onPageChange={handlePageChange} />
       )}
     </div>
   );
