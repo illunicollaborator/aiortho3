@@ -27,7 +27,7 @@ const AuthSignUpPage = () => {
           <CodeVerifyForm onSubmit={handleCodeVerifyFormSubmit} />
         </Funnel.Step>
         <Funnel.Step name="form">
-          {role === 'doctor' ? <DoctorSignUpForm token={signUpToken} /> : <NurseSignUpForm />}
+          {role === 'doctor' ? <DoctorSignUpForm signUpToken={signUpToken} /> : <NurseSignUpForm />}
         </Funnel.Step>
       </Funnel>
     </div>

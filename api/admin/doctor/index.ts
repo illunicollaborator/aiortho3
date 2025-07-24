@@ -1,6 +1,8 @@
 import apiClient from '@/lib/axios';
 import {
   GetDoctorProfileResponse,
+  PostDoctorMedicalLicenseCheckRequest,
+  PostDoctorMedicalLicenseCheckResponse,
   PostDoctorSignUpActivateCodeRequest,
   PostDoctorSignUpActivateCodeResponse,
 } from './types';
@@ -14,3 +16,13 @@ export const postDoctorSignUpActivateCode = async (
 
 export const getDoctorProfile = async (): Promise<GetDoctorProfileResponse> =>
   await apiClient.get(`${RESOURCE}`);
+
+export const postDoctorMedicalLicenseCheck = async (
+  data: PostDoctorMedicalLicenseCheckRequest,
+  token: string
+): Promise<PostDoctorMedicalLicenseCheckResponse> =>
+  await apiClient.post(`${RESOURCE}/check/license`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

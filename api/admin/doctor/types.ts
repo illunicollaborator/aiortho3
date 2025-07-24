@@ -11,3 +11,9 @@ export interface PostDoctorSignUpActivateCodeResponse {
 export interface GetDoctorProfileRequest {}
 
 export interface GetDoctorProfileResponse extends Doctor {}
+
+export interface PostDoctorMedicalLicenseCheckRequest {
+  licenseNumber: string;
+}
+
+export interface PostDoctorMedicalLicenseCheckResponse {}
