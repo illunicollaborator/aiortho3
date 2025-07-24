@@ -49,8 +49,18 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
           onSubmit && onSubmit(signupToken);
           showSuccessToast('가입 코드 인증 완료', '의사 가입 코드 인증이 완료되었습니다.');
         },
-        onError: () => {
-          setError('code', { message: '유효하지 않은 코드 입니다.' });
+        onError: error => {
+          if (error.statusSubCode === 4012) {
+            setError('code', { message: '유효하지 않은 코드 입니다.' });
+            return;
+          }
+
+          if (error.statusSubCode === 4025) {
+            setError('code', { message: '이미 사용된 코드 입니다.' });
+            return;
+          }
+
+          setError('code', { message: '잠시 후 다시 시도해주세요.' });
         },
       }
     );

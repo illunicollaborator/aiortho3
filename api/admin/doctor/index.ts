@@ -1,15 +1,15 @@
 import apiClient from '@/lib/axios';
 import {
   GetDoctorProfileResponse,
-  DoctorSignUpActivateCodeRequest,
-  DoctorSignUpActivateCodeResponse,
+  PostDoctorSignUpActivateCodeRequest,
+  PostDoctorSignUpActivateCodeResponse,
 } from './types';
 
 const RESOURCE = '/ums/doctor';
 
-export const doctorSignUpActivateCode = async (
-  data: DoctorSignUpActivateCodeRequest
-): Promise<DoctorSignUpActivateCodeResponse> =>
+export const postDoctorSignUpActivateCode = async (
+  data: PostDoctorSignUpActivateCodeRequest
+): Promise<PostDoctorSignUpActivateCodeResponse> =>
   await apiClient.post(`${RESOURCE}/signup/activatecode`, data);
 
 export const getDoctorProfile = async (): Promise<GetDoctorProfileResponse> =>

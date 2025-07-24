@@ -1,10 +1,10 @@
 import { Doctor } from '@/models';
 
-export interface DoctorSignUpActivateCodeRequest {
+export interface PostDoctorSignUpActivateCodeRequest {
   code: string;
 }
 
-export interface DoctorSignUpActivateCodeResponse {
+export interface PostDoctorSignUpActivateCodeResponse {
   signupToken: string;
 }
 
