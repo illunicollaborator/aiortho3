@@ -51,6 +51,14 @@ export interface MedicalDepartment {
   name: string;
 }
 
+export interface Admin {
+  adminId: string;
+  name: string;
+  role: UserRole;
+  email: string;
+  createdAt: string;
+}
+
 export interface DoctorProfile {
   adminId: string;
   email: string;
