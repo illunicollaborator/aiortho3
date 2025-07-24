@@ -53,6 +53,8 @@ export interface MedicalDepartment {
 
 export interface Admin {
   adminId: string;
+  no: string;
+  signupCode: string;
   name: string;
   role: UserRole;
   email: string;
