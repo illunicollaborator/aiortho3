@@ -2,20 +2,27 @@ import { Search } from 'lucide-react';
 import { useState } from 'react';
 import MedicalInstitutionModal from './MedicalInstitutionModal';
 import { Hospital } from '@/models';
+import { UseFormRegisterReturn } from 'react-hook-form';
+import { Label } from '../ui/label';
+import { cn } from '@/lib/utils';
 
 interface MedicalInstitutionSelectorProps {
   label: string;
   required?: boolean;
-  // onChange?: (institution: Hospital) => void;
+  registration?: UseFormRegisterReturn;
+  error?: string;
+  onChange?: (institution?: Hospital) => void;
 }
 
-const MedicalInstitutionSelector: React.FC<MedicalInstitutionSelectorProps> = ({
+export default function MedicalInstitutionSelector({
   label,
   required = false,
-  // onChange,
-}) => {
+  registration,
+  error,
+  onChange,
+}: MedicalInstitutionSelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedInstitution, setSelectedInstitution] = useState<Hospital | 'none'>();
+  const [selectedInstitution, setSelectedInstitution] = useState<Hospital>();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -26,44 +33,54 @@ const MedicalInstitutionSelector: React.FC<MedicalInstitutionSelectorProps> = ({
   };
 
   const handleSelectInstitution = (institution?: Hospital) => {
-    setSelectedInstitution(institution ?? 'none');
+    setSelectedInstitution(institution);
 
-    // if (onChange) {
-    //   onChange(institution);
-    // }
+    if (onChange) {
+      onChange(institution);
+    }
   };
 
   return (
     <div className="institution-selector w-full">
       <div className="flex justify-between items-center mb-2">
-        <label className="text-sm font-medium text-[#8395AC]">
+        <Label className="text-sm font-medium text-[#8395AC]">
           {label}
-          {required && <span className="text-[#0054A6]"> *</span>}
-        </label>
+          {required && (
+            <span
+              className={`inline-block ${
+                error ? 'text-[color:var(--aiortho-danger)]' : 'text-[color:var(--aiortho-primary)]'
+              }`}
+            >
+              *
+            </span>
+          )}
+        </Label>
       </div>
 
       {/* 의료기관명 검색 버튼 */}
       <button
         type="button"
         onClick={handleOpenModal}
-        className="flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl bg-white border border-[#DADFE9] cursor-pointer hover:border-[#0054A6] transition-colors mb-3"
+        className={cn(
+          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl bg-white border border-[#DADFE9] cursor-pointer hover:border-[var(--aiortho-primary)] transition-colors mb-3',
+          error && 'border-2 border-[color:var(--aiortho-danger)]'
+        )}
       >
-        <Search className="w-5 h-5 text-[#0054A6] font-bold" />
-        <span className="text-base text-[#0054A6] font-bold">의료기관명 검색</span>
+        <Search className="w-5 h-5 text-[var(--aiortho-primary)] font-bold" />
+        <span className="text-base text-[var(--aiortho-primary)] font-bold">의료기관명 검색</span>
       </button>
 
-      {/* 선택된 의료기관 표시 input */}
-      <div className="flex h-12 px-4 py-3.5 items-center self-stretch rounded-xl border border-[#DADFE9] bg-[#F8F9FA]">
-        <div className="text-base font-normal leading-none w-full">
-          {selectedInstitution ? (
-            <span className="text-[#161621]">
-              {selectedInstitution === 'none' ? '기타' : selectedInstitution.name}
-            </span>
-          ) : (
-            <span className="text-[#8395AC]">선택된 의료기관이 없습니다</span>
-          )}
-        </div>
-      </div>
+      {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
+
+      <input
+        {...registration}
+        className={
+          'flex w-full h-12 px-3 py-1 items-center self-stretch rounded-xl border disabled:bg-[#F0F3FA99] disabled:border-[#DADFE9] disabled:text-[var(--aiortho-gray-600)]'
+        }
+        value={selectedInstitution?.name || ''}
+        placeholder="선택된 의료기관이 없습니다"
+        disabled
+      />
 
       <MedicalInstitutionModal
         isOpen={isModalOpen}
@@ -72,6 +89,4 @@ const MedicalInstitutionSelector: React.FC<MedicalInstitutionSelectorProps> = ({
       />
     </div>
   );
-};
-
-export default MedicalInstitutionSelector;
+}
