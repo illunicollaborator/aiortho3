@@ -12,7 +12,8 @@ interface MedicalDepartmentSelectorProps {
   error?: string;
   items: ArrayItem[];
   required?: boolean;
-  onChange?: (value: string) => void;
+  selectedDepartment?: MedicalDepartment;
+  onChange?: (department: MedicalDepartment) => void;
 }
 
 export default function MedicalDepartmentSelector({
@@ -22,6 +23,7 @@ export default function MedicalDepartmentSelector({
   registration,
   error,
   required = false,
+  selectedDepartment,
   onChange,
 }: MedicalDepartmentSelectorProps) {
   const [departmentDropDownIsOpen, setDepartmentDropDownIsOpen] = useState(false);
@@ -32,7 +34,7 @@ export default function MedicalDepartmentSelector({
 
   const handleDepartmentSelect = (department: MedicalDepartment) => {
     setDepartmentDropDownIsOpen(false);
-    onChange?.(department.name);
+    onChange?.(department);
   };
 
   return (
@@ -42,6 +44,7 @@ export default function MedicalDepartmentSelector({
           label={label}
           registration={registration}
           placeholder={placeholder}
+          value={selectedDepartment?.name || ''}
           rightIcon={<ChevronDown size={20} color="#97A8C4" />}
           error={error}
           required={required}

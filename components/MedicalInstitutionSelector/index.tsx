@@ -43,7 +43,7 @@ export default function MedicalInstitutionSelector({
   return (
     <div className="institution-selector w-full">
       <div className="flex justify-between items-center mb-2">
-        <Label className="text-sm font-medium text-[#8395AC]">
+        <Label className="text-sm font-medium text-[#8395AC] gap-0">
           {label}
           {required && (
             <span
