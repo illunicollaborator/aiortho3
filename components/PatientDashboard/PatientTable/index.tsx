@@ -16,13 +16,25 @@ import { useRouter } from 'next/navigation';
 
 const PER_PAGE_SIZE = 10;
 
-const PatientTable = () => {
+interface PatientTableProps {
+  keyword?: string;
+  showMyPatientFilter?: boolean;
+  showSearchBar?: boolean;
+  clickMode?: 'create' | 'detail';
+}
+
+const PatientTable = ({
+  keyword,
+  showMyPatientFilter = true,
+  showSearchBar = true,
+  clickMode = 'detail',
+}: PatientTableProps) => {
   const router = useRouter();
   const tableRef = useRef<HTMLDivElement>(null);
   const [columns, setColumns] = useState<TableColumn[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [isFindMyPatient, setIsFindMyPatient] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(keyword || '');
   const [sortBy, setSortBy] = useState<TableColumn['sortKey']>('createdAt');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc' | null>(null);
   const [currentSortedColumnId, setCurrentSortedColumnId] =
@@ -39,9 +51,9 @@ const PatientTable = () => {
       findMyPatient: isFindMyPatient,
       ascending: sortDirection === 'asc' ? true : false,
       sortBy,
-      ...(debouncedSearch && { searchKey: debouncedSearch }),
+      searchKey: keyword || debouncedSearch,
     }),
-    [pageNumber, isFindMyPatient, sortDirection, sortBy, debouncedSearch]
+    [pageNumber, isFindMyPatient, sortDirection, sortBy, debouncedSearch, keyword]
   );
 
   const patientsQuery = usePatients(queryParams);
@@ -156,6 +168,14 @@ const PatientTable = () => {
     setPageNumber(page);
   };
 
+  const handleTableRowClick = (patientId: string) => {
+    if (clickMode === 'create') {
+      router.push(`/prescriptions/patients/${patientId}/create`);
+    } else {
+      router.push(`/prescriptions/patients/${patientId}`);
+    }
+  };
+
   if (patientsQuery.isError || !patientsQuery.data) {
     return null;
   }
@@ -183,37 +203,41 @@ const PatientTable = () => {
               </div>
             </div>
 
-            <div className="flex gap-2 items-center text-sm font-medium leading-non text-slate-400">
-              <button
-                type="button"
-                className="self-stretch my-auto flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-                aria-label="내 환자만 보기 필터 적용"
-                onClick={handleFindMyPatientToggle}
-              >
-                <SquareCheck
-                  className={cn(
-                    'w-4 h-4 text-gray-500',
-                    isFindMyPatient && 'text-white fill-sky-700'
-                  )}
-                />
-                내 환자만 보기
-              </button>
-            </div>
+            {showMyPatientFilter && (
+              <div className="flex gap-2 items-center text-sm font-medium leading-non text-slate-400">
+                <button
+                  type="button"
+                  className="self-stretch my-auto flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  aria-label="내 환자만 보기 필터 적용"
+                  onClick={handleFindMyPatientToggle}
+                >
+                  <SquareCheck
+                    className={cn(
+                      'w-4 h-4 text-gray-500',
+                      isFindMyPatient && 'text-white fill-sky-700'
+                    )}
+                  />
+                  내 환자만 보기
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="flex flex-col justify-center px-3 py-2.5 rounded-2xl bg-slate-100 fill-slate-100 border border-transparent focus-within:border-[#0054A6] focus-within:border-2 focus-within:bg-white transition-colors">
-            <div className="flex gap-2 items-center">
-              <Search className="w-5 h-5 text-slate-400" />
-              <input
-                type="text"
-                placeholder="검색"
-                value={search}
-                onChange={handleSearchChange}
-                className="flex-1 bg-transparent border-none outline-none text-slate-400 placeholder:text-slate-400 focus:text-[#161621]"
-                aria-label="환자 검색"
-              />
+          {showSearchBar && (
+            <div className="flex flex-col justify-center px-3 py-2.5 rounded-2xl bg-slate-100 fill-slate-100 border border-transparent focus-within:border-[#0054A6] focus-within:border-2 focus-within:bg-white transition-colors">
+              <div className="flex gap-2 items-center">
+                <Search className="w-5 h-5 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="검색"
+                  value={search}
+                  onChange={handleSearchChange}
+                  className="flex-1 bg-transparent border-none outline-none text-slate-400 placeholder:text-slate-400 focus:text-[#161621]"
+                  aria-label="환자 검색"
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="mt-7 w-full overflow-x-auto">
@@ -254,7 +278,11 @@ const PatientTable = () => {
               >
                 {patients.map((patient, index) => (
                   <React.Fragment key={`${patient.patientId}-${index}`}>
-                    <PatientTableRow patient={patient} columnOrder={columns} />
+                    <PatientTableRow
+                      patient={patient}
+                      columnOrder={columns}
+                      onClick={() => handleTableRowClick(String(patient.patientId))}
+                    />
                     {index < patients.length - 1 && (
                       <img
                         src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/c914df031f0a54b8061f5d8235a95b70eec4cdf0?placeholderIfAbsent=true"
