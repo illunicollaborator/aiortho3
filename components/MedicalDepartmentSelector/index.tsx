@@ -2,33 +2,49 @@ import React, { useState } from 'react';
 import MultiColumnDropdown, { ArrayItem } from '@/components/ui/multi-column-dropdown';
 import { ChevronDown } from 'lucide-react';
 import OrthoInput from '@/components/OrthoInput';
-import { useMedicalDepartments } from './hooks';
 import { MedicalDepartment } from '@/models';
-const MedicalDepartmentSelector = () => {
-  const medicalDepartmentsQuery = useMedicalDepartments();
+import { UseFormRegisterReturn } from 'react-hook-form';
+
+interface MedicalDepartmentSelectorProps {
+  label: string;
+  placeholder: string;
+  registration: UseFormRegisterReturn;
+  error?: string;
+  items: ArrayItem[];
+  required?: boolean;
+  onChange?: (value: string) => void;
+}
+
+export default function MedicalDepartmentSelector({
+  label,
+  placeholder,
+  items,
+  registration,
+  error,
+  required = false,
+  onChange,
+}: MedicalDepartmentSelectorProps) {
   const [departmentDropDownIsOpen, setDepartmentDropDownIsOpen] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState<MedicalDepartment>();
 
   const toggleDropdown = () => {
     setDepartmentDropDownIsOpen(!departmentDropDownIsOpen);
   };
 
   const handleDepartmentSelect = (department: MedicalDepartment) => {
-    setSelectedDepartment(department);
     setDepartmentDropDownIsOpen(false);
+    onChange?.(department.name);
   };
-
-  if (medicalDepartmentsQuery.isFetching) return null;
 
   return (
     <div className="relative">
       <div onClick={toggleDropdown} className="cursor-pointer">
         <OrthoInput
-          label="진료과"
-          value={selectedDepartment?.name}
-          placeholder="진료과를 선택해주세요"
+          label={label}
+          registration={registration}
+          placeholder={placeholder}
           rightIcon={<ChevronDown size={20} color="#97A8C4" />}
-          required
+          error={error}
+          required={required}
         />
       </div>
 
@@ -37,11 +53,9 @@ const MedicalDepartmentSelector = () => {
         onClose={() => setDepartmentDropDownIsOpen(false)}
         onSelect={handleDepartmentSelect}
         className="mt-3"
-        items={medicalDepartmentsQuery.data ?? []}
+        items={items}
         width="w-full"
       />
     </div>
   );
-};
-
-export default MedicalDepartmentSelector;
+}
