@@ -17,8 +17,10 @@ import {
   CheckEmailResponse,
   GetHospitalListResponse,
   GetDepartmentListResponse,
-  PostPhoneVerifyRequest,
-  PostPhoneVerifyResponse,
+  PostPhoneVerifySendRequest,
+  PostPhoneVerifySendResponse,
+  PostPhoneVerifyCheckResponse,
+  PostPhoneVerifyCheckRequest,
 } from './types';
 
 const RESOURCE = '/ums/common';
@@ -60,5 +62,11 @@ export const getDepartmentList = async (): Promise<GetDepartmentListResponse> =>
   await apiClient.get(`${RESOURCE}/departments`);
 
 export const postPhoneVerifySend = async (
-  data: PostPhoneVerifyRequest
-): Promise<PostPhoneVerifyResponse> => await apiClient.post(`${RESOURCE}/phoneverify/send`, data);
+  data: PostPhoneVerifySendRequest
+): Promise<PostPhoneVerifySendResponse> =>
+  await apiClient.post(`${RESOURCE}/phoneverify/send`, data);
+
+export const postPhoneVerifyCheck = async (
+  data: PostPhoneVerifyCheckRequest
+): Promise<PostPhoneVerifyCheckResponse> =>
+  await apiClient.post(`${RESOURCE}/phoneverify/verify`, data);

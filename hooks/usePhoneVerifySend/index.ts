@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { postPhoneVerifySend } from '@/api/admin/common';
 import { ErrorResponse } from '@/api/types';
-import { PostPhoneVerifyRequest, PostPhoneVerifyResponse } from '@/api/admin/common/types';
+import { PostPhoneVerifySendRequest, PostPhoneVerifySendResponse } from '@/api/admin/common/types';
 
 const usePhoneVerifySend = () => {
-  return useMutation<PostPhoneVerifyResponse, ErrorResponse, PostPhoneVerifyRequest>({
+  return useMutation<PostPhoneVerifySendResponse, ErrorResponse, PostPhoneVerifySendRequest>({
     mutationFn: postPhoneVerifySend,
   });
 };
