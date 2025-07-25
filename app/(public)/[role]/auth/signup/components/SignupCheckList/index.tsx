@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Check } from 'lucide-react';
 import { Label } from '@/components/ui/label';
 import Link from 'next/link';
@@ -25,10 +25,32 @@ const termsData = [
   },
 ];
 
-export default function SignupCheckList() {
+interface SignupCheckListProps {
+  error?: string;
+  onRequiredTermsChange?: (isValid: boolean) => void;
+}
+
+export default function SignupCheckList({ error, onRequiredTermsChange }: SignupCheckListProps) {
   const [checkedItems, setCheckedItems] = useState<number[]>(termsData.map(t => t.id));
 
+  const { isRequiredTermsValid } = useMemo(() => {
+    const requiredTerms = termsData.filter(term => term.required);
+    const checkedRequiredTerms = checkedItems.filter(id =>
+      requiredTerms.some(term => term.id === id)
+    );
+    const isRequiredTermsValid = checkedRequiredTerms.length === requiredTerms.length;
+
+    return { requiredTerms, isRequiredTermsValid };
+  }, [checkedItems]);
+
   const isAllChecked = checkedItems.length === termsData.length;
+
+  // useEffect에서 상태 변경 시에만 부모에게 알림
+  useEffect(() => {
+    if (onRequiredTermsChange) {
+      onRequiredTermsChange(isRequiredTermsValid);
+    }
+  }, [isRequiredTermsValid, onRequiredTermsChange]);
 
   const toggleAll = () => {
     setCheckedItems(isAllChecked ? [] : termsData.map(t => t.id));
@@ -77,11 +99,11 @@ export default function SignupCheckList() {
                 <Label className="text-[color:var(--aiortho-gray-900)] text-sm font-medium">
                   {item.label}
                   {item.required ? (
-                    <span className="text-[color:var(--aiortho-primary)] text-sm font-medium ml-1">
+                    <span className="text-[color:var(--aiortho-primary)] text-sm font-medium -ml-1">
                       *
                     </span>
                   ) : (
-                    <span className="text-[#66798D] font-medium ml-1">(선택)</span>
+                    <span className="text-[#66798D] font-medium -ml-1">(선택)</span>
                   )}
                 </Label>
               </div>
@@ -94,6 +116,7 @@ export default function SignupCheckList() {
           );
         })}
       </div>
+      {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
     </div>
   );
 }
