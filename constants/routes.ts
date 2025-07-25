@@ -10,6 +10,13 @@ export const ROUTES: Record<string, RouteConfig> = {
     key: 'home',
     path: '/home',
     label: '홈',
+    children: {
+      quickMenu: {
+        key: 'quickMenu',
+        path: '/home/quick',
+        label: '퀵 메뉴 (처방하기)',
+      },
+    },
   },
 
   prescriptions: {
@@ -31,6 +38,13 @@ export const ROUTES: Record<string, RouteConfig> = {
             key: 'patientsDetail',
             path: '/prescriptions/patients/[id]',
             label: '환자 상세 정보',
+            children: {
+              prescription: {
+                key: 'patientsPrescription',
+                path: '/prescriptions/patients/[id]/create',
+                label: '처방하기',
+              },
+            },
           },
         },
       },

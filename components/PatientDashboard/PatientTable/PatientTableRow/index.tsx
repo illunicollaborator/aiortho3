@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
 import { StatusBadge } from '@/components/Badge';
 import { Patient, PrescriptionStatus } from '@/models';
 import { formatPeriod, formatISODate } from '@/lib/utils';
@@ -10,15 +9,10 @@ import { TableColumn } from '../types';
 interface PatientTableRowProps {
   patient: Patient;
   columnOrder: TableColumn[];
+  onClick?: () => void;
 }
 
-const PatientTableRow = ({ patient, columnOrder }: PatientTableRowProps) => {
-  const router = useRouter();
-
-  const handleRowClick = () => {
-    router.push(`/prescriptions/patients/${patient.patientId}`);
-  };
-
+const PatientTableRow = ({ patient, columnOrder, onClick }: PatientTableRowProps) => {
   // 컬럼 데이터 렌더링 함수
   const renderCellContent = (columnKey: string) => {
     if (columnKey === '병원 환자 번호') {
@@ -67,7 +61,7 @@ const PatientTableRow = ({ patient, columnOrder }: PatientTableRowProps) => {
   return (
     <div
       className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors"
-      onClick={handleRowClick}
+      onClick={onClick}
     >
       {columnOrder.map(column => (
         <div

@@ -8,8 +8,7 @@ const QuickMenu: React.FC = () => {
   const router = useRouter();
 
   const handlePrescriptionClick = () => {
-    // FIXME: 처방하기 페이지 추가 후 수정
-    // router.push('/doctor/quick');
+    router.push('/home/quick');
   };
 
   const handlePatientRegistrationClick = () => {
