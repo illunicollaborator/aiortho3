@@ -37,7 +37,7 @@ export default function CreatePrescriptionPage() {
   const { data: standardProgram } = standardProgramQuery;
 
   return (
-    <section className="flex flex-col">
+    <section className="flex flex-col max-w-[680px]">
       <h1 className="text-2xl font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mb-8">
         처방하기
       </h1>
@@ -50,8 +50,8 @@ export default function CreatePrescriptionPage() {
         환자에게 처방할 치료 운동 종류를 선택해주세요
       </h2>
 
-      {patient.prescription ? (
-        <PrescriptionProgramCard prescription={patient.prescription} />
+      {program ? (
+        <PrescriptionProgramCard prescription={program} defaultIsOpen />
       ) : (
         <button
           type="button"

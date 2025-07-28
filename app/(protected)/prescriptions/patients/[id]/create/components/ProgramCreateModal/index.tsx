@@ -85,6 +85,28 @@ export default function ProgramCreateModal({
                 </Label>
               </div>
             ))}
+
+            <div
+              className={cn(
+                'flex items-center w-full py-4 px-4 gap-3 border border-[var(--aiortho-gray-200)] rounded-lg hover:bg-[var(--aiortho-gray-50)] transition-colors',
+                'has-[button[data-state="checked"]]:border-[var(--aiortho-primary)]'
+              )}
+            >
+              <RadioGroupItem
+                value={'개별 프로그램'}
+                id={`개별 프로그램`}
+                onClick={() =>
+                  setSelectedProgram({
+                    name: '개별 프로그램',
+                    exercises: [],
+                    repeatCount: 3,
+                  })
+                }
+              />
+              <Label htmlFor={`개별 프로그램`} className="text-sm cursor-pointer">
+                개별 프로그램
+              </Label>
+            </div>
           </RadioGroup>
         </div>
         <DialogFooter className="mt-7">
