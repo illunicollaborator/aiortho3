@@ -108,20 +108,21 @@ export interface Patient {
 }
 
 export interface Prescription {
-  prescriptionId: string;
+  prescriptionId?: string;
   name: string;
-  patientId: number;
-  createdAt: string;
-  updatedAt: string;
+  patientId?: number;
+  createdAt?: string;
+  updatedAt?: string;
   exercises: Exercise[];
   repeatCount: number;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface Exercise {
   exerciseId: string;
   name: string;
   duration: number;
+  order: number;
   direction: ExerciseDirection;
 }

@@ -1,5 +1,10 @@
 import { Exercise } from '@/models';
 
+export interface StaticProgramExercise {
+  exerciseId: string;
+  name: string;
+}
+
 export interface GetStandardProgramListRequest {}
 
 export interface GetStandardProgramListResponse {
@@ -10,3 +15,7 @@ export interface GetStandardProgramListResponse {
     exercises: Exercise[];
   }[];
 }
+
+export interface GetStaticProgramExerciseListRequest {}
+
+export interface GetStaticProgramExerciseListResponse extends Array<StaticProgramExercise> {}
