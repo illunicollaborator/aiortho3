@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { X, Search } from 'lucide-react';
 import { useHospitals } from './hooks';
@@ -19,13 +19,19 @@ export default function MedicalInstitutionModal({
   onClose,
   onSelect,
 }: MedicalInstitutionModalProps) {
-  const hospitalsQuery = useHospitals();
-
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredInstitutions, setFilteredInstitutions] = useState<Hospital[]>(
-    hospitalsQuery.data ?? []
-  );
   const [currentPage, setCurrentPage] = useState(1);
+
+  const queryParams = useMemo(
+    () => ({
+      keyword: searchQuery,
+      page: currentPage,
+      limit: ITEMS_PER_PAGE,
+    }),
+    [searchQuery, currentPage]
+  );
+
+  const hospitalsQuery = useHospitals(queryParams);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -45,25 +51,12 @@ export default function MedicalInstitutionModal({
     setCurrentPage(page);
   };
 
-  useEffect(() => {
-    if (searchQuery && hospitalsQuery.data) {
-      const filtered = hospitalsQuery.data.filter(
-        institution =>
-          institution.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          institution.address.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredInstitutions(filtered);
-      setCurrentPage(1);
-    } else {
-      setFilteredInstitutions(hospitalsQuery.data ?? []);
-    }
-  }, [searchQuery, hospitalsQuery.data]);
+  const initialState = {
+    hospitals: [],
+    counts: 0,
+  };
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredInstitutions.length / ITEMS_PER_PAGE);
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const currentInstitutions = filteredInstitutions.slice(startIndex, endIndex);
+  const { hospitals, counts } = hospitalsQuery.data ?? initialState;
 
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
@@ -134,7 +127,7 @@ export default function MedicalInstitutionModal({
                   </h3>
                   <div className="flex items-center">
                     <span className="text-[var(--aiortho-primary)] text-base sm:text-lg font-bold leading-5">
-                      {filteredInstitutions.length}
+                      {counts}
                     </span>
                     <span className="text-[#161621] text-base sm:text-lg font-bold leading-5">
                       건
@@ -163,8 +156,8 @@ export default function MedicalInstitutionModal({
                     className="institutions-list flex-1 flex flex-col items-start overflow-y-auto min-h-0 
                            scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
                   >
-                    {currentInstitutions.length > 0 ? (
-                      currentInstitutions.map((institution, index) => (
+                    {hospitals.length > 0 ? (
+                      hospitals.map((institution, index) => (
                         <div
                           key={institution.hospitalCode}
                           className="institution-row flex flex-col items-start w-full cursor-pointer 
@@ -199,7 +192,7 @@ export default function MedicalInstitutionModal({
                               </div>
                             </div>
                           </div>
-                          {index < currentInstitutions.length - 1 && (
+                          {index < hospitals.length - 1 && (
                             <div className="divider w-full h-[1px] bg-[#8395AC] opacity-20"></div>
                           )}
                         </div>
@@ -216,11 +209,11 @@ export default function MedicalInstitutionModal({
                 </div>
 
                 {/* Pagination Section */}
-                {totalPages > 1 && (
+                {counts > 1 && (
                   <div className="flex pt-4">
                     <Pagination
                       currentPage={currentPage}
-                      totalPages={totalPages}
+                      totalPages={Math.ceil(counts / ITEMS_PER_PAGE)}
                       onPageChange={handlePageChange}
                     />
                   </div>

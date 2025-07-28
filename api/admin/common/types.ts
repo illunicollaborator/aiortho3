@@ -56,9 +56,16 @@ export interface CheckEmailRequest {
 
 export interface CheckEmailResponse {}
 
-export interface GetHospitalListRequest {}
+export interface GetHospitalListRequest {
+  keyword: string;
+  page: number;
+  limit: number;
+}
 
-export interface GetHospitalListResponse extends Array<Hospital> {}
+export interface GetHospitalListResponse {
+  counts: number;
+  hospitals: Hospital[];
+}
 
 export interface GetDepartmentListRequest {}
 

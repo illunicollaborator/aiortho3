@@ -21,6 +21,7 @@ import {
   PostPhoneVerifySendResponse,
   PostPhoneVerifyCheckResponse,
   PostPhoneVerifyCheckRequest,
+  GetHospitalListRequest,
 } from './types';
 
 const RESOURCE = '/ums/common';
@@ -55,8 +56,9 @@ export const resetPassword = async (
 export const checkEmail = async (data: CheckEmailRequest): Promise<CheckEmailResponse> =>
   await apiClient.post(`${RESOURCE}/check/email`, data);
 
-export const getHospitalList = async (): Promise<GetHospitalListResponse> =>
-  await apiClient.get(`${RESOURCE}/hospitals`);
+export const getHospitalList = async (
+  params: GetHospitalListRequest
+): Promise<GetHospitalListResponse> => await apiClient.get(`${RESOURCE}/hospitals`, { params });
 
 export const getDepartmentList = async (): Promise<GetDepartmentListResponse> =>
   await apiClient.get(`${RESOURCE}/departments`);
