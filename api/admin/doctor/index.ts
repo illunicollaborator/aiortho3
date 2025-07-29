@@ -7,6 +7,8 @@ import {
   PostDoctorSignUpActivateCodeResponse,
   GetSearchNursesRequest,
   GetSearchNursesResponse,
+  PostDoctorSignUpRequest,
+  PostDoctorSignUpResponse,
 } from './types';
 
 const RESOURCE = '/ums/doctor';
@@ -32,3 +34,13 @@ export const postDoctorMedicalLicenseCheck = async (
 export const getSearchNurses = async (
   params: GetSearchNursesRequest
 ): Promise<GetSearchNursesResponse> => await apiClient.get(`${RESOURCE}/nurses`, { params });
+
+export const postDoctorSignUp = async (
+  token: string,
+  data: PostDoctorSignUpRequest
+): Promise<PostDoctorSignUpResponse> =>
+  await apiClient.post(`${RESOURCE}/signup`, data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });

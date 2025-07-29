@@ -28,3 +28,19 @@ export interface GetSearchNursesResponse {
   counts: number;
   nurses: Nurse[];
 }
+
+export interface PostDoctorSignUpRequest {
+  signupCode: string;
+  email: string;
+  password: string;
+  name: string;
+  licenseNumber: string;
+  phoneNumber: string;
+  hospitalCode: string;
+  departmentCode: string;
+  specialtyField?: string;
+  specialistLicenseNumber?: string;
+  nurseIds?: string[];
+}
+
+export interface PostDoctorSignUpResponse {}

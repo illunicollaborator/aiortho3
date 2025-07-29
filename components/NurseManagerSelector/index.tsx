@@ -7,10 +7,11 @@ import { Nurse } from '@/models';
 
 interface NurseManagerProps {
   label: string;
-  onChange?: (nurses: Nurse[]) => void;
+  error?: string;
+  onChange?: (nurseIds: string[]) => void;
 }
 
-const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
+const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNurses, setSelectedNurses] = useState<Nurse[]>([]);
 
@@ -25,7 +26,7 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
   const handleSelectNurse = (nurse: Nurse) => {
     // 이미 선택된 간호사인지 확인
     const isAlreadySelected = selectedNurses.some(
-      selectedNurse => selectedNurse.name === nurse.name
+      selectedNurse => selectedNurse.adminId === nurse.adminId
     );
 
     if (!isAlreadySelected) {
@@ -33,17 +34,17 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
       setSelectedNurses(updatedNurses);
 
       if (onChange) {
-        onChange(updatedNurses);
+        onChange(updatedNurses.map(n => n.adminId));
       }
     }
   };
 
   const handleRemoveNurse = (nurseId: string) => {
-    const updatedNurses = selectedNurses.filter(nurse => nurse.name !== nurseId);
+    const updatedNurses = selectedNurses.filter(nurse => nurse.adminId !== nurseId);
     setSelectedNurses(updatedNurses);
 
     if (onChange) {
-      onChange(updatedNurses);
+      onChange(updatedNurses.map(n => n.adminId));
     }
   };
 
@@ -55,6 +56,7 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
 
       {/* 담당 간호사 추가 버튼 */}
       <button
+        type="button"
         onClick={handleOpenModal}
         className="flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl bg-white border border-[#DADFE9] cursor-pointer hover:border-[#0054A6] transition-colors mb-3"
       >
@@ -78,7 +80,7 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
                 <div className="flex items-center"></div>
               </div>
               <button
-                onClick={() => handleRemoveNurse(nurse.name)}
+                onClick={() => handleRemoveNurse(nurse.adminId)}
                 className="flex items-center justify-center w-6 h-6 rounded-full bg-[#F0F3FA]/60 "
               >
                 <X className="w-4 h-4 text-[#8395AC] cursor-pointer" />
@@ -87,6 +89,8 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
           ))
         )}
       </div>
+
+      {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mt-2">{error}</p>}
 
       <NurseSearchModal
         isOpen={isModalOpen}

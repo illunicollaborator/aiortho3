@@ -5,12 +5,14 @@ import { Hospital } from '@/models';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { Label } from '../ui/label';
 import { cn } from '@/lib/utils';
+import OrthoInput from '../OrthoInput';
 
 interface MedicalInstitutionSelectorProps {
   label: string;
   required?: boolean;
   registration?: UseFormRegisterReturn;
   error?: string;
+  selectedInstitutionName?: string;
   onChange?: (institution?: Hospital) => void;
 }
 
@@ -19,6 +21,7 @@ export default function MedicalInstitutionSelector({
   required = false,
   registration,
   error,
+  selectedInstitutionName,
   onChange,
 }: MedicalInstitutionSelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,14 +75,15 @@ export default function MedicalInstitutionSelector({
 
       {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
 
-      <input
-        {...registration}
+      <OrthoInput
         className={
           'flex w-full h-12 px-3 py-1 items-center self-stretch rounded-xl border disabled:bg-[#F0F3FA99] disabled:border-[#DADFE9] disabled:text-[var(--aiortho-gray-600)]'
         }
-        value={selectedInstitution?.name || ''}
+        registration={registration}
+        required={required}
+        value={selectedInstitutionName ?? selectedInstitution?.name ?? ''}
         placeholder="선택된 의료기관이 없습니다"
-        disabled
+        readOnly
       />
 
       <MedicalInstitutionModal

@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import OrthoInput from '@/components/OrthoInput';
 import { Button } from '@/components/ui/button';
-import { useForm } from 'react-hook-form';
-import { Eye, EyeOff, ChevronDown } from 'lucide-react';
-import { useCheckEmail } from '../../hooks';
+import { useForm, useController } from 'react-hook-form';
+import { Eye, EyeOff } from 'lucide-react';
+import { useCheckEmail, useMedicalLicenseCheck } from '../../hooks';
 import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector';
-import { ArrayItem } from '@/components/ui/multi-column-dropdown';
 import MedicalDepartmentSelector from '@/components/MedicalDepartmentSelector';
 import NurseManagerSelector from '@/components/NurseManagerSelector';
 import SignupCheckList from '../SignupCheckList';
 import { formatTime } from '@/lib/utils';
 import { usePhoneVerifySend } from '@/hooks';
 import { useTimer } from '@/hooks/useTimer';
-
-interface DoctorSignupFormProps {
-  token: string;
-}
+import { decodeJWT } from '@/lib/utils';
+import { Hospital, MedicalDepartment } from '@/models';
+import { useMedicalDepartments } from '@/hooks';
+import usePhoneVerifyCheck from '@/hooks/usePhoneVerifyCheck';
+import { useDoctorSignUp } from '../../hooks/useDoctorSignUp';
+import { useRouter } from 'next/navigation';
+import { showSuccessToast } from '@/components/ui/toast-notification';
+import { toast } from 'sonner';
 
 const schema = z
   .object({
+    signupCode: z.string(),
     email: z.string().email({ message: '올바르지 않은 아이디 (이메일) 형식이에요.' }),
     password: z
       .string()
@@ -35,14 +39,28 @@ const schema = z
       }),
     confirmPassword: z.string(),
     name: z.string().min(1, { message: '이름을 입력해주세요' }),
-    medicalLicense: z.string(),
-    specialistLicense: z.string(),
-    doctorCode: z.string(),
+    medicalLicense: z.string().min(1, { message: '의료 면허 번호를 입력해주세요' }),
+    medicalInstitution: z.string().min(1, { message: '의료 기관명을 선택해주세요' }),
+    medicalDepartment: z.string().min(1, { message: '진료과를 선택해주세요' }),
+    specialties: z.string().optional(),
+    specialistLicense: z.string().optional(),
+    nurseIds: z
+      .array(z.string())
+      .refine(val => !val || val.length <= 10, {
+        message: '담당 간호사는 최대 10명까지 선택할 수 있습니다.',
+      })
+      .optional(),
     phoneNumber: z.string().min(9, '9자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
     certificationNumber: z
       .string()
       .min(6, '6자리 이상 입력해주세요')
       .max(6, '6자리 이하 입력해주세요'),
+    certificationNumberCheckStatus: z
+      .boolean()
+      .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
+    requiredTermsAgreed: z
+      .boolean()
+      .refine(val => val === true, { message: '필수 약관에 동의해주세요.' }),
   })
   .refine(data => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
@@ -50,112 +68,144 @@ const schema = z
   });
 
 type FormValues = z.infer<typeof schema>;
+interface DoctorSignupFormProps {
+  signUpToken: string;
+}
 
-const SPECIALTIES = [
-  [
-    { id: '1', name: '재활의학과' },
-    { id: '2', name: '소아청소년과' },
-    { id: '3', name: '가정의학과' },
-    { id: '4', name: '정형외과' },
-  ],
-  [
-    { id: '5', name: '성형외과' },
-    { id: '6', name: '일반의' },
-    { id: '7', name: '결핵과' },
-    { id: '8', name: '내과' },
-  ],
-  [
-    { id: '9', name: '마취통증의학과' },
-    { id: '10', name: '방사선종양학과' },
-    { id: '11', name: '병리과' },
-    { id: '12', name: '비뇨의학과' },
-  ],
-  [
-    { id: '13', name: '산부인과' },
-    { id: '14', name: '신경과' },
-    { id: '15', name: '신경외과' },
-    { id: '16', name: '안과' },
-  ],
-  [
-    { id: '17', name: '영상의학과' },
-    { id: '18', name: '예방의학과' },
-    { id: '19', name: '외과' },
-    { id: '20', name: '응급의학과' },
-  ],
-  [
-    { id: '21', name: '이비인후과' },
-    { id: '22', name: '진단검사의학과' },
-    { id: '23', name: '피부과' },
-    { id: '24', name: '핵의학과' },
-  ],
-  [
-    { id: '25', name: '흉부외과' },
-    { id: '26', name: '치과' },
-    { id: '27', name: '한의학과' },
-    { id: '28', name: '정신건강의학과' },
-  ],
-  [
-    { id: '29', name: '감염내과' },
-    { id: '30', name: '알레르기내과' },
-    { id: '31', name: '류마티스내과' },
-    { id: '32', name: '노년내과' },
-  ],
-];
+const DoctorSignUpForm = ({ signUpToken }: DoctorSignupFormProps) => {
+  const router = useRouter();
 
-const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
   const {
     register,
     handleSubmit,
     setValue,
     setError,
-    formState: { errors },
+    clearErrors,
+    control,
+    formState: { errors, isValid, isSubmitting },
     watch,
   } = useForm<FormValues>({
     mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: {
+      signupCode: decodeJWT(signUpToken).code,
       email: '',
       password: '',
       confirmPassword: '',
       name: '',
       medicalLicense: '',
+      medicalInstitution: '',
+      medicalDepartment: '',
+      specialties: '',
       specialistLicense: '',
-      // doctorCode: token ,
-      doctorCode: 'NDKS8354K',
+      nurseIds: [],
       phoneNumber: '',
       certificationNumber: '',
+      certificationNumberCheckStatus: false,
+      requiredTermsAgreed: false,
     },
   });
-
-  console.log(watch());
 
   const email = watch('email');
   const [prevEmail, setPrevEmail] = useState<string>('');
   const [emailCheckStatus, setEmailCheckStatus] = useState<null | boolean>(null);
   const emailCheckMutation = useCheckEmail();
 
+  const confirmPassword = watch('confirmPassword');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [departmentDropDownIsOpen, setDepartmentDropDownIsOpen] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState<ArrayItem | null>(null);
+  const medicalLicense = watch('medicalLicense');
+  const [prevMedicalLicense, setPrevMedicalLicense] = useState<string>('');
+  const [medicalLicenseCheckStatus, setMedicalLicenseCheckStatus] = useState<null | boolean>(null);
+  const medicalLicenseCheckMutation = useMedicalLicenseCheck();
 
-  const [specialistDropDownIsOpen, setSpecialistDropDownIsOpen] = useState(false);
-  const [selectedSpecialist, setSelectedSpecialist] = useState<ArrayItem | null>(null);
+  const medicalDepartmentsQuery = useMedicalDepartments();
 
   const phoneNumber = watch('phoneNumber');
+  const [prevPhoneNumber, setPrevPhoneNumber] = useState<string>('');
   const [phoneNumberCheckStatus, setPhoneNumberCheckStatus] = useState<null | boolean>(null);
-  const phoneVerifyMutation = usePhoneVerifySend();
+  const phoneVerifySendMutation = usePhoneVerifySend();
 
-  const { timer, isActive, setTimer, setIsActive } = useTimer();
-  const [certificationNumberCheckStatus, setCertificationNumberCheckStatus] = useState<
-    null | boolean
-  >(null);
-
-  const DEFAULT_TIMER = 180; // 3 minutes in seconds
+  const phoneVerifyCheckMutation = usePhoneVerifyCheck();
   const [certSent, setCertSent] = useState(false);
   const certificationNumber = watch('certificationNumber');
-  const mockCertificationCode = '123456'; // Mock verification code
+  const [prevCertificationNumber, setPrevCertificationNumber] = useState<string>('');
+  const certificationNumberCheckStatus = watch('certificationNumberCheckStatus');
+
+  const doctorSignUpMutation = useDoctorSignUp(signUpToken);
+
+  // nurseIds 컨트롤러
+  const {
+    field: nurseIdsField,
+    fieldState: { error: nurseIdsError },
+  } = useController({
+    name: 'nurseIds',
+    control,
+    defaultValue: [],
+  });
+
+  const DEFAULT_TIMER = 300;
+  const { timer, isActive, setTimer, setIsActive } = useTimer();
+
+  // 선택된 의료기관 이름 관리
+  const [selectedInstitutionName, setSelectedInstitutionName] = useState<string>('');
+  const [selectedDepartmentName, setSelectedDepartmentName] = useState<string>('');
+  const [selectedSpecialtiesName, setSelectedSpecialtiesName] = useState<string>('');
+
+  // 이메일 입력값 변경 감지
+  useEffect(() => {
+    if (email !== prevEmail && emailCheckStatus !== null) {
+      setEmailCheckStatus(null);
+      clearErrors('email');
+    }
+  }, [email, prevEmail, clearErrors]);
+
+  // 의료 면허 번호 입력값 변경 감지
+  useEffect(() => {
+    if (medicalLicense !== prevMedicalLicense && medicalLicenseCheckStatus !== null) {
+      setMedicalLicenseCheckStatus(null);
+      clearErrors('medicalLicense');
+    }
+  }, [medicalLicense, prevMedicalLicense, medicalLicenseCheckStatus, clearErrors]);
+
+  // 휴대폰 번호 입력값 변경 감지
+  useEffect(() => {
+    if (phoneNumber !== prevPhoneNumber && phoneNumberCheckStatus !== null) {
+      setPhoneNumberCheckStatus(null);
+      setCertSent(false);
+      setIsActive(false);
+      setTimer(DEFAULT_TIMER);
+      clearErrors('phoneNumber');
+    }
+  }, [phoneNumber, prevPhoneNumber, phoneNumberCheckStatus, setIsActive, setTimer, clearErrors]);
+
+  // 인증번호 입력값 변경 감지
+  useEffect(() => {
+    if (certificationNumber !== prevCertificationNumber && certificationNumberCheckStatus) {
+      setValue('certificationNumberCheckStatus', false, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+      setPrevCertificationNumber('');
+      clearErrors('certificationNumber');
+    }
+  }, [
+    certificationNumber,
+    prevCertificationNumber,
+    certificationNumberCheckStatus,
+    setValue,
+    clearErrors,
+  ]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   const handleEmailCheck = (email: string) => {
     emailCheckMutation.mutate(
@@ -167,7 +217,7 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
         },
         onError: error => {
           if (error.statusCode === 409) {
-            setError('email', { message: '이미 가입된 이메일입니다.' });
+            setError('email', { message: '이미 가입된 아이디(이메일)에요' });
           }
 
           setEmailCheckStatus(false);
@@ -176,27 +226,65 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
     );
   };
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const handleMedicalLicenseCheck = () => {
+    medicalLicenseCheckMutation.mutate(
+      { licenseNumber: medicalLicense, token: signUpToken },
+      {
+        onSuccess: () => {
+          setPrevMedicalLicense(medicalLicense);
+          setMedicalLicenseCheckStatus(true);
+        },
+        onError: error => {
+          if (error.statusCode === 4011) {
+            setError('medicalLicense', { message: '이미 사용된 의사 면허 번호에요' });
+          } else {
+            setError('medicalLicense', { message: '의사 면허 번호를 다시 확인해주세요' });
+          }
+
+          setMedicalLicenseCheckStatus(false);
+        },
+      }
+    );
   };
 
-  const toggleConfirmPasswordVisibility = () => {
-    setShowConfirmPassword(!showConfirmPassword);
+  const handleMedicalInstitutionChange = (institution?: Hospital) => {
+    setValue('medicalInstitution', institution?.hospitalCode ?? '', {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    setSelectedInstitutionName(institution?.name ?? '');
+  };
+
+  const handleMedicalDepartmentChange = (department: MedicalDepartment) => {
+    setValue('medicalDepartment', department.code ?? '', {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    });
+    setSelectedDepartmentName(department.name ?? '');
+  };
+
+  const handleSpecialtiesChange = (department: MedicalDepartment) => {
+    if (department.name === '선택 안함') {
+      setValue('specialties', '', {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+      setSelectedSpecialtiesName('');
+    } else {
+      setValue('specialties', department.code ?? '', {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+      setSelectedSpecialtiesName(department.name ?? '');
+    }
   };
 
   const handlePhoneNumberCheck = () => {
-    // if (mockPhoneNumber.includes(phoneNumber)) {
-    //   setPhoneNumberCheckStatus(false);
-    // } else {
-    //   setPhoneNumberCheckStatus(true);
-    //   if (phoneNumber) {
-    //     setCertSent(true);
-    //     setTimer(DEFAULT_TIMER);
-    //     setIsActive(true);
-    //   }
-    // }
-
-    phoneVerifyMutation.mutate(
+    phoneVerifySendMutation.mutate(
       { phoneNumber },
       {
         onSuccess: () => {
@@ -204,9 +292,17 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
           setCertSent(true);
           setTimer(DEFAULT_TIMER);
           setIsActive(true);
+          setPrevPhoneNumber(phoneNumber);
         },
         onError: error => {
-          console.log(error);
+          if (error.statusCode === 4002) {
+            setError('phoneNumber', { message: '유효하지 않은 전화번호입니다' });
+          } else if (error.statusSubCode === 4017) {
+            setError('phoneNumber', { message: '인증 시도 횟수를 초과했습니다' });
+          } else {
+            setError('phoneNumber', { message: '잠시 후 시도해주세요' });
+          }
+
           setPhoneNumberCheckStatus(false);
         },
       }
@@ -214,18 +310,73 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
   };
 
   const handleCertificationNumberCheck = () => {
-    if (certificationNumber === mockCertificationCode) {
-      // Certification number matches
-      setCertificationNumberCheckStatus(true);
-      setIsActive(false); // Stop the timer once verified
-    } else {
-      // Certification number doesn't match
-      setCertificationNumberCheckStatus(false);
-    }
+    phoneVerifyCheckMutation.mutate(
+      { phoneNumber, code: certificationNumber },
+      {
+        onSuccess: () => {
+          setPrevCertificationNumber(certificationNumber);
+          setValue('certificationNumberCheckStatus', true, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+          });
+          setIsActive(false);
+          setTimer(DEFAULT_TIMER);
+        },
+        onError: error => {
+          if (error.statusCode === 4002) {
+            setError('certificationNumber', { message: '유효하지 않은 전화번호입니다' });
+          } else {
+            setError('certificationNumber', { message: '유효하지 않은 인증 코드입니다' });
+          }
+
+          setValue('certificationNumberCheckStatus', false, {
+            shouldValidate: true,
+            shouldDirty: true,
+            shouldTouch: true,
+          });
+        },
+      }
+    );
   };
 
+  const handleRequiredTermsChange = useCallback(
+    (isValid: boolean) => {
+      setValue('requiredTermsAgreed', isValid, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    },
+    [setValue]
+  );
+
   const onSubmit = (data: FormValues) => {
-    console.log('Form submitted with data:', data);
+    const payload = {
+      signupCode: data.signupCode,
+      email: data.email,
+      password: data.password,
+      name: data.name,
+      licenseNumber: data.medicalLicense,
+      phoneNumber: data.phoneNumber,
+      hospitalCode: data.medicalInstitution,
+      departmentCode: data.medicalDepartment,
+      ...(data.specialties && { specialtyField: data.specialties }),
+      ...(data.specialistLicense && { specialistLicenseNumber: data.specialistLicense }),
+      ...(data.nurseIds && { nurseIds: data.nurseIds }),
+    };
+
+    doctorSignUpMutation.mutateAsync(payload, {
+      onSuccess: () => {
+        router.replace('/doctor/auth');
+        showSuccessToast('회원가입이 완료되었어요', '로그인 해주세요.');
+      },
+      onError: () => {
+        toast.error('회원가입에 실패했어요.', {
+          description: '잠시 후 시도해주세요.',
+        });
+      },
+    });
   };
 
   return (
@@ -238,26 +389,29 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
           </p>
         </div>
         <form className="space-y-10 mt-8" onSubmit={handleSubmit(onSubmit)}>
-          <OrthoInput label="의사 가입 코드" registration={register('doctorCode')} readOnly />
+          <OrthoInput label="의사 가입 코드" registration={register('signupCode')} readOnly />
 
           <OrthoInput
             label="아이디 (이메일)"
             placeholder="아이디 (이메일)를 입력해주세요"
             registration={register('email')}
             apiResponse={emailCheckStatus !== null ? !emailCheckStatus : undefined}
-            apiResponseMessage={emailCheckStatus ? '사용가능한 아이디 (이메일)에요.' : undefined}
+            apiResponseMessage={
+              emailCheckStatus && !Boolean(errors.email)
+                ? '사용가능한 아이디 (이메일)에요.'
+                : undefined
+            }
             error={errors.email?.message}
             rightIcon={
               <Button
                 type="button"
                 onClick={() => handleEmailCheck(email)}
                 className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
-                disabled={emailCheckStatus === true || Boolean(errors.email) || prevEmail === email}
+                disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
                 중복확인
               </Button>
             }
-            readOnly={emailCheckMutation.isSuccess}
             required
           />
 
@@ -267,7 +421,6 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
             type={showPassword ? 'text' : 'password'}
             registration={register('password')}
             error={errors.password?.message}
-            required
             rightIcon={
               showPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
@@ -276,6 +429,7 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
               )
             }
             onRightIconClick={togglePasswordVisibility}
+            required
           />
 
           <OrthoInput
@@ -283,8 +437,10 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
             placeholder="비밀번호를 다시 입력하세요"
             type={showConfirmPassword ? 'text' : 'password'}
             registration={register('confirmPassword')}
+            apiResponseMessage={
+              confirmPassword && !errors.confirmPassword ? '비밀번호가 일치해요' : undefined
+            }
             error={errors.confirmPassword?.message}
-            required
             rightIcon={
               showConfirmPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
@@ -293,6 +449,7 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
               )
             }
             onRightIconClick={toggleConfirmPasswordVisibility}
+            required
           />
 
           <OrthoInput
@@ -308,34 +465,60 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
             placeholder="의료 면허 번호을 입력해주세요"
             registration={register('medicalLicense')}
             error={errors.medicalLicense?.message}
+            apiResponse={
+              medicalLicenseCheckStatus !== null ? !medicalLicenseCheckStatus : undefined
+            }
+            apiResponseMessage={
+              medicalLicenseCheckStatus === true ? '사용가능한 의사 면허 번호에요' : ''
+            }
+            rightIcon={
+              <Button
+                type="button"
+                onClick={() => handleMedicalLicenseCheck()}
+                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+                disabled={
+                  medicalLicenseCheckStatus === true ||
+                  Boolean(errors.medicalLicense) ||
+                  !medicalLicense
+                }
+              >
+                중복확인
+              </Button>
+            }
             required
           />
 
-          <MedicalInstitutionSelector label="의료 기관명" required />
+          <MedicalInstitutionSelector
+            label="의료 기관명"
+            registration={register('medicalInstitution')}
+            error={errors.medicalInstitution?.message}
+            onChange={handleMedicalInstitutionChange}
+            selectedInstitutionName={selectedInstitutionName}
+            required
+          />
 
           {/* Department Dropdown */}
-          <MedicalDepartmentSelector />
+          <MedicalDepartmentSelector
+            label="진료과"
+            placeholder="진료과를 선택해주세요"
+            items={medicalDepartmentsQuery.data ?? []}
+            registration={register('medicalDepartment')}
+            error={errors.medicalDepartment?.message}
+            onChange={handleMedicalDepartmentChange}
+            selectedDepartmentName={selectedDepartmentName}
+            required
+          />
 
-          {/* FIXME: 기획 고도화 필요 */}
-          {/* <div className="relative">
-            <div onClick={() => toggleDropdown('specialist')} className="cursor-pointer">
-              <OrthoInput
-                label="전문의 과목"
-                value={selectedSpecialist?.name}
-                placeholder="전문의 과목을 선택해주세요"
-                rightIcon={<ChevronDown size={20} color="#97A8C4" />}
-              />
-            </div>
-
-            <MultiColumnDropdown
-              isOpen={specialistDropDownIsOpen}
-              onClose={() => setSpecialistDropDownIsOpen(false)}
-              onSelect={handleSpecialistSelect}
-              className="mt-3"
-              items={[]}
-              width="w-full"
-            />
-          </div> */}
+          {/* Specialties Dropdown */}
+          <MedicalDepartmentSelector
+            label="전문의 과목"
+            placeholder="전문의 과목을 선택해주세요"
+            items={[{ code: 'none', name: '선택 안함' }, ...(medicalDepartmentsQuery.data ?? [])]}
+            registration={register('specialties')}
+            error={errors.specialties?.message}
+            onChange={handleSpecialtiesChange}
+            selectedDepartmentName={selectedSpecialtiesName}
+          />
 
           <OrthoInput
             label="전문의 면허 번호"
@@ -344,8 +527,13 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
             error={errors.specialistLicense?.message}
           />
 
-          {/* FIXME: 기획 고도화 필요 */}
-          <NurseManagerSelector label="담당 간호사" />
+          <NurseManagerSelector
+            label="담당 간호사"
+            error={nurseIdsError?.message || errors.nurseIds?.message}
+            onChange={(nurseIds: string[]) => {
+              nurseIdsField.onChange(nurseIds);
+            }}
+          />
 
           <OrthoInput
             label="휴대폰 번호"
@@ -353,11 +541,7 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
             registration={register('phoneNumber')}
             apiResponse={phoneNumberCheckStatus !== null ? !phoneNumberCheckStatus : undefined}
             apiResponseMessage={
-              phoneNumberCheckStatus === true
-                ? '사용 가능한 전화번호입니다.'
-                : phoneNumberCheckStatus === false
-                  ? '이미 사용 중인 전화번호입니다.'
-                  : undefined
+              phoneNumberCheckStatus === true ? '사용 가능한 전화번호입니다.' : ''
             }
             error={errors.phoneNumber?.message}
             rightIcon={
@@ -367,15 +551,18 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
                   onClick={handlePhoneNumberCheck}
                   className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
                   disabled={
-                    phoneVerifyMutation.isPending ||
-                    phoneVerifyMutation.isError ||
-                    Boolean(errors.phoneNumber)
+                    phoneVerifySendMutation.isPending ||
+                    phoneVerifySendMutation.isError ||
+                    Boolean(errors.phoneNumber) ||
+                    !phoneNumber ||
+                    isActive
                   }
                 >
                   인증번호 전송
                 </Button>
               </div>
             }
+            readOnly={isActive}
             required
           />
 
@@ -384,14 +571,12 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
             placeholder="인증번호 6자리"
             registration={register('certificationNumber')}
             apiResponse={
-              certificationNumberCheckStatus !== null ? !certificationNumberCheckStatus : undefined
+              certificationNumberCheckStatus !== null && certificationNumberCheckStatus
+                ? !certificationNumberCheckStatus
+                : undefined
             }
             apiResponseMessage={
-              certificationNumberCheckStatus === true
-                ? '인증 번호가 일치해요.'
-                : certificationNumberCheckStatus === false
-                  ? '인증 번호가 일치하지 않아요.'
-                  : undefined
+              certificationNumberCheckStatus === true ? '인증 번호가 확인되었어요' : ''
             }
             error={errors.certificationNumber?.message}
             rightIcon={
@@ -404,23 +589,28 @@ const DoctorSignUpForm = ({ token }: DoctorSignupFormProps) => {
                 <Button
                   type="button"
                   onClick={handleCertificationNumberCheck}
-                  // disabled={!certSent || !isActive}
-                  className={`text-white bg-[#8395AC] hover:bg-[#8395AC] rounded-md h-8 font-medium text-[13px]`}
+                  disabled={!certSent || !isActive}
+                  className={`text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer`}
                 >
                   확인
                 </Button>
               </div>
             }
+            readOnly={!isActive}
             required
           />
 
-          <SignupCheckList />
+          <SignupCheckList
+            error={errors.requiredTermsAgreed?.message}
+            onRequiredTermsChange={handleRequiredTermsChange}
+          />
 
           <Button
             type="submit"
             className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+            disabled={!isValid || isSubmitting}
           >
-            다음
+            회원가입
           </Button>
         </form>
       </div>
