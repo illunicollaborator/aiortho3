@@ -6,7 +6,13 @@ export interface InviteSendCodeRequest {
 
 export interface InviteSendCodeResponse {}
 
-export interface GetAdminsRequest {}
+export interface GetAdminsRequest {
+  page: number;
+  limit: number;
+  sortBy: string;
+  ascending: boolean;
+  keyword: string;
+}
 
 export interface GetAdminsResponse {
   adminListItems: Admin[];

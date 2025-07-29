@@ -25,7 +25,8 @@ export default function DoctorRegistrationDashboard() {
     () => ({
       page: pageNumber,
       limit: PER_PAGE_SIZE,
-      sort: `${sortBy}:${sortDirection}`,
+      sortBy,
+      ascending: sortDirection === 'asc' ? true : false,
       keyword: debouncedSearch,
     }),
     [pageNumber, sortBy, sortDirection, debouncedSearch]
