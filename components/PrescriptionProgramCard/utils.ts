@@ -5,7 +5,7 @@ export const createDefaultExercise = (): Exercise => {
   return {
     exerciseId: '',
     name: '',
-    duration: 3,
+    duration: 0,
     direction: ExerciseDirection.Left,
     description: '',
   };
