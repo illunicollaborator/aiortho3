@@ -45,9 +45,11 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
         {prescriptions.length > 0 ? (
           prescriptions.map((prescription, idx) => (
             <div key={`prescription-history-${idx}`} className="flex flex-col gap-3">
-              <span className="text-[var(--aiortho-gray-600)]">
-                {formatDate(prescription.startDate, true)}
-              </span>
+              {prescription.startDate && (
+                <span className="text-[var(--aiortho-gray-600)]">
+                  {formatDate(prescription.startDate, true)}
+                </span>
+              )}
 
               <PrescriptionProgramCard prescription={prescription} disabled />
             </div>

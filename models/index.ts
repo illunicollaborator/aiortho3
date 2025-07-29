@@ -119,10 +119,13 @@ export interface Prescription {
   endDate?: string;
 }
 
+export type Program = Pick<Prescription, 'name' | 'exercises' | 'repeatCount'>;
+
 export interface Exercise {
   exerciseId: string;
   name: string;
   duration: number;
-  order: number;
+  order?: number;
   direction: ExerciseDirection;
+  description?: string;
 }
