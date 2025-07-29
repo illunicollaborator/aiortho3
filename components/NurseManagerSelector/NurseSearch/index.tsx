@@ -38,7 +38,7 @@ const NurseSearch: React.FC<NurseSearchProps> = ({ searchQuery, onSearch, onClea
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="간호사 이름, 부서 또는 휴대폰번호를 입력하세요"
+            placeholder="간호사명 검색"
             className="search-input w-full text-[#161621] text-base font-normal leading-none outline-none"
           />
           {inputValue && (

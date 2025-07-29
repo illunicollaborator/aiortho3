@@ -1,4 +1,4 @@
-import { Doctor } from '@/models';
+import { Doctor, Nurse } from '@/models';
 
 export interface PostDoctorSignUpActivateCodeRequest {
   code: string;
@@ -17,3 +17,14 @@ export interface PostDoctorMedicalLicenseCheckRequest {
 }
 
 export interface PostDoctorMedicalLicenseCheckResponse {}
+
+export interface GetSearchNursesRequest {
+  page: number;
+  limit: number;
+  keyword: string;
+}
+
+export interface GetSearchNursesResponse {
+  counts: number;
+  nurses: Nurse[];
+}

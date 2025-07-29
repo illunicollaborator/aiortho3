@@ -3,15 +3,14 @@
 import React, { useState } from 'react';
 import { X, Plus } from 'lucide-react';
 import NurseSearchModal from './NurseSearchModal';
-import { Nurse } from './types';
+import { Nurse } from '@/models';
 
 interface NurseManagerProps {
   label: string;
-  required?: boolean;
   onChange?: (nurses: Nurse[]) => void;
 }
 
-const NurseManager: React.FC<NurseManagerProps> = ({ label, required = false, onChange }) => {
+const NurseManager: React.FC<NurseManagerProps> = ({ label, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNurses, setSelectedNurses] = useState<Nurse[]>([]);
 
@@ -25,20 +24,24 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, required = false, on
 
   const handleSelectNurse = (nurse: Nurse) => {
     // 이미 선택된 간호사인지 확인
-    const isAlreadySelected = selectedNurses.some(selectedNurse => selectedNurse.id === nurse.id);
+    const isAlreadySelected = selectedNurses.some(
+      selectedNurse => selectedNurse.name === nurse.name
+    );
 
     if (!isAlreadySelected) {
       const updatedNurses = [...selectedNurses, nurse];
       setSelectedNurses(updatedNurses);
+
       if (onChange) {
         onChange(updatedNurses);
       }
     }
   };
 
-  const handleRemoveNurse = (nurseId: number) => {
-    const updatedNurses = selectedNurses.filter(nurse => nurse.id !== nurseId);
+  const handleRemoveNurse = (nurseId: string) => {
+    const updatedNurses = selectedNurses.filter(nurse => nurse.name !== nurseId);
     setSelectedNurses(updatedNurses);
+
     if (onChange) {
       onChange(updatedNurses);
     }
@@ -67,21 +70,18 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, required = false, on
           </div>
         ) : (
           selectedNurses.map(nurse => (
-            <div className="flex items-center gap-2 w-full">
-              <div
-                key={nurse.id}
-                className="flex h-12 px-4 py-3.5 items-center justify-between self-stretch rounded-xl border border-[#DADFE9] bg-[#F0F3FA]/60 w-full"
-              >
+            <div key={nurse.adminId} className="flex items-center gap-2 w-full">
+              <div className="flex h-12 px-4 py-3.5 items-center justify-between self-stretch rounded-xl border border-[#DADFE9] bg-[#F0F3FA]/60 w-full">
                 <div className="flex items-center gap-2">
                   <div className="text-[#66798D] text-base font-medium">{nurse.name}</div>
                 </div>
                 <div className="flex items-center"></div>
               </div>
               <button
-                onClick={() => handleRemoveNurse(nurse.id)}
+                onClick={() => handleRemoveNurse(nurse.name)}
                 className="flex items-center justify-center w-6 h-6 rounded-full bg-[#F0F3FA]/60 "
               >
-                <X className="w-4 h-4 text-[#8395AC]" />
+                <X className="w-4 h-4 text-[#8395AC] cursor-pointer" />
               </button>
             </div>
           ))
