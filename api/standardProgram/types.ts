@@ -1,21 +1,12 @@
-import { Exercise } from '@/models';
-
-export interface StaticProgramExercise {
-  exerciseId: string;
-  name: string;
-}
+import { Program, Exercise } from '@/models';
 
 export interface GetStandardProgramListRequest {}
 
 export interface GetStandardProgramListResponse {
   adminId: string;
-  presets: {
-    name: string;
-    repeatCount: number;
-    exercises: Exercise[];
-  }[];
+  presets: Program[];
 }
 
 export interface GetStaticProgramExerciseListRequest {}
 
-export interface GetStaticProgramExerciseListResponse extends Array<StaticProgramExercise> {}
+export interface GetStaticProgramExerciseListResponse extends Array<Exercise> {}

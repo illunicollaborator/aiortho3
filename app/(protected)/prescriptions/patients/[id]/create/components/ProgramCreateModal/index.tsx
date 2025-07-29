@@ -14,13 +14,14 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { GetStandardProgramListResponse } from '@/api/standardProgram/types';
+import { Program } from '@/models';
+import { createDefaultExercise } from '@/components/PrescriptionProgramCard/utils';
 
 interface ProgramCreateModalProps {
-  standardProgram: GetStandardProgramListResponse['presets'];
+  standardProgram: Program[];
   isOpen: boolean;
   onClose: () => void;
-  onSelect: (program: GetStandardProgramListResponse['presets'][0]) => void;
+  onSelect: (program: Program) => void;
 }
 
 export default function ProgramCreateModal({
@@ -29,9 +30,7 @@ export default function ProgramCreateModal({
   onClose,
   onSelect,
 }: ProgramCreateModalProps) {
-  const [selectedProgram, setSelectedProgram] = useState<
-    GetStandardProgramListResponse['presets'][0] | null
-  >(null);
+  const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
 
   const handleClose = () => {
     setSelectedProgram(null);
@@ -98,7 +97,7 @@ export default function ProgramCreateModal({
                 onClick={() =>
                   setSelectedProgram({
                     name: '개별 프로그램',
-                    exercises: [],
+                    exercises: [createDefaultExercise()],
                     repeatCount: 3,
                   })
                 }

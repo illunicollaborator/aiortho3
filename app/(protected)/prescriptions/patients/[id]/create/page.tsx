@@ -7,15 +7,15 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { ProgramCreateModal } from './components';
 import { useStandardProgram } from './hooks';
-import { GetStandardProgramListResponse } from '@/api/standardProgram/types';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
+import { Prescription } from '@/models';
 
 export default function CreatePrescriptionPage() {
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const patientQuery = usePatient(id as string);
   const standardProgramQuery = useStandardProgram();
-  const [program, setProgram] = useState<GetStandardProgramListResponse['presets'][0]>();
+  const [prescriptionProgram, setPrescriptionProgram] = useState<Prescription>();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -25,8 +25,8 @@ export default function CreatePrescriptionPage() {
     setIsModalOpen(false);
   };
 
-  const handleSelectProgram = (program: GetStandardProgramListResponse['presets'][0]) => {
-    setProgram(program);
+  const handleSelectProgram = (program: Prescription) => {
+    setPrescriptionProgram(program);
   };
 
   if (!patientQuery.data || !standardProgramQuery.data) {
@@ -50,8 +50,8 @@ export default function CreatePrescriptionPage() {
         환자에게 처방할 치료 운동 종류를 선택해주세요
       </h2>
 
-      {program ? (
-        <PrescriptionProgramCard prescription={program} defaultIsOpen />
+      {prescriptionProgram ? (
+        <PrescriptionProgramCard prescription={prescriptionProgram} defaultIsOpen />
       ) : (
         <button
           type="button"
