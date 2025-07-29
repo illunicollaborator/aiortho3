@@ -125,7 +125,7 @@ export default function PrescriptionProgramCard({
   if (!staticExerciseList) {
     return null;
   }
-
+      
   return (
     <Card
       className={`border border-[var(--aiortho-gray-100)] p-5 transition-all duration-300 ease-in-out ${isOpen ? 'shadow-md' : 'shadow-sm'}`}
@@ -165,6 +165,7 @@ export default function PrescriptionProgramCard({
                     <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0 ">
                       운동 종류 선택
                     </Label>
+                    
                     <Controller
                       name={`exercises.${idx}.exerciseId`}
                       control={control}
