@@ -38,7 +38,18 @@ const schema = z
         message: '영문, 숫자, 특수문자를 모두 포함해야 합니다.',
       }),
     confirmPassword: z.string(),
-    name: z.string().min(1, { message: '이름을 입력해주세요' }),
+    name: z
+      .string()
+      .min(2, { message: '이름은 2자 이상 입력해주세요' })
+      .max(10, { message: '이름은 10자 이하로 입력해주세요' })
+      .regex(/^[가-힣]+$/, { message: '한글만 입력 가능합니다' })
+      .refine(
+        val => {
+          const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
+          return !singleConsonantVowel.test(val);
+        },
+        { message: '자음이나 모음만 사용할 수 없습니다' }
+      ),
     medicalLicense: z.string().min(1, { message: '의료 면허 번호를 입력해주세요' }),
     medicalInstitution: z.string().min(1, { message: '의료 기관명을 선택해주세요' }),
     medicalDepartment: z.string().min(1, { message: '진료과를 선택해주세요' }),
