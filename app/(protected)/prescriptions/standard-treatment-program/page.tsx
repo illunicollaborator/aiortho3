@@ -12,6 +12,8 @@ import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
 import { createDefaultExercise } from '@/components/PrescriptionProgramCard/utils';
+import { showSuccessToast } from '@/components/ui/toast-notification';
+import { showWarningToast } from '@/components/ui/toast-warning';
 
 const isStandardProgramNumber = (name: string): boolean => {
   const standardProgramRegex = /^표준 프로그램 \d+$/;
@@ -86,9 +88,19 @@ export default function StandardTreatmentProgramPage() {
   };
 
   const handleDeleteProgram = (index: number) => {
-    deleteStandardProgramMutation.mutateAsync({
-      presetIndex: index,
-    });
+    deleteStandardProgramMutation.mutateAsync(
+      {
+        presetIndex: index,
+      },
+      {
+        onSuccess: () => {
+          showSuccessToast(`${standardProgram[index].name} 삭제 완료`, '프로그램이 삭제되었어요.');
+        },
+        onError: () => {
+          showWarningToast('프로그램 삭제 실패', '잠시 후 시도해주세요.');
+        },
+      }
+    );
 
     removeFromNewProgramIndices(index);
   };
@@ -136,7 +148,7 @@ export default function StandardTreatmentProgramPage() {
             showControl={!isAnyProgramEditing}
             onStartEditing={() => handleStartEditing(idx)}
             onStopEditing={() => handleStopEditing(idx)}
-            onUpdate={() => handleUpdateProgram(program, idx)}
+            onUpdate={p => handleUpdateProgram(p, idx)}
             onDelete={() => handleDeleteProgram(idx)}
             isDeleteConfirm
             checkIsDirty
