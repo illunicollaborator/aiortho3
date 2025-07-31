@@ -61,7 +61,7 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
         )}
       </div>
 
-      {pageCount > 0 && (
+      {pageCount > 1 && (
         <Pagination currentPage={page} totalPages={pageCount} onPageChange={handlePageChange} />
       )}
     </div>
