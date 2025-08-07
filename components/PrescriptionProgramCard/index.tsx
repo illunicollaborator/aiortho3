@@ -168,8 +168,6 @@ export default function PrescriptionProgramCard({
     return null;
   }
 
-  console.log(staticExerciseList);
-
   return (
     <Card
       className={cn(
