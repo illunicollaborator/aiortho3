@@ -32,6 +32,7 @@ export default function CreatePrescriptionPage() {
   const standardProgramQuery = useStandardProgram();
   const createPrescriptionMutation = useCreatePrescription();
   const [prescriptionProgram, setPrescriptionProgram] = useState<Prescription>();
+  const [prescriptionProgramIsDirty, setPrescriptionProgramIsDirty] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
   const form = useForm<FormValues>({
@@ -99,6 +100,10 @@ export default function CreatePrescriptionPage() {
 
       form.setValue('period', String(initialPeriod));
     }
+
+    if (patientQuery.data?.prescription) {
+      setIsEditing(true);
+    }
   }, [patientQuery.data?.prescription]);
 
   if (!patientQuery.data || !standardProgramQuery.data) {
@@ -107,6 +112,8 @@ export default function CreatePrescriptionPage() {
 
   const { data: patient } = patientQuery;
   const { data: standardProgram } = standardProgramQuery;
+
+  const isDirty = prescriptionProgramIsDirty || form.formState.isDirty;
 
   return (
     <section className="flex flex-col max-w-[680px]">
@@ -131,8 +138,10 @@ export default function CreatePrescriptionPage() {
             onStopEditing={() => setIsEditing(false)}
             onUpdate={handleSetProgram}
             onDelete={handleDeleteProgram}
+            showControl={patient.prescription ? false : true}
+            checkIsDirty={patient.prescription ? true : false}
+            setIsDirty={setPrescriptionProgramIsDirty}
             defaultIsOpen
-            showControl
           />
 
           <Form {...form}>
@@ -175,7 +184,8 @@ export default function CreatePrescriptionPage() {
             !form.formState.isValid ||
             !prescriptionProgram ||
             isEditing ||
-            createPrescriptionMutation.isPending
+            createPrescriptionMutation.isPending ||
+            !isDirty
           }
           onClick={form.handleSubmit(onSubmit)}
         >
