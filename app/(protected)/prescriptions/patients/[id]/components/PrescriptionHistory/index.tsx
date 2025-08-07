@@ -51,7 +51,7 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
                 </span>
               )}
 
-              <PrescriptionProgramCard prescription={prescription} disabled />
+              <PrescriptionProgramCard prescription={prescription} />
             </div>
           ))
         ) : (
