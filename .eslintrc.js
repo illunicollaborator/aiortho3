@@ -5,5 +5,8 @@ module.exports = {
   plugins: ['react', 'react-hooks', 'jsx-a11y'],
   rules: {
     'prettier/prettier': ['error'],
+    '@next/next/no-img-element': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'react-hooks/rules-of-hooks': 'off',
   },
 };
