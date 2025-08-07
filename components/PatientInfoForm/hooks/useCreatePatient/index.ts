@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { postPatientCreate } from '@/api/patients';
-import { PostCreatePatientRequest, PostCreatePatientResponse } from '@/api/patients/types';
-import { ErrorResponse } from '@/api/types';
+import { postPatientCreate } from '@/apis/patients';
+import { PostCreatePatientRequest, PostCreatePatientResponse } from '@/apis/patients/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useCreatePatient = () => {
   return useMutation<PostCreatePatientResponse, ErrorResponse, PostCreatePatientRequest>({

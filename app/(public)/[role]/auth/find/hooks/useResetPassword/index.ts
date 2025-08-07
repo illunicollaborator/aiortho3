@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { resetPassword } from '@/api/admin/common';
-import { ResetPasswordRequest, ResetPasswordResponse } from '@/api/admin/common/types';
-import { ErrorResponse } from '@/api/types';
+import { resetPassword } from '@/apis/admin/common';
+import { ResetPasswordRequest, ResetPasswordResponse } from '@/apis/admin/common/types';
+import { ErrorResponse } from '@/apis/types';
 
 type ResetPasswordVariables = {
   data: ResetPasswordRequest;

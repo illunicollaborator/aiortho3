@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { postCreateStandardProgram } from '@/api/standardProgram';
+import { postCreateStandardProgram } from '@/apis/standardProgram';
 import {
   PostCreateStandardProgramRequest,
   PostCreateStandardProgramResponse,
-} from '@/api/standardProgram/types';
-import { ErrorResponse } from '@/api/types';
+} from '@/apis/standardProgram/types';
+import { ErrorResponse } from '@/apis/types';
 import { STANDARD_PROGRAM_QUERY_KEY } from '@/constants/queryKey';
 
 export const useCreateStandardProgram = () => {

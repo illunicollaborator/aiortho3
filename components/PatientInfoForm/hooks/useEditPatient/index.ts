@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { updatePatient } from '@/api/patients';
-import { UpdatePatientRequest, UpdatePatientResponse } from '@/api/patients/types';
-import { ErrorResponse } from '@/api/types';
+import { updatePatient } from '@/apis/patients';
+import { UpdatePatientRequest, UpdatePatientResponse } from '@/apis/patients/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useEditPatient = (patientId: string) => {
   return useMutation<UpdatePatientResponse, ErrorResponse, UpdatePatientRequest['params']>({

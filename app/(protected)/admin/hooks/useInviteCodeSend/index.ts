@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { inviteSendCode } from '@/api/admin/root';
-import { InviteSendCodeRequest, InviteSendCodeResponse } from '@/api/admin/root/type';
-import { ErrorResponse } from '@/api/types';
+import { inviteSendCode } from '@/apis/admin/root';
+import { InviteSendCodeRequest, InviteSendCodeResponse } from '@/apis/admin/root/type';
+import { ErrorResponse } from '@/apis/types';
 
 export const useInviteCodeSend = () => {
   return useMutation<InviteSendCodeResponse, ErrorResponse, InviteSendCodeRequest>({

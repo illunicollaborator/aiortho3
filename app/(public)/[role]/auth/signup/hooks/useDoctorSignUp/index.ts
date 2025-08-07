@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { postDoctorSignUp } from '@/api/admin/doctor';
-import { PostDoctorSignUpRequest, PostDoctorSignUpResponse } from '@/api/admin/doctor/types';
-import { ErrorResponse } from '@/api/types';
+import { postDoctorSignUp } from '@/apis/admin/doctor';
+import { PostDoctorSignUpRequest, PostDoctorSignUpResponse } from '@/apis/admin/doctor/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useDoctorSignUp = (token: string) => {
   return useMutation<PostDoctorSignUpResponse, ErrorResponse, PostDoctorSignUpRequest>({

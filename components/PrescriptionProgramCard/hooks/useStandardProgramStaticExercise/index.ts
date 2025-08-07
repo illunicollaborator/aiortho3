@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getStaticProgramExerciseList } from '@/api/standardProgram';
+import { getStaticProgramExerciseList } from '@/apis/standardProgram';
 
 export const useStandardProgramStaticExercise = () => {
   return useQuery({

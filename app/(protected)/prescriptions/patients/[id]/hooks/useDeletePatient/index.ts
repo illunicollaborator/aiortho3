@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
-import { deletePatient } from '@/api/patients';
-import { DeletePatientRequest, DeletePatientResponse } from '@/api/patients/types';
-import { ErrorResponse } from '@/api/types';
+import { deletePatient } from '@/apis/patients';
+import { DeletePatientRequest, DeletePatientResponse } from '@/apis/patients/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useDeletePatient = () => {
   return useMutation<DeletePatientResponse, ErrorResponse, DeletePatientRequest>({
