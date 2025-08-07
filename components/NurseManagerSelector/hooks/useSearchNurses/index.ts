@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getSearchNurses } from '@/api/admin/doctor';
-import { GetSearchNursesRequest } from '@/api/admin/doctor/types';
+import { getSearchNurses } from '@/apis/admin/doctor';
+import { GetSearchNursesRequest } from '@/apis/admin/doctor/types';
 
 export const useSearchNurses = (params: GetSearchNursesRequest) => {
   return useQuery({

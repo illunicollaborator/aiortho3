@@ -1,4 +1,4 @@
-import { getDepartmentList } from '@/api/admin/common';
+import { getDepartmentList } from '@/apis/admin/common';
 import { useQuery } from '@tanstack/react-query';
 
 export const useMedicalDepartments = () => {

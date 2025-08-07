@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { getNurseProfile } from '@/api/admin/nurse';
+import { getNurseProfile } from '@/apis/admin/nurse';
 import { NURSE_PROFILE_QUERY_KEY } from '@/constants/queryKey';
 
 interface UseNurseProfileProps extends Partial<UseQueryOptions> {

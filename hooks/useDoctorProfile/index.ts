@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { getDoctorProfile } from '@/api/admin/doctor';
+import { getDoctorProfile } from '@/apis/admin/doctor';
 import { DOCTOR_PROFILE_QUERY_KEY } from '@/constants/queryKey';
 
 interface UseDoctorProfileProps extends Partial<UseQueryOptions> {

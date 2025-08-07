@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPatientList } from '@/api/patients';
-import { GetPatientListRequest } from '@/api/patients/types';
+import { getPatientList } from '@/apis/patients';
+import { GetPatientListRequest } from '@/apis/patients/types';
 
 const QUERY_KEY = 'patients';
 

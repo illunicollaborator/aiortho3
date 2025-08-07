@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { getPrescriptionHistory } from '@/api/prescription';
-import { GetPrescriptionHistoryRequest } from '@/api/prescription/types';
+import { getPrescriptionHistory } from '@/apis/prescription';
+import { GetPrescriptionHistoryRequest } from '@/apis/prescription/types';
 
 interface UsePrescriptionHistoryProps {
   patientId: number;

@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { postCreatePrescription } from '@/api/prescription';
+import { postCreatePrescription } from '@/apis/prescription';
 import {
   PostCreatePrescriptionRequest,
   PostCreatePrescriptionResponse,
-} from '@/api/prescription/types';
-import { ErrorResponse } from '@/api/types';
+} from '@/apis/prescription/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useCreatePrescription = () => {
   return useMutation<PostCreatePrescriptionResponse, ErrorResponse, PostCreatePrescriptionRequest>({

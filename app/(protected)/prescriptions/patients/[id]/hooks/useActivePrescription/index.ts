@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getActivePrescription } from '@/api/prescription';
+import { getActivePrescription } from '@/apis/prescription';
 
 export const useActivePrescription = (patientId: number) => {
   return useQuery({

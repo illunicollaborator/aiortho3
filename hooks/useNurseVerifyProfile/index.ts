@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { postNurseProfileVerify } from '@/api/admin/nurse';
+import { postNurseProfileVerify } from '@/apis/admin/nurse';
 import {
   PostNurseProfileVerifyRequest,
   PostNurseProfileVerifyResponse,
-} from '@/api/admin/nurse/types';
-import { ErrorResponse } from '@/api/types';
+} from '@/apis/admin/nurse/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useNurseVerifyProfile = () => {
   return useMutation<PostNurseProfileVerifyResponse, ErrorResponse, PostNurseProfileVerifyRequest>({

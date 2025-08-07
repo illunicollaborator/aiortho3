@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { putUpdateNurseProfile } from '@/api/admin/nurse';
-import { ErrorResponse } from '@/api/types';
+import { putUpdateNurseProfile } from '@/apis/admin/nurse';
+import { ErrorResponse } from '@/apis/types';
 import {
   PostUpdateNurseProfileRequest,
   PostUpdateNurseProfileResponse,
-} from '@/api/admin/nurse/types';
+} from '@/apis/admin/nurse/types';
 import { NURSE_PROFILE_QUERY_KEY } from '@/constants/queryKey';
 
 export const useUpdateNurseProfile = () => {

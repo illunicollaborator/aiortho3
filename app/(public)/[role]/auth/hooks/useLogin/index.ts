@@ -1,11 +1,11 @@
 import { useAuthStore } from '@/store/authStore';
 import { useMutation } from '@tanstack/react-query';
-import { login } from '@/api/admin/common';
-import { LoginRequest, LoginResponse } from '@/api/admin/common/types';
+import { login } from '@/apis/admin/common';
+import { LoginRequest, LoginResponse } from '@/apis/admin/common/types';
 import { decodeJWT } from '@/lib/utils';
 import { TOKEN_KEY, REFRESH_KEY } from '@/constants/auth';
 import { removeStorage, setStorage } from '@/lib/storage';
-import { ErrorResponse } from '@/api/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useLogin = (isAutoLogin: boolean) => {
   const { setAuth, setTokens } = useAuthStore();

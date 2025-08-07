@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
-import { postDoctorProfileVerify } from '@/api/admin/doctor';
+import { postDoctorProfileVerify } from '@/apis/admin/doctor';
 import {
   PostDoctorProfileVerifyRequest,
   PostDoctorProfileVerifyResponse,
-} from '@/api/admin/doctor/types';
-import { ErrorResponse } from '@/api/types';
+} from '@/apis/admin/doctor/types';
+import { ErrorResponse } from '@/apis/types';
 
 export const useDoctorVerifyProfile = () => {
   return useMutation<
