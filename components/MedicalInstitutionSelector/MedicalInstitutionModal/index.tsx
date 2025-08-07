@@ -80,7 +80,7 @@ export default function MedicalInstitutionModal({
                   의료 기관명을 선택해주세요
                 </h2>
                 <p className="modal-subtitle text-[#66798D] text-sm sm:text-base font-normal leading-[22px]">
-                  검색 결과가 없을 경우 '기타'를 선택해주세요.
+                  {`검색 결과가 없을 경우 '기타'를 선택해주세요.`}
                 </p>
               </div>
               <button
