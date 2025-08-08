@@ -1,5 +1,3 @@
-const NurseSignUpForm = () => {
+export default function NurseSignUpForm() {
   return <div>NurseSignUpForm</div>;
-};
-
-export default NurseSignUpForm;
+}
