@@ -39,7 +39,9 @@ export default function QuickMenu({ role }: QuickMenuProps) {
           onClick={handlePatientRegistrationClick}
           subtitle="처음 진료 받는"
           title="환자 등록하기"
-          icon={<img className="w-15 h-15 cursor-pointer" src="/icon.png" alt="환자 등록" />}
+          icon={
+            <img className="w-15 h-15 cursor-pointer" src="/quick-register.png" alt="환자 등록" />
+          }
         />
       </div>
     </section>
