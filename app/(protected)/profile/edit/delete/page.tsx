@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import { useNurseProfile, useDoctorProfile } from '@/hooks';
 import { isDoctorRole } from '@/lib/utils';
 import { toast } from 'sonner';
-import { Doctor, Nurse, UserRole } from '@/models';
 import { useAuthStore } from '@/store/authStore';
 import { useDeleteAccount } from './hooks/useDeleteAccount';
 import { showSuccessToast } from '@/components/ui/toast-notification';
@@ -69,7 +68,7 @@ export default function ProfileDeletePage() {
   const onSubmit = (data: FormValues) => {
     postDeleteAccount(
       {
-        adminId: data.email,
+        email: data.email,
         password: data.password,
       },
       {
@@ -79,7 +78,7 @@ export default function ProfileDeletePage() {
           removeStorage('local', REFRESH_KEY);
           removeStorage('session', TOKEN_KEY);
           removeStorage('session', REFRESH_KEY);
-          router.push('/');
+          router.replace('/');
         },
         onError: error => {
           if (error.statusSubCode === 4028) {
