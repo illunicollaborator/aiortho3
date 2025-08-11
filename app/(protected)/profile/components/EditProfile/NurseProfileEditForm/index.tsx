@@ -12,8 +12,8 @@ import { Eye, EyeOff } from 'lucide-react';
 import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector';
 import { Button } from '@/components/ui/button';
 import { formatTime } from '@/lib/utils';
-import router from 'next/router';
 import { showSuccessToast } from '@/components/ui/toast-notification';
+import { useRouter } from 'next/navigation';
 
 const schema = z
   .object({
@@ -101,6 +101,7 @@ interface NurseProfileEditFormProps {
 }
 
 export default function NurseProfileEditForm({ profile }: NurseProfileEditFormProps) {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -116,11 +117,11 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
       password: '',
       nextPassword: '',
       nextPasswordConfirm: '',
-      name: '',
-      medicalInstitution: '',
+      name: profile.name,
+      medicalInstitution: profile.hospitalCode,
       phoneNumber: profile.phoneNumber,
       certificationNumber: '',
-      certificationNumberCheckStatus: false,
+      certificationNumberCheckStatus: true,
     },
   });
 
@@ -158,7 +159,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
     updateNurseProfile(payload, {
       onSuccess: () => {
         showSuccessToast('개인정보 수정완료', '개인정보가 수정되었어요');
-        router.push('/profile');
+        router.replace('/profile');
       },
     });
   };
@@ -338,6 +339,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         registration={register('medicalInstitution')}
         error={errors.medicalInstitution?.message}
         onChange={handleMedicalInstitutionChange}
+        selectedInstitutionName={profile.hospitalInfo.name}
         required
       />
 
