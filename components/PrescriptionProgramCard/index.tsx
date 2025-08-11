@@ -33,6 +33,7 @@ interface PrescriptionProgramCardProps {
   isPending?: boolean;
   isDeleteConfirm?: boolean;
   checkIsDirty?: boolean;
+  setIsDirty?: (isDirty: boolean) => void;
   onUpdate?: (prescription: Prescription, index?: number) => void;
   onDelete?: (index?: number) => void;
   onStartEditing?: () => void;
@@ -66,6 +67,7 @@ export default function PrescriptionProgramCard({
   isPending = false,
   isDeleteConfirm = false,
   checkIsDirty = false,
+  setIsDirty,
   onUpdate,
   onDelete,
   onStartEditing,
@@ -103,6 +105,11 @@ export default function PrescriptionProgramCard({
     const updatedExercises = [...watchedExercises];
 
     updatedExercises[idx] = { ...updatedExercises[idx], ...newExercise };
+
+    if (!('description' in newExercise)) {
+      delete updatedExercises[idx].description;
+    }
+
     setValue('exercises', updatedExercises);
   };
 
@@ -126,9 +133,9 @@ export default function PrescriptionProgramCard({
 
   const handleRepetitionsChange = (change: number) => {
     const newValue = watchedRepetitions + change;
-    if (newValue >= 3 && newValue <= 12) {
-      setValue('repetitions', newValue);
-    }
+    setValue('repetitions', newValue, {
+      shouldDirty: true,
+    });
   };
 
   const onSubmit = () => {
@@ -138,6 +145,7 @@ export default function PrescriptionProgramCard({
       repeatCount: watchedRepetitions,
     });
     onStopEditing?.();
+    setIsDirty?.(isDirty);
   };
 
   const handleCreateComplete = handleSubmit(onSubmit);
@@ -460,7 +468,8 @@ export default function PrescriptionProgramCard({
                   </Button>
                 )}
 
-                {isEditing && checkIsDirty && !isDirty && (
+                {/* FIXME: 필요시 수정 취소 버튼 */}
+                {/* {isEditing && checkIsDirty && !isDirty && (
                   <Button
                     type="button"
                     variant="secondary"
@@ -469,7 +478,7 @@ export default function PrescriptionProgramCard({
                   >
                     수정 취소
                   </Button>
-                )}
+                )} */}
               </div>
             </CardContent>
           </form>

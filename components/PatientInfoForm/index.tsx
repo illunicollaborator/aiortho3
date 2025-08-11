@@ -11,7 +11,6 @@ import { useCreatePatient, useEditPatient } from './hooks';
 import { toast } from 'sonner';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useParams, useRouter } from 'next/navigation';
-import { Patient } from '@/models';
 import { usePatient } from '@/hooks';
 import { useEffect } from 'react';
 
@@ -34,7 +33,6 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
     handleSubmit,
     formState: { errors, isSubmitting, isValid, dirtyFields, isDirty },
     setValue,
-    // watch,
     reset,
   } = useForm<PatientFormData>({
     resolver: zodResolver(patientFormSchema),
@@ -63,9 +61,6 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   }, [patient, isEditMode, reset]);
 
   if (isLoading) return null;
-
-  // const birthDate = watch('birthDate');
-  // const genderDigit = watch('genderDigit');
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -115,8 +110,8 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
     } else {
       await createPatientMutation.mutateAsync(payload, {
         onSuccess: ({ patientId }) => {
-          router.push(`/prescriptions/patients/${patientId}`);
           showSuccessToast('환자 등록 완료', '환자 정보가 등록되었습니다.');
+          router.push(`/prescriptions/patients/${patientId}`);
         },
         onError: () => {
           toast.error('환자 정보 등록에 실패했습니다.', {
@@ -254,7 +249,15 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         required
       />
 
-      <div className="flex mt-12 justify-end">
+      <div className="flex mt-12 justify-end gap-5">
+        <button
+          type="button"
+          className="bg-[var(--aiortho-secondary)] font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-secondary)]/70 transition-colors cursor-pointer"
+          onClick={() => router.back()}
+        >
+          취소
+        </button>
+
         <button
           type="submit"
           className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
