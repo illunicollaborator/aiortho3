@@ -105,7 +105,7 @@ export default function MedicalInstitutionModal({
             </div>
           </div>
 
-          <div className="flex flex-col px-4 sm:px-8 pb-4 sm:pb-8 mt-4">
+          <div className="flex flex-col w-full h-full px-4 sm:px-8 mt-4">
             {!searchQuery ? (
               <div className="flex flex-col gap-4 min-h-[150px]">
                 <span className="font-bold text-xl text-[var(--aiortho-primary)]">Tip</span>
@@ -207,15 +207,17 @@ export default function MedicalInstitutionModal({
                 </div>
 
                 {/* Pagination Section */}
-                {counts > 1 && (
-                  <div className="flex pt-4">
+                <div className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 bg-white">
+                  {counts > 1 ? (
                     <Pagination
                       currentPage={currentPage}
                       totalPages={Math.ceil(counts / ITEMS_PER_PAGE)}
                       onPageChange={handlePageChange}
                     />
-                  </div>
-                )}
+                  ) : (
+                    <div className="h-8"></div>
+                  )}
+                </div>
               </>
             )}
           </div>

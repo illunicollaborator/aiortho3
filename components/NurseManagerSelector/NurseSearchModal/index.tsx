@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { X, Search, User } from 'lucide-react';
+import { X } from 'lucide-react';
 import Pagination from '@/components/Pagination';
 import { Nurse } from '@/models';
 import NurseSearch from '../NurseSearch';
@@ -198,10 +198,9 @@ export default function NurseSearchModal({
                       );
                     })
                   ) : (
-                    <div className="flex-1 flex items-center justify-center py-12 w-full">
+                    <div className="flex items-center justify-center py-12 w-full">
                       <div className="flex flex-col items-center gap-3 text-center">
-                        <User className="w-12 h-12 text-gray-300" />
-                        <div className="text-[#66798D] text-sm">검색 결과가 없습니다.</div>
+                        <div className="text-[#66798D] text-sm">검색 결과가 없어요.</div>
                       </div>
                     </div>
                   )}
@@ -209,10 +208,7 @@ export default function NurseSearchModal({
               </div>
 
               {/* Pagination Section - Always visible at bottom */}
-              <div
-                className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 px-6 sm:px-8 
-                         border-t border-gray-100 bg-white"
-              >
+              <div className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 px-6 sm:px-8 bg-white">
                 {counts > 1 ? (
                   <Pagination
                     currentPage={currentPage}
