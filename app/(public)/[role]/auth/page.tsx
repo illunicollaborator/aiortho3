@@ -112,7 +112,7 @@ export default function AuthPage() {
             registration={register('password')}
             error={errors.password?.message}
             rightIcon={
-              showPassword ? (
+              !showPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
               ) : (
                 <Eye size={20} color="#97A8C4" />

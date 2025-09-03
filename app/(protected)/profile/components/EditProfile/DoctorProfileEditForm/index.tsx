@@ -379,7 +379,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         error={errors.password?.message}
         isDirty={dirtyFields.password}
         rightIcon={
-          showPassword ? (
+          !showPassword ? (
             <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
             <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
@@ -396,7 +396,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         error={errors.nextPassword?.message}
         isDirty={dirtyFields.nextPassword}
         rightIcon={
-          showNextPassword ? (
+          !showNextPassword ? (
             <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
             <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
@@ -421,7 +421,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         }
         isDirty={dirtyFields.nextPasswordConfirm}
         rightIcon={
-          showNextPasswordConfirm ? (
+          !showNextPasswordConfirm ? (
             <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
             <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
