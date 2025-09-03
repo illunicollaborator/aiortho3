@@ -86,8 +86,7 @@ export default function MedicalInstitutionModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="close-button absolute right-2 top-2 flex justify-center w-8 h-8 items-center rounded-full
-                          hover:bg-gray-100 transition-colors duration-200 flex-shrink-0 cursor-pointer"
+                className="close-button absolute right-2 top-2 flex justify-center w-8 h-8 items-center rounded-full hover:bg-gray-100 transition-colors duration-200 flex-shrink-0 cursor-pointer"
                 aria-label="모달 닫기"
               >
                 <X className="w-6 h-6 text-[#66798D]" />

@@ -66,26 +66,19 @@ export default function NurseSearchModal({
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent
-        className="nurse-search-modal max-w-[604px] w-[95vw] sm:w-full p-0 rounded-[24px] border-none h-[70vh] max-h-[600px] min-h-[500px]
-                   data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300
-                   data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200
-                   data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95"
+        className="nurse-search-modal max-w-[604px] max-h-[600px] w-[604px] h-[636px] p-0 border-none min-h-[500px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95"
         onPointerDownOutside={e => e.preventDefault()}
         onEscapeKeyDown={onClose}
       >
         <DialogTitle className="sr-only">담당 간호사 선택</DialogTitle>
 
-        <div
-          className="modal-container w-full h-full rounded-[24px] bg-white relative 
-                        font-['Pretendard_Variable',-apple-system,Roboto,Helvetica,sans-serif] 
-                        flex flex-col overflow-hidden shadow-lg"
-        >
+        <div className="modal-container w-full h-full relative font-['Pretendard_Variable',-apple-system,Roboto,Helvetica,sans-serif] flex flex-col overflow-hidden shadow-lg">
           {/* Header Section */}
-          <div className="modal-header flex-shrink-0 px-6 sm:px-8 pt-6 sm:pt-8 pb-3 sm:pb-4">
+          <div className="modal-header relative flex-shrink-0 px-6 sm:px-8 pt-8 sm:pt-12 pb-4 sm:pb-7">
             <div className="flex justify-between items-start gap-4">
-              <div className="flex flex-col gap-2 sm:gap-3 flex-1">
+              <div className="flex flex-col gap-3 sm:gap-5 flex-1">
                 <h2 className="modal-title text-[#161621] text-xl sm:text-2xl font-bold leading-[140%]">
-                  담당 간호사를 선택해주세요
+                  담당 간호사명을 검색해주세요
                 </h2>
                 <p className="modal-subtitle text-[#66798D] text-sm sm:text-base font-normal leading-[22px]">
                   선택된 담당 간호사가 환자 관리를 서포트합니다.
@@ -93,16 +86,15 @@ export default function NurseSearchModal({
               </div>
               <button
                 onClick={onClose}
-                className="close-button flex w-8 h-8 justify-center items-center rounded-full
-                          hover:bg-gray-100 transition-colors duration-200 flex-shrink-0"
+                className="close-button absolute right-2 top-2 flex w-8 h-8 justify-center items-center rounded-full hover:bg-gray-100 transition-colors duration-200 flex-shrink-0 cursor-pointer"
                 aria-label="모달 닫기"
               >
-                <X className="w-5 h-5 text-[#66798D]" />
+                <X className="w-6 h-6 text-[#66798D]" />
               </button>
             </div>
           </div>
 
-          <div className="search-section flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-4">
+          <div className="search-section flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-8">
             <NurseSearch
               searchQuery={searchQuery}
               onSearch={handleSearch}
@@ -113,7 +105,7 @@ export default function NurseSearchModal({
           {searchQuery && (
             <>
               {/* Search Section */}
-              <div className="results-header flex items-center gap-2 flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-4 mt-12">
+              <div className="results-header flex items-center gap-2 flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-4 mt-4">
                 <h3 className="text-[#161621] text-base sm:text-lg font-bold leading-5">
                   검색 결과
                 </h3>
