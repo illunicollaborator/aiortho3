@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
-import { X, Search } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useHospitals } from './hooks';
 import MedicalInstitutionSearch from '../MedicalInstitutionSearch';
 import Pagination from '@/components/Pagination';
@@ -200,8 +200,7 @@ export default function MedicalInstitutionModal({
                     ) : (
                       <div className="w-full flex items-center justify-center py-12">
                         <div className="flex flex-col items-center gap-3 text-center">
-                          <Search className="w-12 h-12 text-gray-300" />
-                          <div className="text-[#66798D] text-sm">검색 결과가 없습니다.</div>
+                          <div className="text-[#66798D] text-sm">검색 결과가 없어요.</div>
                         </div>
                       </div>
                     )}
