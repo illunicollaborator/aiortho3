@@ -39,7 +39,7 @@ const NurseSearch: React.FC<NurseSearchProps> = ({ searchQuery, onSearch, onClea
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="간호사명 검색"
-            className="search-input w-full text-[#161621] text-base font-normal leading-none outline-none"
+            className="search-input w-full text-[#161621] text-base font-normal leading-none outline-none placeholder:text-[#97A8C4]"
           />
           {inputValue && (
             <button

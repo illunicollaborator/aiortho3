@@ -320,7 +320,7 @@ export default function NurseSignUpForm() {
             registration={register('password')}
             error={errors.password?.message}
             rightIcon={
-              showPassword ? (
+              !showPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
               ) : (
                 <Eye size={20} color="#97A8C4" />
@@ -340,7 +340,7 @@ export default function NurseSignUpForm() {
             }
             error={errors.confirmPassword?.message}
             rightIcon={
-              showConfirmPassword ? (
+              !showConfirmPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
               ) : (
                 <Eye size={20} color="#97A8C4" />

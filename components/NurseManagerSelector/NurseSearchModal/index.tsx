@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { X, Search, User } from 'lucide-react';
+import { X } from 'lucide-react';
 import Pagination from '@/components/Pagination';
 import { Nurse } from '@/models';
 import NurseSearch from '../NurseSearch';
 import { useSearchNurses } from '../hooks';
+import { showWarningToast } from '@/components/ui/toast-warning';
 
 interface NurseSearchModalProps {
   isOpen: boolean;
@@ -44,6 +45,16 @@ export default function NurseSearchModal({
   };
 
   const handleSelectNurse = (nurse: Nurse) => {
+    if (isNurseSelected(nurse.adminId)) {
+      showWarningToast(
+        '이미 추가된 담당 간호사',
+        '이미 추가된 간호사에요. 다른 간호사를 추가해주세요.'
+      );
+      onClose();
+
+      return;
+    }
+
     onSelect(nurse);
     onClose();
   };
@@ -66,26 +77,19 @@ export default function NurseSearchModal({
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent
-        className="nurse-search-modal max-w-[604px] w-[95vw] sm:w-full p-0 rounded-[24px] border-none h-[70vh] max-h-[600px] min-h-[500px]
-                   data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300
-                   data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200
-                   data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95"
+        className="nurse-search-modal max-w-[604px] max-h-[600px] w-[604px] h-[636px] p-0 border-none min-h-[500px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95"
         onPointerDownOutside={e => e.preventDefault()}
         onEscapeKeyDown={onClose}
       >
         <DialogTitle className="sr-only">담당 간호사 선택</DialogTitle>
 
-        <div
-          className="modal-container w-full h-full rounded-[24px] bg-white relative 
-                        font-['Pretendard_Variable',-apple-system,Roboto,Helvetica,sans-serif] 
-                        flex flex-col overflow-hidden shadow-lg"
-        >
+        <div className="modal-container w-full h-full relative font-['Pretendard_Variable',-apple-system,Roboto,Helvetica,sans-serif] flex flex-col overflow-hidden shadow-lg">
           {/* Header Section */}
-          <div className="modal-header flex-shrink-0 px-6 sm:px-8 pt-6 sm:pt-8 pb-3 sm:pb-4">
+          <div className="modal-header relative flex-shrink-0 px-6 sm:px-8 pt-8 sm:pt-12 pb-4 sm:pb-7">
             <div className="flex justify-between items-start gap-4">
-              <div className="flex flex-col gap-2 sm:gap-3 flex-1">
+              <div className="flex flex-col gap-3 sm:gap-5 flex-1">
                 <h2 className="modal-title text-[#161621] text-xl sm:text-2xl font-bold leading-[140%]">
-                  담당 간호사를 선택해주세요
+                  담당 간호사명을 검색해주세요
                 </h2>
                 <p className="modal-subtitle text-[#66798D] text-sm sm:text-base font-normal leading-[22px]">
                   선택된 담당 간호사가 환자 관리를 서포트합니다.
@@ -93,16 +97,15 @@ export default function NurseSearchModal({
               </div>
               <button
                 onClick={onClose}
-                className="close-button flex w-8 h-8 justify-center items-center rounded-full
-                          hover:bg-gray-100 transition-colors duration-200 flex-shrink-0"
+                className="close-button absolute right-2 top-2 flex w-8 h-8 justify-center items-center rounded-full hover:bg-gray-100 transition-colors duration-200 flex-shrink-0 cursor-pointer"
                 aria-label="모달 닫기"
               >
-                <X className="w-5 h-5 text-[#66798D]" />
+                <X className="w-6 h-6 text-[#66798D]" />
               </button>
             </div>
           </div>
 
-          <div className="search-section flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-4">
+          <div className="search-section flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-8">
             <NurseSearch
               searchQuery={searchQuery}
               onSearch={handleSearch}
@@ -113,7 +116,7 @@ export default function NurseSearchModal({
           {searchQuery && (
             <>
               {/* Search Section */}
-              <div className="results-header flex items-center gap-2 flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-4 mt-12">
+              <div className="results-header flex items-center gap-2 flex-shrink-0 px-6 sm:px-8 pb-3 sm:pb-4 mt-4">
                 <h3 className="text-[#161621] text-base sm:text-lg font-bold leading-5">
                   검색 결과
                 </h3>
@@ -149,67 +152,47 @@ export default function NurseSearchModal({
                            scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
                 >
                   {nurses.length > 0 ? (
-                    nurses.map((nurse, index) => {
-                      const isSelected = isNurseSelected(nurse.adminId);
-                      return (
-                        <div
-                          key={nurse.name}
-                          className={`nurse-row flex flex-col items-start w-full 
-                                transition-colors duration-150 ${
-                                  isSelected
-                                    ? 'bg-blue-100 hover:bg-blue-100 cursor-not-allowed'
-                                    : 'hover:bg-blue-50 active:bg-blue-100 cursor-pointer'
-                                }`}
-                          onClick={() => !isSelected && handleSelectNurse(nurse)}
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={e => {
-                            if ((e.key === 'Enter' || e.key === ' ') && !isSelected) {
-                              e.preventDefault();
-                              handleSelectNurse(nurse);
-                            }
-                          }}
-                        >
-                          <div className="flex h-[68px] items-center w-full">
-                            <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
-                              <div
-                                className={`w-full overflow-hidden text-ellipsis whitespace-nowrap 
-                                         text-sm font-normal ${
-                                           isSelected
-                                             ? 'text-[#0054A6] font-medium'
-                                             : 'text-[#161621] opacity-80'
-                                         }`}
-                                title={nurse.name}
-                              >
-                                {nurse.name}
-                                {isSelected && <span className="ml-2 text-xs">(선택됨)</span>}
-                              </div>
-                            </div>
-                            <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
-                              <div
-                                className={`w-full overflow-hidden text-ellipsis whitespace-nowrap 
-                                         text-sm font-normal ${
-                                           isSelected
-                                             ? 'text-[#0054A6]'
-                                             : 'text-[#161621] opacity-80'
-                                         }`}
-                                title={nurse.phoneNumber}
-                              >
-                                {nurse.phoneNumber}
-                              </div>
+                    nurses.map((nurse, index) => (
+                      <div
+                        key={nurse.name}
+                        className="nurse-row flex flex-col items-start w-full transition-colors duration-150 hover:bg-blue-50 active:bg-blue-100 cursor-pointer"
+                        onClick={() => handleSelectNurse(nurse)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleSelectNurse(nurse);
+                          }
+                        }}
+                      >
+                        <div className="flex h-[68px] items-center w-full">
+                          <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
+                            <div
+                              className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal text-[#161621]"
+                              title={nurse.name}
+                            >
+                              {nurse.name}
                             </div>
                           </div>
-                          {index < nurses.length - 1 && (
-                            <div className="divider w-full h-[1px] bg-[#8395AC] opacity-20"></div>
-                          )}
+                          <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
+                            <div
+                              className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal text-[#161621]"
+                              title={nurse.phoneNumber}
+                            >
+                              {nurse.phoneNumber}
+                            </div>
+                          </div>
                         </div>
-                      );
-                    })
+                        {index < nurses.length - 1 && (
+                          <div className="divider w-full h-[1px] bg-[#8395AC] opacity-20"></div>
+                        )}
+                      </div>
+                    ))
                   ) : (
-                    <div className="flex-1 flex items-center justify-center py-12 w-full">
+                    <div className="flex items-center justify-center py-12 w-full">
                       <div className="flex flex-col items-center gap-3 text-center">
-                        <User className="w-12 h-12 text-gray-300" />
-                        <div className="text-[#66798D] text-sm">검색 결과가 없습니다.</div>
+                        <div className="text-[#66798D] text-sm">검색 결과가 없어요.</div>
                       </div>
                     </div>
                   )}
@@ -217,10 +200,7 @@ export default function NurseSearchModal({
               </div>
 
               {/* Pagination Section - Always visible at bottom */}
-              <div
-                className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 px-6 sm:px-8 
-                         border-t border-gray-100 bg-white"
-              >
+              <div className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 px-6 sm:px-8 bg-white">
                 {counts > 1 ? (
                   <Pagination
                     currentPage={currentPage}

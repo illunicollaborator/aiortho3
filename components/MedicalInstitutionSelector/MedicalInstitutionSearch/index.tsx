@@ -42,8 +42,8 @@ const MedicalInstitutionSearch: React.FC<MedicalInstitutionSearchProps> = ({
             value={inputValue}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
-            placeholder="의료 기관명을 입력하세요"
-            className="search-input w-full text-[#161621] text-base font-normal leading-none outline-none"
+            placeholder="의료 기관명 검색"
+            className="search-input w-full text-[#161621] text-base font-normal leading-none outline-none placeholder:text-[#97A8C4]"
           />
           {inputValue && (
             <button

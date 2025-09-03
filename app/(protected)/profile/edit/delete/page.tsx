@@ -129,7 +129,7 @@ export default function ProfileDeletePage() {
           registration={register('password')}
           error={errors.password?.message}
           rightIcon={
-            showPassword ? (
+            !showPassword ? (
               <EyeOff size={24} className="text-[var(--aiortho-gray-400)]" />
             ) : (
               <Eye size={24} className="text-[var(--aiortho-gray-400)]" />

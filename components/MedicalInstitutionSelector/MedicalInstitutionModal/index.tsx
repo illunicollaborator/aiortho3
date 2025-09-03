@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
-import { X, Search } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useHospitals } from './hooks';
 import MedicalInstitutionSearch from '../MedicalInstitutionSearch';
 import Pagination from '@/components/Pagination';
@@ -61,7 +61,7 @@ export default function MedicalInstitutionModal({
   return (
     <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
       <DialogContent
-        className="medical-institution-modal max-w-[604px] w-[95vw] sm:w-full p-0 rounded-[24px] border-none max-h-[90vh] 
+        className="medical-institution-modal max-w-[604px] max-h-[636px] w-[604px] h-[636px] sm:w-full p-0 border-none 
                    data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300
                    data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200
                    data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95"
@@ -71,32 +71,31 @@ export default function MedicalInstitutionModal({
         <DialogTitle className="sr-only">의료 기관 선택</DialogTitle>
         <DialogDescription className="sr-only">의료 기관 선택 모달</DialogDescription>
 
-        <div className="modal-container w-full max-h-[636px] rounded-[24px] bg-white relative flex flex-col overflow-hidden shadow-lg">
+        <div className="modal-container flex-1 relative flex flex-col overflow-hidden shadow-lg">
           {/* Header Section */}
-          <div className="modal-header flex-shrink-0 px-6 sm:px-8 pt-8 sm:pt-12 pb-4 sm:pb-6">
+          <div className="modal-header relative flex-shrink-0 px-6 sm:px-8 pt-8 sm:pt-12 pb-4 sm:pb-8">
             <div className="flex justify-between items-start gap-4">
               <div className="flex flex-col gap-3 sm:gap-5 flex-1">
                 <h2 className="modal-title text-[#161621] text-xl sm:text-2xl font-bold leading-[140%]">
-                  의료 기관명을 선택해주세요
+                  의료 기관명을 검색해주세요
                 </h2>
                 <p className="modal-subtitle text-[#66798D] text-sm sm:text-base font-normal leading-[22px]">
-                  {`검색 결과가 없을 경우 '기타'를 선택해주세요.`}
+                  {`검색 결과가 없을 경우, 고객센터(02-000-000)로 문의 바랍니다.`}
                 </p>
               </div>
               <button
                 type="button"
                 onClick={onClose}
-                className="close-button flex w-8 h-8 justify-center items-center rounded-full
-                          hover:bg-gray-100 transition-colors duration-200 flex-shrink-0"
+                className="close-button absolute right-2 top-2 flex justify-center w-8 h-8 items-center rounded-full hover:bg-gray-100 transition-colors duration-200 flex-shrink-0 cursor-pointer"
                 aria-label="모달 닫기"
               >
-                <X className="w-5 h-5 text-[#66798D]" />
+                <X className="w-6 h-6 text-[#66798D]" />
               </button>
             </div>
           </div>
 
           {/* Search Section */}
-          <div className="search-section flex-shrink-0 px-6 sm:px-8 pb-4 sm:pb-6">
+          <div className="search-section flex-shrink-0 px-4 sm:px-8 pb-4 sm:pb-8">
             <div className="flex flex-col gap-4 sm:gap-6">
               <MedicalInstitutionSearch
                 searchQuery={searchQuery}
@@ -106,11 +105,11 @@ export default function MedicalInstitutionModal({
             </div>
           </div>
 
-          <div className="flex flex-col px-6 sm:px-8 pb-8 sm:pb-6 mt-8">
+          <div className="flex flex-col w-full h-full px-4 sm:px-8 mt-4">
             {!searchQuery ? (
               <div className="flex flex-col gap-4 min-h-[150px]">
                 <span className="font-bold text-xl text-[var(--aiortho-primary)]">Tip</span>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1">
                   <p className="font-semibold text-sm text-[var(--aiortho-gray-900)]">
                     의료 기관명 or 소재지
                   </p>
@@ -200,8 +199,7 @@ export default function MedicalInstitutionModal({
                     ) : (
                       <div className="w-full flex items-center justify-center py-12">
                         <div className="flex flex-col items-center gap-3 text-center">
-                          <Search className="w-12 h-12 text-gray-300" />
-                          <div className="text-[#66798D] text-sm">검색 결과가 없습니다.</div>
+                          <div className="text-[#66798D] text-sm">검색 결과가 없어요.</div>
                         </div>
                       </div>
                     )}
@@ -209,15 +207,17 @@ export default function MedicalInstitutionModal({
                 </div>
 
                 {/* Pagination Section */}
-                {counts > 1 && (
-                  <div className="flex pt-4">
+                <div className="pagination-section flex-shrink-0 flex justify-start py-3 sm:py-4 bg-white">
+                  {counts > 1 ? (
                     <Pagination
                       currentPage={currentPage}
                       totalPages={Math.ceil(counts / ITEMS_PER_PAGE)}
                       onPageChange={handlePageChange}
                     />
-                  </div>
-                )}
+                  ) : (
+                    <div className="h-8"></div>
+                  )}
+                </div>
               </>
             )}
           </div>

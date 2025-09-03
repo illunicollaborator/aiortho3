@@ -429,7 +429,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             registration={register('password')}
             error={errors.password?.message}
             rightIcon={
-              showPassword ? (
+              !showPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
               ) : (
                 <Eye size={20} color="#97A8C4" />
@@ -449,7 +449,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             }
             error={errors.confirmPassword?.message}
             rightIcon={
-              showConfirmPassword ? (
+              !showConfirmPassword ? (
                 <EyeOff size={20} color="#97A8C4" />
               ) : (
                 <Eye size={20} color="#97A8C4" />

@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
 import { toast } from 'sonner';
-import ToastNotification from './toast-notification';
 
 interface ToastWarningProps {
   title: string;
