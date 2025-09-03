@@ -5,6 +5,7 @@ import Pagination from '@/components/Pagination';
 import { Nurse } from '@/models';
 import NurseSearch from '../NurseSearch';
 import { useSearchNurses } from '../hooks';
+import { showWarningToast } from '@/components/ui/toast-warning';
 
 interface NurseSearchModalProps {
   isOpen: boolean;
@@ -44,6 +45,16 @@ export default function NurseSearchModal({
   };
 
   const handleSelectNurse = (nurse: Nurse) => {
+    if (isNurseSelected(nurse.adminId)) {
+      showWarningToast(
+        '이미 추가된 담당 간호사',
+        '이미 추가된 간호사에요. 다른 간호사를 추가해주세요.'
+      );
+      onClose();
+
+      return;
+    }
+
     onSelect(nurse);
     onClose();
   };
@@ -141,62 +152,43 @@ export default function NurseSearchModal({
                            scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
                 >
                   {nurses.length > 0 ? (
-                    nurses.map((nurse, index) => {
-                      const isSelected = isNurseSelected(nurse.adminId);
-                      return (
-                        <div
-                          key={nurse.name}
-                          className={`nurse-row flex flex-col items-start w-full 
-                                transition-colors duration-150 ${
-                                  isSelected
-                                    ? 'bg-blue-100 hover:bg-blue-100 cursor-not-allowed'
-                                    : 'hover:bg-blue-50 active:bg-blue-100 cursor-pointer'
-                                }`}
-                          onClick={() => !isSelected && handleSelectNurse(nurse)}
-                          role="button"
-                          tabIndex={0}
-                          onKeyDown={e => {
-                            if ((e.key === 'Enter' || e.key === ' ') && !isSelected) {
-                              e.preventDefault();
-                              handleSelectNurse(nurse);
-                            }
-                          }}
-                        >
-                          <div className="flex h-[68px] items-center w-full">
-                            <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
-                              <div
-                                className={`w-full overflow-hidden text-ellipsis whitespace-nowrap 
-                                         text-sm font-normal ${
-                                           isSelected
-                                             ? 'text-[#0054A6] font-medium'
-                                             : 'text-[#161621] opacity-80'
-                                         }`}
-                                title={nurse.name}
-                              >
-                                {nurse.name}
-                                {isSelected && <span className="ml-2 text-xs">(선택됨)</span>}
-                              </div>
-                            </div>
-                            <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
-                              <div
-                                className={`w-full overflow-hidden text-ellipsis whitespace-nowrap 
-                                         text-sm font-normal ${
-                                           isSelected
-                                             ? 'text-[#0054A6]'
-                                             : 'text-[#161621] opacity-80'
-                                         }`}
-                                title={nurse.phoneNumber}
-                              >
-                                {nurse.phoneNumber}
-                              </div>
+                    nurses.map((nurse, index) => (
+                      <div
+                        key={nurse.name}
+                        className="nurse-row flex flex-col items-start w-full transition-colors duration-150 hover:bg-blue-50 active:bg-blue-100 cursor-pointer"
+                        onClick={() => handleSelectNurse(nurse)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={e => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            handleSelectNurse(nurse);
+                          }
+                        }}
+                      >
+                        <div className="flex h-[68px] items-center w-full">
+                          <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
+                            <div
+                              className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal text-[#161621]"
+                              title={nurse.name}
+                            >
+                              {nurse.name}
                             </div>
                           </div>
-                          {index < nurses.length - 1 && (
-                            <div className="divider w-full h-[1px] bg-[#8395AC] opacity-20"></div>
-                          )}
+                          <div className="flex w-1/2 h-[68px] px-4 py-2.5 items-center gap-2.5">
+                            <div
+                              className="w-full overflow-hidden text-ellipsis whitespace-nowrap text-sm font-normal text-[#161621]"
+                              title={nurse.phoneNumber}
+                            >
+                              {nurse.phoneNumber}
+                            </div>
+                          </div>
                         </div>
-                      );
-                    })
+                        {index < nurses.length - 1 && (
+                          <div className="divider w-full h-[1px] bg-[#8395AC] opacity-20"></div>
+                        )}
+                      </div>
+                    ))
                   ) : (
                     <div className="flex items-center justify-center py-12 w-full">
                       <div className="flex flex-col items-center gap-3 text-center">
