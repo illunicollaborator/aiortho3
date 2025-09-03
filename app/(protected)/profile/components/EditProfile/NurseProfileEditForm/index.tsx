@@ -345,7 +345,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
 
       <OrthoInput
         label="휴대폰 번호"
-        placeholder="휴대폰 번호을 입력해주세요"
+        placeholder="휴대폰 번호를 입력해주세요"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
         isDirty={dirtyFields.phoneNumber}

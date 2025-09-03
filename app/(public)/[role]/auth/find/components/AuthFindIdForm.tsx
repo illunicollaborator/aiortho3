@@ -80,7 +80,7 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
 
       <OrthoInput
         label="휴대폰 번호"
-        placeholder="휴대폰 번호을 입력해주세요 (01012345678)"
+        placeholder="휴대폰 번호를 입력해주세요 (01012345678)"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
       />
