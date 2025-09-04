@@ -274,7 +274,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
         shouldDirty: true,
         shouldTouch: true,
       });
-      setSelectedSpecialtiesName('');
+      setSelectedSpecialtiesName('선택 안함');
     } else {
       setValue('specialties', department?.code ?? '', {
         shouldValidate: true,
