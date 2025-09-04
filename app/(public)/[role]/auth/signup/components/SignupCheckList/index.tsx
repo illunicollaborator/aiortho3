@@ -82,7 +82,7 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
       </div>
 
       {/* Terms List */}
-      <div className="border-t pt-4 space-y-4">
+      <div className="border-t border-[var(--aiortho-gray-100)] pt-4 space-y-4">
         {termsData.map(item => {
           const isChecked = checkedItems.includes(item.id);
           return (
