@@ -399,8 +399,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           <OrthoInput label="의사 가입 코드" registration={register('signupCode')} disabled />
 
           <OrthoInput
-            label="아이디 (이메일)"
-            placeholder="아이디 (이메일)를 입력해주세요"
+            label="아이디(이메일)"
+            placeholder="아이디(이메일)를 입력해주세요"
             registration={register('email')}
             apiResponse={emailCheckStatus !== null ? !emailCheckStatus : undefined}
             apiResponseMessage={
