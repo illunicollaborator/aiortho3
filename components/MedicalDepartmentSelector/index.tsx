@@ -55,6 +55,8 @@ export default function MedicalDepartmentSelector({
           error={error}
           required={required}
           isDirty={isDirty}
+          className="bg-white border-[var(--aiortho-gray-200)] cursor-pointer text-[color:var(--aiortho-gray-900)] hover:border-[var(--aiortho-primary)]"
+          readOnly
         />
       </div>
 
