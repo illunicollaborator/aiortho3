@@ -413,6 +413,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
               <Button
                 type="button"
                 variant="input"
+                size="inputConfirm"
                 onClick={() => handleEmailCheck(email)}
                 disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
@@ -440,7 +441,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           />
 
           <OrthoInput
-            label="비밀번호 확인"
+            label="비밀번호 재입력"
             placeholder="비밀번호를 다시 입력하세요"
             type={showConfirmPassword ? 'text' : 'password'}
             registration={register('confirmPassword')}
@@ -468,8 +469,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           />
 
           <OrthoInput
-            label="의료 면허 번호"
-            placeholder="의료 면허 번호을 입력해주세요"
+            label="의사 면허 번호"
+            placeholder="의사 면허 번호을 입력해주세요"
             registration={register('medicalLicense')}
             error={errors.medicalLicense?.message}
             apiResponse={
@@ -483,6 +484,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 type="button"
                 onClick={() => handleMedicalLicenseCheck()}
                 variant="input"
+                size="inputConfirm"
                 disabled={
                   medicalLicenseCheckStatus === true ||
                   Boolean(errors.medicalLicense) ||
@@ -553,8 +555,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
               <div className="flex items-center gap-2 md:gap-5 py-2">
                 <Button
                   type="button"
-                  onClick={handlePhoneNumberCheck}
-                  className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/80 disabled:bg-[var(--aiortho-gray-100)] disabled:text-[var(--aiortho-gray-400)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
+                  variant="input"
+                  size="inputCertify"
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
@@ -562,6 +564,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                     !phoneNumber ||
                     isActive
                   }
+                  onClick={handlePhoneNumberCheck}
                 >
                   인증번호 전송
                 </Button>
@@ -594,6 +597,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 <Button
                   type="button"
                   variant="input"
+                  size="inputConfirm"
                   onClick={handleCertificationNumberCheck}
                   disabled={!certSent || !isActive}
                 >

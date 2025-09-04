@@ -304,6 +304,7 @@ export default function NurseSignUpForm() {
               <Button
                 type="button"
                 variant="input"
+                size="inputConfirm"
                 onClick={() => handleEmailCheck(email)}
                 disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
@@ -331,7 +332,7 @@ export default function NurseSignUpForm() {
           />
 
           <OrthoInput
-            label="비밀번호 확인"
+            label="비밀번호 재입력"
             placeholder="비밀번호를 다시 입력하세요"
             type={showConfirmPassword ? 'text' : 'password'}
             registration={register('confirmPassword')}
@@ -382,6 +383,7 @@ export default function NurseSignUpForm() {
                   type="button"
                   onClick={handlePhoneNumberCheck}
                   variant="input"
+                  size="inputCertify"
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
@@ -423,6 +425,7 @@ export default function NurseSignUpForm() {
                   onClick={handleCertificationNumberCheck}
                   disabled={!certSent || !isActive}
                   variant="input"
+                  size="inputConfirm"
                 >
                   확인
                 </Button>
