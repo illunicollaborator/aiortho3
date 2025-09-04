@@ -75,13 +75,15 @@ export default function MedicalInstitutionSelector({
 
       {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
 
-      <OrthoInput
-        registration={registration}
-        required={required}
-        value={selectedInstitutionName ?? selectedInstitution?.name ?? ''}
-        placeholder="선택된 의료기관이 없습니다"
-        disabled
-      />
+      {selectedInstitutionName && (
+        <OrthoInput
+          registration={registration}
+          required={required}
+          value={selectedInstitutionName ?? selectedInstitution?.name ?? ''}
+          placeholder="선택된 의료기관이 없습니다"
+          disabled
+        />
+      )}
 
       <MedicalInstitutionModal
         isOpen={isModalOpen}

@@ -73,13 +73,7 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) =
 
       {/* 선택된 간호사들 표시 */}
       <div className="space-y-2">
-        {selectedNurses.length === 0 ? (
-          <div className="flex h-12 px-4 py-3.5 items-center self-stretch rounded-xl border border-[var(--aiortho-gray-200)] text-[color:var(--aiortho-gray-600)] bg-[#F0F3FA99] cursor-not-allowed">
-            <span className="text-[var(--aiortho-gray-500)] text-base font-normal">
-              담당 간호사가 없습니다
-            </span>
-          </div>
-        ) : (
+        {selectedNurses.length > 0 &&
           selectedNurses.map(nurse => (
             <div key={nurse.adminId} className="flex items-center gap-2 w-full">
               <div className="flex h-12 px-4 py-3.5 items-center justify-between self-stretch rounded-xl border border-[var(--aiortho-gray-200)] bg-[#F0F3FA]/60 w-full">
@@ -97,8 +91,7 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) =
                 <X className="w-4 h-4 text-[var(--aiortho-gray-600)] cursor-pointer" />
               </button>
             </div>
-          ))
-        )}
+          ))}
       </div>
 
       {isMaxNurses && (
