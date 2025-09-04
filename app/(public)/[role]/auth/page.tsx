@@ -8,9 +8,9 @@ import { z } from 'zod';
 import { Eye, EyeOff } from 'lucide-react';
 import OrthoInput from '@/components/OrthoInput';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useLogin } from './hooks/useLogin';
 import Spinner from '@/components/Spinner';
+import { AutoLoginCheckIcon } from '@/components/Icon';
 
 // Define schema with Zod
 const loginSchema = z.object({
@@ -123,12 +123,11 @@ export default function AuthPage() {
 
           <div className="flex justify-between items-center w-full ">
             <div className="flex items-center gap-2">
-              <Checkbox
-                className="w-4 h-4 border-gray-400 bg-white data-[state=checked]:bg-[#0054A6] data-[state=checked]:border-[#0054A6] data-[state=checked]:text-white"
-                checked={isChecked}
-                onCheckedChange={e => setIsChecked(!isChecked)}
-              />
-              <p className="font-medium text-sm text-[color:var(--aiortho-gray-700))]">
+              <AutoLoginCheckIcon isChecked={isChecked} onClick={() => setIsChecked(!isChecked)} />
+              <p
+                className="font-medium text-sm text-[color:var(--aiortho-gray-700))] cursor-pointer"
+                onClick={() => setIsChecked(!isChecked)}
+              >
                 자동 로그인
               </p>
             </div>

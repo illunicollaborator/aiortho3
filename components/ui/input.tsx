@@ -13,6 +13,7 @@ function Input({ className, type, ...props }: React.ComponentProps<'input'>) {
         'focus:border-[color:var(--aiortho-primary)] focus:ring-1 focus:ring-[color:var(--aiortho-primary)]',
         className
       )}
+      autoComplete="off"
       {...props}
     />
   );
