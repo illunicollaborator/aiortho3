@@ -395,7 +395,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             회원가입을 위해 아래 항목들을 입력해주세요.
           </p>
         </div>
-        <form className="space-y-10 mt-8" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-12 mt-8" onSubmit={handleSubmit(onSubmit)}>
           <OrthoInput label="의사 가입 코드" registration={register('signupCode')} readOnly />
 
           <OrthoInput
@@ -612,7 +612,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
 
           <Button
             type="submit"
-            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 md:mb-16 rounded-full cursor-pointer"
             disabled={!isValid || isSubmitting}
           >
             회원가입

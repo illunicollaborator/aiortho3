@@ -72,7 +72,7 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
   }, [checkedItems]);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4">
       {/* Select All */}
       <div className="flex items-center gap-2 cursor-pointer" onClick={toggleAll}>
         {renderCheckBox(isAllChecked)}
