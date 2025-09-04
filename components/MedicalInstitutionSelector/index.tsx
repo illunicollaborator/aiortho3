@@ -65,7 +65,7 @@ export default function MedicalInstitutionSelector({
         type="button"
         onClick={handleOpenModal}
         className={cn(
-          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl bg-white border border-[#DADFE9] cursor-pointer hover:border-[var(--aiortho-primary)] transition-colors mb-3',
+          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl bg-white border border-[#DADFE9] cursor-pointer hover:border-[var(--aiortho-primary)] hover:ring-1 hover:ring-[var(--aiortho-primary)] transition-colors mb-2',
           error && 'border-2 border-[color:var(--aiortho-danger)]'
         )}
       >
@@ -76,14 +76,11 @@ export default function MedicalInstitutionSelector({
       {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
 
       <OrthoInput
-        className={
-          'flex w-full h-12 px-3 py-1 items-center self-stretch rounded-xl border disabled:bg-[#F0F3FA99] disabled:border-[#DADFE9] disabled:text-[var(--aiortho-gray-600)]'
-        }
         registration={registration}
         required={required}
         value={selectedInstitutionName ?? selectedInstitution?.name ?? ''}
         placeholder="선택된 의료기관이 없습니다"
-        readOnly
+        disabled
       />
 
       <MedicalInstitutionModal
