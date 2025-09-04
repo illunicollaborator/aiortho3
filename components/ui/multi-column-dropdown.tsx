@@ -76,28 +76,20 @@ export default function MultiColumnDropdown({
   return (
     <div
       ref={dropdownRef}
-      className={`scrollable absolute z-50 bg-white border border-gray-200 rounded-md overflow-hidden ${width} ${className} shadow-[0_0_30px_0_#9FABC44D]`}
-      style={{
-        height,
-        maxHeight,
-        overflowY: 'auto',
-        ...containerStyle,
-      }}
+      className={`scrollable absolute z-50 bg-white border border-gray-200 rounded-xl overflow-y-scroll ${width} ${className} shadow-[0_0_30px_0_#9FABC44D] max-h-[292px] p-2`}
     >
-      <div className="p-2">
-        {toMatrix(items, columns).map((row, rowIndex) => (
-          <div key={rowIndex} className={`grid ${gridClass} gap-1 mb-1`}>
-            {row.map(item => (
-              <button
-                key={item.code}
-                className="px-2 py-3 text-sm font-bold text-center text-[#343A47] hover:bg-[#F3F5FB] rounded-md focus:outline-none focus:bg-[#F3F5FB]"
-                onClick={() => handleSelect(item)}
-              >
-                {item.name}
-              </button>
-            ))}
-          </div>
-        ))}
+      <div className={`grid ${gridClass} gap-1`}>
+        {toMatrix(items, columns).map(row =>
+          row.map(item => (
+            <button
+              key={item.code}
+              className="px-3 h-12 text-sm font-bold text-center text-[#343A47] hover:bg-[#F3F5FB] rounded-[10px] focus:outline-none focus:bg-[#F3F5FB] cursor-pointer whitespace-nowrap overflow-hidden text-ellipsis"
+              onClick={() => handleSelect(item)}
+            >
+              {item.name}
+            </button>
+          ))
+        )}
       </div>
     </div>
   );
