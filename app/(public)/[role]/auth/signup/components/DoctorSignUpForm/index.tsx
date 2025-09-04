@@ -605,10 +605,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             required
           />
 
-          <SignupCheckList
-            error={errors.requiredTermsAgreed?.message}
-            onRequiredTermsChange={handleRequiredTermsChange}
-          />
+          <SignupCheckList onRequiredTermsChange={handleRequiredTermsChange} />
 
           <Button
             type="submit"

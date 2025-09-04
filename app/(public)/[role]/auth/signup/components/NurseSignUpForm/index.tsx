@@ -432,10 +432,7 @@ export default function NurseSignUpForm() {
             required
           />
 
-          <SignupCheckList
-            error={errors.requiredTermsAgreed?.message}
-            onRequiredTermsChange={handleRequiredTermsChange}
-          />
+          <SignupCheckList onRequiredTermsChange={handleRequiredTermsChange} />
 
           <Button
             type="submit"

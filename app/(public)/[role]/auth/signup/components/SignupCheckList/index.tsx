@@ -26,11 +26,10 @@ const termsData = [
 ];
 
 interface SignupCheckListProps {
-  error?: string;
   onRequiredTermsChange?: (isValid: boolean) => void;
 }
 
-export default function SignupCheckList({ error, onRequiredTermsChange }: SignupCheckListProps) {
+export default function SignupCheckList({ onRequiredTermsChange }: SignupCheckListProps) {
   const [checkedItems, setCheckedItems] = useState<number[]>(termsData.map(t => t.id));
 
   const { isRequiredTermsValid } = useMemo(() => {
@@ -113,7 +112,6 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
           );
         })}
       </div>
-      {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
     </div>
   );
 }
