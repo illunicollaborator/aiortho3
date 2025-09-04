@@ -412,8 +412,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             rightIcon={
               <Button
                 type="button"
+                variant="input"
                 onClick={() => handleEmailCheck(email)}
-                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/80 disabled:bg-[var(--aiortho-gray-100)] disabled:text-[var(--aiortho-gray-400)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
                 disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
                 중복확인
@@ -482,7 +482,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
               <Button
                 type="button"
                 onClick={() => handleMedicalLicenseCheck()}
-                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+                variant="input"
                 disabled={
                   medicalLicenseCheckStatus === true ||
                   Boolean(errors.medicalLicense) ||
@@ -593,9 +593,9 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 )}
                 <Button
                   type="button"
+                  variant="input"
                   onClick={handleCertificationNumberCheck}
                   disabled={!certSent || !isActive}
-                  className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/80 disabled:bg-[var(--aiortho-gray-100)] disabled:text-[var(--aiortho-gray-400)] rounded-md h-8 font-normal text-[13px] cursor-pointer"
                 >
                   확인
                 </Button>

@@ -303,8 +303,8 @@ export default function NurseSignUpForm() {
             rightIcon={
               <Button
                 type="button"
+                variant="input"
                 onClick={() => handleEmailCheck(email)}
-                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
                 disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
                 중복확인
@@ -381,7 +381,7 @@ export default function NurseSignUpForm() {
                 <Button
                   type="button"
                   onClick={handlePhoneNumberCheck}
-                  className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+                  variant="input"
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
@@ -422,7 +422,7 @@ export default function NurseSignUpForm() {
                   type="button"
                   onClick={handleCertificationNumberCheck}
                   disabled={!certSent || !isActive}
-                  className={`text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer`}
+                  variant="input"
                 >
                   확인
                 </Button>
