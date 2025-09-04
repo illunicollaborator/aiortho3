@@ -425,7 +425,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
 
           <OrthoInput
             label="비밀번호"
-            placeholder="비밀번호를 입력하세요"
+            placeholder="8~16자리 영문/숫자/특수문자 조합"
             type={showPassword ? 'text' : 'password'}
             registration={register('password')}
             error={errors.password?.message}
@@ -442,7 +442,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
 
           <OrthoInput
             label="비밀번호 재입력"
-            placeholder="비밀번호를 다시 입력하세요"
+            placeholder="비밀번호를 재입력해주세요"
             type={showConfirmPassword ? 'text' : 'password'}
             registration={register('confirmPassword')}
             apiResponseMessage={
