@@ -60,7 +60,7 @@ const schema = z
     nurseIds: z
       .array(z.string())
       .refine(val => !val || val.length <= 10, {
-        message: '담당 간호사는 최대 10명까지 선택할 수 있습니다.',
+        message: '담당 간호사는 최대 10명까지만 등록 가능합니다',
       })
       .optional(),
     phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
@@ -274,7 +274,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
         shouldDirty: true,
         shouldTouch: true,
       });
-      setSelectedSpecialtiesName('');
+      setSelectedSpecialtiesName('선택 안함');
     } else {
       setValue('specialties', department?.code ?? '', {
         shouldValidate: true,
@@ -395,12 +395,12 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             회원가입을 위해 아래 항목들을 입력해주세요.
           </p>
         </div>
-        <form className="space-y-10 mt-8" onSubmit={handleSubmit(onSubmit)}>
-          <OrthoInput label="의사 가입 코드" registration={register('signupCode')} readOnly />
+        <form className="space-y-12 mt-8" onSubmit={handleSubmit(onSubmit)}>
+          <OrthoInput label="의사 가입 코드" registration={register('signupCode')} disabled />
 
           <OrthoInput
-            label="아이디 (이메일)"
-            placeholder="아이디 (이메일)를 입력해주세요"
+            label="아이디(이메일)"
+            placeholder="아이디(이메일)를 입력해주세요"
             registration={register('email')}
             apiResponse={emailCheckStatus !== null ? !emailCheckStatus : undefined}
             apiResponseMessage={
@@ -412,8 +412,9 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             rightIcon={
               <Button
                 type="button"
+                variant="input"
+                size="inputConfirm"
                 onClick={() => handleEmailCheck(email)}
-                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
                 disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
                 중복확인
@@ -424,7 +425,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
 
           <OrthoInput
             label="비밀번호"
-            placeholder="비밀번호를 입력하세요"
+            placeholder="8~16자리 영문/숫자/특수문자 조합"
             type={showPassword ? 'text' : 'password'}
             registration={register('password')}
             error={errors.password?.message}
@@ -440,8 +441,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           />
 
           <OrthoInput
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 입력하세요"
+            label="비밀번호 재입력"
+            placeholder="비밀번호를 재입력해주세요"
             type={showConfirmPassword ? 'text' : 'password'}
             registration={register('confirmPassword')}
             apiResponseMessage={
@@ -468,8 +469,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           />
 
           <OrthoInput
-            label="의료 면허 번호"
-            placeholder="의료 면허 번호을 입력해주세요"
+            label="의사 면허 번호"
+            placeholder="의사 면허 번호을 입력해주세요"
             registration={register('medicalLicense')}
             error={errors.medicalLicense?.message}
             apiResponse={
@@ -482,7 +483,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
               <Button
                 type="button"
                 onClick={() => handleMedicalLicenseCheck()}
-                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+                variant="input"
+                size="inputConfirm"
                 disabled={
                   medicalLicenseCheckStatus === true ||
                   Boolean(errors.medicalLicense) ||
@@ -553,8 +555,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
               <div className="flex items-center gap-2 md:gap-5 py-2">
                 <Button
                   type="button"
-                  onClick={handlePhoneNumberCheck}
-                  className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+                  variant="input"
+                  size="inputCertify"
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
@@ -562,6 +564,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                     !phoneNumber ||
                     isActive
                   }
+                  onClick={handlePhoneNumberCheck}
                 >
                   인증번호 전송
                 </Button>
@@ -593,9 +596,10 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 )}
                 <Button
                   type="button"
+                  variant="input"
+                  size="inputConfirm"
                   onClick={handleCertificationNumberCheck}
                   disabled={!certSent || !isActive}
-                  className={`text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer`}
                 >
                   확인
                 </Button>
@@ -605,14 +609,11 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             required
           />
 
-          <SignupCheckList
-            error={errors.requiredTermsAgreed?.message}
-            onRequiredTermsChange={handleRequiredTermsChange}
-          />
+          <SignupCheckList onRequiredTermsChange={handleRequiredTermsChange} />
 
           <Button
             type="submit"
-            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 mt-4 md:mb-16 rounded-full cursor-pointer"
+            className="w-full bg-[color:var(--aiortho-primary)] hover:bg-[color:var(--aiortho-primary)] text-white py-5 md:mb-16 rounded-full cursor-pointer"
             disabled={!isValid || isSubmitting}
           >
             회원가입

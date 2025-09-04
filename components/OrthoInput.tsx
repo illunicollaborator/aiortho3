@@ -84,8 +84,7 @@ const OrthoInput: FC<OrthoInputProps> = ({
               hasValue &&
               !error &&
               'border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]',
-            readOnly &&
-              'bg-[#F0F3FA99] border-[#DADFE9] cursor-not-allowed text-[color:var(--aiortho-gray-600)]',
+            readOnly && 'border-[#DADFE9] cursor-not-allowed text-[color:var(--aiortho-gray-600)]',
             className
           )}
           {...registration}

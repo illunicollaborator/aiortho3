@@ -290,8 +290,8 @@ export default function NurseSignUpForm() {
         </div>
         <form className="space-y-10 mt-8" onSubmit={handleSubmit(onSubmit)}>
           <OrthoInput
-            label="아이디 (이메일)"
-            placeholder="아이디 (이메일)를 입력해주세요"
+            label="아이디(이메일)"
+            placeholder="아이디(이메일)를 입력해주세요"
             registration={register('email')}
             apiResponse={emailCheckStatus !== null ? !emailCheckStatus : undefined}
             apiResponseMessage={
@@ -303,8 +303,9 @@ export default function NurseSignUpForm() {
             rightIcon={
               <Button
                 type="button"
+                variant="input"
+                size="inputConfirm"
                 onClick={() => handleEmailCheck(email)}
-                className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
                 disabled={emailCheckStatus || Boolean(errors.email) || !email}
               >
                 중복확인
@@ -315,7 +316,7 @@ export default function NurseSignUpForm() {
 
           <OrthoInput
             label="비밀번호"
-            placeholder="비밀번호를 입력하세요"
+            placeholder="8~16자리 영문/숫자/특수문자 조합"
             type={showPassword ? 'text' : 'password'}
             registration={register('password')}
             error={errors.password?.message}
@@ -331,8 +332,8 @@ export default function NurseSignUpForm() {
           />
 
           <OrthoInput
-            label="비밀번호 확인"
-            placeholder="비밀번호를 다시 입력하세요"
+            label="비밀번호 재입력"
+            placeholder="비밀번호를 재입력해주세요"
             type={showConfirmPassword ? 'text' : 'password'}
             registration={register('confirmPassword')}
             apiResponseMessage={
@@ -381,7 +382,8 @@ export default function NurseSignUpForm() {
                 <Button
                   type="button"
                   onClick={handlePhoneNumberCheck}
-                  className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+                  variant="input"
+                  size="inputCertify"
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
@@ -422,7 +424,8 @@ export default function NurseSignUpForm() {
                   type="button"
                   onClick={handleCertificationNumberCheck}
                   disabled={!certSent || !isActive}
-                  className={`text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer`}
+                  variant="input"
+                  size="inputConfirm"
                 >
                   확인
                 </Button>
@@ -432,10 +435,7 @@ export default function NurseSignUpForm() {
             required
           />
 
-          <SignupCheckList
-            error={errors.requiredTermsAgreed?.message}
-            onRequiredTermsChange={handleRequiredTermsChange}
-          />
+          <SignupCheckList onRequiredTermsChange={handleRequiredTermsChange} />
 
           <Button
             type="submit"

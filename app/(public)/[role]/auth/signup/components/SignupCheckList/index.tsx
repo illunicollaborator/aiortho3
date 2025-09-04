@@ -26,12 +26,11 @@ const termsData = [
 ];
 
 interface SignupCheckListProps {
-  error?: string;
   onRequiredTermsChange?: (isValid: boolean) => void;
 }
 
-export default function SignupCheckList({ error, onRequiredTermsChange }: SignupCheckListProps) {
-  const [checkedItems, setCheckedItems] = useState<number[]>(termsData.map(t => t.id));
+export default function SignupCheckList({ onRequiredTermsChange }: SignupCheckListProps) {
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   const { isRequiredTermsValid } = useMemo(() => {
     const requiredTerms = termsData.filter(term => term.required);
@@ -57,7 +56,7 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
 
   const renderCheckBox = (checked: boolean) => (
     <div
-      className={`w-5 h-5 flex items-center justify-center rounded-full border`}
+      className={`w-6 h-6 flex items-center justify-center rounded-full border`}
       style={{
         borderColor: '#DADFE9',
         backgroundColor: checked ? '#0054A6' : '#DADFE9',
@@ -72,7 +71,7 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
   }, [checkedItems]);
 
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4">
       {/* Select All */}
       <div className="flex items-center gap-2 cursor-pointer" onClick={toggleAll}>
         {renderCheckBox(isAllChecked)}
@@ -82,7 +81,7 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
       </div>
 
       {/* Terms List */}
-      <div className="border-t pt-4 space-y-4">
+      <div className="border-t border-[var(--aiortho-gray-100)] pt-4 space-y-4">
         {termsData.map(item => {
           const isChecked = checkedItems.includes(item.id);
           return (
@@ -113,7 +112,6 @@ export default function SignupCheckList({ error, onRequiredTermsChange }: Signup
           );
         })}
       </div>
-      {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
     </div>
   );
 }
