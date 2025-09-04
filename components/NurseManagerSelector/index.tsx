@@ -30,7 +30,7 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) =
       selectedNurse => selectedNurse.adminId === nurse.adminId
     );
 
-    if (!isAlreadySelected) {
+    if (!isAlreadySelected && selectedNurses.length < 10) {
       const updatedNurses = [...selectedNurses, nurse];
       setSelectedNurses(updatedNurses);
 
@@ -49,6 +49,8 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) =
     }
   };
 
+  const isMaxNurses = selectedNurses.length === 10;
+
   return (
     <div className="nurse-manager w-full">
       <div className="flex justify-between items-center mb-2">
@@ -60,9 +62,10 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) =
         type="button"
         onClick={handleOpenModal}
         className={cn(
-          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl border border-[var(--aiortho-gray-200)] cursor-pointer hover:border-[var(--aiortho-primary)] transition-colors mb-3',
+          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl border border-[var(--aiortho-gray-200)] cursor-pointer hover:border-[var(--aiortho-primary)] transition-colors mb-3 disabled:cursor-not-allowed disabled:hover:border-[var(--aiortho-gray-200)] disabled:[&_*]:opacity-40',
           error && 'border-2 border-[color:var(--aiortho-danger)]'
         )}
+        disabled={isMaxNurses}
       >
         <Plus className="w-5 h-5 text-[var(--aiortho-primary)] font-bold" />
         <span className="text-base text-[var(--aiortho-primary)] font-bold">담당 간호사 추가</span>
@@ -98,7 +101,11 @@ const NurseManager: React.FC<NurseManagerProps> = ({ label, error, onChange }) =
         )}
       </div>
 
-      {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mt-2">{error}</p>}
+      {isMaxNurses && (
+        <p className="font-normal text-[var(--aiortho-danger)] text-xs mt-2">
+          담당 간호사는 최대 10명까지만 등록 가능합니다
+        </p>
+      )}
 
       <NurseSearchModal
         isOpen={isModalOpen}

@@ -60,7 +60,7 @@ const schema = z
     nurseIds: z
       .array(z.string())
       .refine(val => !val || val.length <= 10, {
-        message: '담당 간호사는 최대 10명까지 선택할 수 있습니다.',
+        message: '담당 간호사는 최대 10명까지만 등록 가능합니다',
       })
       .optional(),
     phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
