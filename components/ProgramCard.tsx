@@ -250,16 +250,16 @@ export default function ProgramCard({
               </div>
 
               {/* 프로그램 반복 수 */}
-              <div className="mt-12 w-full font-pretendard w-full md:mt-10 p-6">
-                <div className="w-full h-px bg-[#F0F3FA] rounded-[20px] w-full" />
-                <div className="flex mt-6 w-full items-start gap-4 md:gap-[104px] justify-start flex-wrap w-full">
+              <div className="mt-12 w-full font-pretendard md:mt-10 p-6">
+                <div className="w-full h-px bg-[#F0F3FA] rounded-[20px]" />
+                <div className="flex mt-6 w-full items-start gap-4 md:gap-[104px] justify-start flex-wrap ">
                   <div className="min-w-[200px] flex-grow flex-shrink basis-0 max-w-full md:w-[266px]">
                     <div className="min-h-12 w-full">
                       <div className="w-full">
-                        <div className="text-[#161621] leading-tight text-lg font-bold leading-[1.4] md:max-w-full">
+                        <div className="text-[#161621] text-lg font-bold leading-[1.4] md:max-w-full">
                           프로그램 반복 수
                         </div>
-                        <div className="text-[#66798D] leading-tight text-[13px] font-normal leading-none mt-2.5">
+                        <div className="text-[#66798D] text-[13px] font-normal leading-none mt-2.5">
                           최소 3회, 최대 12회까지 설정할 수 있어요
                         </div>
                       </div>
@@ -292,7 +292,7 @@ export default function ProgramCard({
               {/* 생성 완료 버튼 */}
               <div className="mt- w-full font-pretendard md:max-w-full md:mt-10 p-6">
                 <div className="w-full h-px bg-[#F0F3FA] rounded-[20px] md:max-w-full" />
-                <div className="flex mt-6 w-full items-center justify-start w-full">
+                <div className="flex mt-6 w-full items-center justify-start">
                   <div className="flex items-center gap-2 text-sm text-[#66798D] font-normal">
                     <Button
                       variant="ghost"
