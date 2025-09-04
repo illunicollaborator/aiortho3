@@ -30,7 +30,7 @@ interface SignupCheckListProps {
 }
 
 export default function SignupCheckList({ onRequiredTermsChange }: SignupCheckListProps) {
-  const [checkedItems, setCheckedItems] = useState<number[]>(termsData.map(t => t.id));
+  const [checkedItems, setCheckedItems] = useState<number[]>([]);
 
   const { isRequiredTermsValid } = useMemo(() => {
     const requiredTerms = termsData.filter(term => term.required);
@@ -56,7 +56,7 @@ export default function SignupCheckList({ onRequiredTermsChange }: SignupCheckLi
 
   const renderCheckBox = (checked: boolean) => (
     <div
-      className={`w-5 h-5 flex items-center justify-center rounded-full border`}
+      className={`w-6 h-6 flex items-center justify-center rounded-full border`}
       style={{
         borderColor: '#DADFE9',
         backgroundColor: checked ? '#0054A6' : '#DADFE9',
