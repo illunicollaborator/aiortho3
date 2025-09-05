@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import OrthoInput from '@/components/OrthoInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Doctor, Hospital, MedicalDepartment } from '@/models';
+import { Doctor, MedicalDepartmentInfo, HospitalInfo } from '@/models';
 import { Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,7 +32,7 @@ const schema = z
         value => {
           if (!value) return true; // required 체크
           if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value);
+          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
         },
         {
           message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -45,7 +45,7 @@ const schema = z
         value => {
           if (!value) return true; // required 체크
           if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value);
+          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
         },
         {
           message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -58,7 +58,7 @@ const schema = z
         value => {
           if (!value) return true; // required 체크
           if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value);
+          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
         },
         {
           message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -83,9 +83,21 @@ const schema = z
     medicalLicenseCheckStatus: z.boolean().refine(val => val === true, {
       message: '의료 면허 번호를 검증해주세요.',
     }),
-    medicalInstitution: z.string().min(1, { message: '의료 기관명을 선택해주세요' }),
-    medicalDepartment: z.string().min(1, { message: '진료과를 선택해주세요' }),
-    specialties: z.string().optional(),
+    medicalInstitution: z.object({
+      hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+    }),
+    medicalDepartment: z.object({
+      code: z.string().min(1, { message: '진료과를 선택해주세요' }),
+      name: z.string().min(1, { message: '진료과를 선택해주세요' }),
+    }),
+    specialties: z
+      .object({
+        code: z.string(),
+        name: z.string(),
+      })
+      .optional(),
     specialistLicense: z.string().optional(),
     nurseIds: z
       .array(z.string())
@@ -126,7 +138,6 @@ interface DoctorProfileEditFormProps {
 export default function DoctorProfileEditForm({ profile }: DoctorProfileEditFormProps) {
   const router = useRouter();
 
-  // FIXME: 디폴트값 그대로 불러오는 기획 고도화 필요
   const {
     handleSubmit,
     register,
@@ -143,23 +154,30 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
       password: '',
       nextPassword: '',
       nextPasswordConfirm: '',
-      name: '',
-      medicalLicense: '',
-      medicalLicenseCheckStatus: false,
-      medicalInstitution: '',
-      medicalDepartment: '',
-      specialties: '',
-      specialistLicense: '',
-      nurseIds: [],
+      name: profile.name,
+      medicalLicense: profile.licenseNumber,
+      medicalLicenseCheckStatus: true,
+      medicalInstitution: profile.hospitalInfo,
+      medicalDepartment: profile.departmentInfo,
+      specialties: profile.specialityFieldInfo,
+      specialistLicense: profile.specialistLicenseNumber,
+      nurseIds: profile.nurseIds,
       phoneNumber: profile.phoneNumber,
       certificationNumber: '',
-      certificationNumberCheckStatus: false,
+      certificationNumberCheckStatus: true,
     },
   });
+
+  console.log(errors);
+  console.log(isDirty, isValid, dirtyFields);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showNextPassword, setShowNextPassword] = useState(false);
   const [showNextPasswordConfirm, setShowNextPasswordConfirm] = useState(false);
+
+  const medicalInstitution = watch('medicalInstitution');
+  const medicalDepartment = watch('medicalDepartment');
+  const specialties = watch('specialties');
 
   const medicalLicense = watch('medicalLicense');
   const medicalLicenseCheckStatus = watch('medicalLicenseCheckStatus');
@@ -192,9 +210,9 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
       name: data.name,
       licenseNumber: data.medicalLicense,
       phoneNumber: data.phoneNumber,
-      hospitalCode: data.medicalInstitution,
-      departmentCode: data.medicalDepartment,
-      specialtyField: data.specialties,
+      hospitalCode: data.medicalInstitution.hospitalCode,
+      departmentCode: data.medicalDepartment.code,
+      specialtyField: data.specialties?.code,
       specialistLicenseNumber: data.specialistLicense,
       nurseIds: data.nurseIds,
     };
@@ -235,31 +253,69 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
     );
   };
 
-  const handleMedicalInstitutionChange = (institution?: Hospital) => {
-    setValue('medicalInstitution', institution?.hospitalCode ?? '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-  };
-
-  const handleMedicalDepartmentChange = (department?: MedicalDepartment) => {
-    setValue('medicalDepartment', department?.code ?? '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-  };
-
-  const handleSpecialtiesChange = (department?: MedicalDepartment) => {
-    if (department?.name === '선택 안함') {
-      setValue('specialties', '', {
+  const handleMedicalInstitutionChange = (institution?: HospitalInfo) => {
+    if (!institution) {
+      setValue(
+        'medicalInstitution',
+        {
+          hospitalCode: '',
+          name: '',
+          address: '',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
+    } else {
+      setValue('medicalInstitution', institution, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
       });
+    }
+  };
+
+  const handleMedicalDepartmentChange = (department?: MedicalDepartmentInfo) => {
+    if (!department) {
+      setValue(
+        'medicalDepartment',
+        {
+          code: '',
+          name: '',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
     } else {
-      setValue('specialties', department?.code ?? '', {
+      setValue('medicalDepartment', department, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
+  };
+
+  const handleSpecialtiesChange = (department?: MedicalDepartmentInfo) => {
+    if (department?.name === '선택 안함') {
+      setValue(
+        'specialties',
+        {
+          code: '',
+          name: '선택 안함',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
+    } else {
+      setValue('specialties', department, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
@@ -360,7 +416,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         registration={register('signupCode')}
         error={errors.signupCode?.message}
         isDirty={dirtyFields.signupCode}
-        readOnly
+        disabled
       />
 
       <OrthoInput
@@ -368,7 +424,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         registration={register('email')}
         error={errors.email?.message}
         isDirty={dirtyFields.email}
-        readOnly
+        disabled
       />
 
       <OrthoInput
@@ -380,9 +436,9 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         isDirty={dirtyFields.password}
         rightIcon={
           !showPassword ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('current')}
@@ -397,9 +453,9 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         isDirty={dirtyFields.nextPassword}
         rightIcon={
           !showNextPassword ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('next')}
@@ -422,9 +478,9 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         isDirty={dirtyFields.nextPasswordConfirm}
         rightIcon={
           !showNextPasswordConfirm ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('nextConfirm')}
@@ -485,6 +541,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         label="의료 기관명"
         registration={register('medicalInstitution')}
         error={errors.medicalInstitution?.message}
+        institutionInfo={medicalInstitution}
         onChange={handleMedicalInstitutionChange}
         required
       />
@@ -495,7 +552,8 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         items={medicalDepartmentsQuery.data ?? []}
         registration={register('medicalDepartment')}
         error={errors.medicalDepartment?.message}
-        isDirty={dirtyFields.medicalDepartment}
+        medicalDepartmentInfo={medicalDepartment}
+        isDirty={Boolean(dirtyFields.medicalDepartment)}
         onChange={handleMedicalDepartmentChange}
         required
       />
@@ -506,6 +564,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         items={[{ code: 'none', name: '선택 안함' }, ...(medicalDepartmentsQuery.data ?? [])]}
         registration={register('specialties')}
         error={errors.specialties?.message}
+        medicalDepartmentInfo={specialties}
         onChange={handleSpecialtiesChange}
       />
 
