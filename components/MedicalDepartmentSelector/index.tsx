@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MultiColumnDropdown, { ArrayItem } from '@/components/ui/multi-column-dropdown';
 import { ChevronDown } from 'lucide-react';
 import OrthoInput from '@/components/OrthoInput';
-import { MedicalDepartment } from '@/models';
+import { MedicalDepartmentInfo } from '@/models';
 import { UseFormRegisterReturn } from 'react-hook-form';
 
 interface MedicalDepartmentSelectorProps {
@@ -11,10 +11,10 @@ interface MedicalDepartmentSelectorProps {
   registration: UseFormRegisterReturn;
   error?: string;
   items: ArrayItem[];
+  medicalDepartmentInfo?: MedicalDepartmentInfo;
   required?: boolean;
   isDirty?: boolean;
-  selectedDepartmentName?: string;
-  onChange?: (department?: MedicalDepartment) => void;
+  onChange?: (department?: MedicalDepartmentInfo) => void;
 }
 
 export default function MedicalDepartmentSelector({
@@ -23,21 +23,18 @@ export default function MedicalDepartmentSelector({
   items,
   registration,
   error,
+  medicalDepartmentInfo,
   required = false,
   isDirty = false,
-  selectedDepartmentName,
   onChange,
 }: MedicalDepartmentSelectorProps) {
   const [departmentDropDownIsOpen, setDepartmentDropDownIsOpen] = useState(false);
-  const [selectedDepartment, setSelectedDepartment] = useState<MedicalDepartment>();
 
   const toggleDropdown = () => {
     setDepartmentDropDownIsOpen(!departmentDropDownIsOpen);
   };
 
-  const handleSelectDepartment = (department?: MedicalDepartment) => {
-    setSelectedDepartment(department);
-
+  const handleSelectDepartment = (department?: MedicalDepartmentInfo) => {
     if (onChange) {
       onChange(department);
     }
@@ -50,7 +47,7 @@ export default function MedicalDepartmentSelector({
           label={label}
           registration={registration}
           placeholder={placeholder}
-          value={selectedDepartmentName ?? (selectedDepartment?.name || '')}
+          value={medicalDepartmentInfo ? medicalDepartmentInfo.name : ''}
           rightIcon={<ChevronDown size={20} color="#97A8C4" />}
           error={error}
           required={required}

@@ -10,7 +10,7 @@ import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector'
 import SignupCheckList from '../SignupCheckList';
 import { formatTime } from '@/lib/utils';
 import { useTimer } from '@/hooks/useTimer';
-import { Hospital } from '@/models';
+import { HospitalInfo } from '@/models';
 import { useRouter } from 'next/navigation';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { toast } from 'sonner';
@@ -43,7 +43,11 @@ const schema = z
         },
         { message: '자음이나 모음만 사용할 수 없습니다' }
       ),
-    medicalInstitution: z.string().min(1, { message: '의료 기관명을 선택해주세요' }),
+    medicalInstitution: z.object({
+      hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+    }),
     phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
     certificationNumber: z
       .string()
@@ -82,7 +86,11 @@ export default function NurseSignUpForm() {
       password: '',
       confirmPassword: '',
       name: '',
-      medicalInstitution: '',
+      medicalInstitution: {
+        hospitalCode: '',
+        name: '',
+        address: '',
+      },
       phoneNumber: '',
       certificationNumber: '',
       certificationNumberCheckStatus: false,
@@ -98,6 +106,8 @@ export default function NurseSignUpForm() {
   const confirmPassword = watch('confirmPassword');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const medicalInstitution = watch('medicalInstitution');
 
   const phoneNumber = watch('phoneNumber');
   const [prevPhoneNumber, setPrevPhoneNumber] = useState<string>('');
@@ -183,13 +193,28 @@ export default function NurseSignUpForm() {
     );
   };
 
-  const handleMedicalInstitutionChange = (institution?: Hospital) => {
-    setValue('medicalInstitution', institution?.hospitalCode ?? '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-    setSelectedInstitutionName(institution?.name ?? '');
+  const handleMedicalInstitutionChange = (institution?: HospitalInfo) => {
+    if (!institution) {
+      setValue(
+        'medicalInstitution',
+        {
+          hospitalCode: '',
+          name: '',
+          address: '',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
+    } else {
+      setValue('medicalInstitution', institution, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
   };
 
   const handlePhoneNumberCheck = () => {
@@ -263,7 +288,7 @@ export default function NurseSignUpForm() {
       password: data.password,
       name: data.name,
       phoneNumber: data.phoneNumber,
-      hospitalCode: data.medicalInstitution,
+      hospitalCode: data.medicalInstitution.hospitalCode,
     };
 
     nurseSignUpMutation.mutateAsync(payload, {
@@ -364,7 +389,7 @@ export default function NurseSignUpForm() {
             registration={register('medicalInstitution')}
             error={errors.medicalInstitution?.message}
             onChange={handleMedicalInstitutionChange}
-            selectedInstitutionName={selectedInstitutionName}
+            institutionInfo={medicalInstitution}
             required
           />
 

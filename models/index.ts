@@ -46,7 +46,13 @@ export interface Hospital {
   address: string;
 }
 
-export interface MedicalDepartment {
+export interface HospitalInfo {
+  hospitalCode: string;
+  name: string;
+  address: string;
+}
+
+export interface MedicalDepartmentInfo {
   code: string;
   name: string;
 }
@@ -75,19 +81,9 @@ export interface Doctor {
   specialistLicenseNumber?: string;
   nurseIds: string[];
   nurseInfos: Nurse[];
-  specialityFieldInfo: {
-    code: string;
-    name: string;
-  };
-  hospitalInfo: {
-    hospitalCode: string;
-    name: string;
-    address: string;
-  };
-  departmentInfo: {
-    code: string;
-    name: string;
-  };
+  hospitalInfo: HospitalInfo;
+  departmentInfo: MedicalDepartmentInfo;
+  specialtyFieldInfo?: MedicalDepartmentInfo;
 }
 
 export interface Nurse {

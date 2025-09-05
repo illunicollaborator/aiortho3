@@ -13,7 +13,7 @@ import SignupCheckList from '../SignupCheckList';
 import { formatTime } from '@/lib/utils';
 import { useTimer } from '@/hooks/useTimer';
 import { decodeJWT } from '@/lib/utils';
-import { Hospital, MedicalDepartment } from '@/models';
+import { HospitalInfo, MedicalDepartmentInfo } from '@/models';
 import { useMedicalDepartments } from '@/hooks';
 import { useDoctorSignUp } from '../../hooks';
 import { useRouter } from 'next/navigation';
@@ -53,9 +53,21 @@ const schema = z
       .string()
       .min(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' })
       .max(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' }),
-    medicalInstitution: z.string().min(1, { message: '의료 기관명을 선택해주세요' }),
-    medicalDepartment: z.string().min(1, { message: '진료과를 선택해주세요' }),
-    specialties: z.string().optional(),
+    medicalInstitution: z.object({
+      hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+    }),
+    medicalDepartment: z.object({
+      code: z.string().min(1, { message: '진료과를 선택해주세요' }),
+      name: z.string().min(1, { message: '진료과를 선택해주세요' }),
+    }),
+    specialties: z
+      .object({
+        code: z.string(),
+        name: z.string(),
+      })
+      .optional(),
     specialistLicense: z.string().optional(),
     nurseIds: z
       .array(z.string())
@@ -106,9 +118,19 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
       confirmPassword: '',
       name: '',
       medicalLicense: '',
-      medicalInstitution: '',
-      medicalDepartment: '',
-      specialties: '',
+      medicalInstitution: {
+        hospitalCode: '',
+        name: '',
+        address: '',
+      },
+      medicalDepartment: {
+        code: '',
+        name: '',
+      },
+      specialties: {
+        code: '',
+        name: '',
+      },
       specialistLicense: '',
       nurseIds: [],
       phoneNumber: '',
@@ -126,6 +148,10 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
   const confirmPassword = watch('confirmPassword');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const medicalInstitution = watch('medicalInstitution');
+  const medicalDepartment = watch('medicalDepartment');
+  const specialties = watch('specialties');
 
   const medicalLicense = watch('medicalLicense');
   const [prevMedicalLicense, setPrevMedicalLicense] = useState<string>('');
@@ -249,39 +275,73 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     );
   };
 
-  const handleMedicalInstitutionChange = (institution?: Hospital) => {
-    setValue('medicalInstitution', institution?.hospitalCode ?? '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-    setSelectedInstitutionName(institution?.name ?? '');
-  };
-
-  const handleMedicalDepartmentChange = (department?: MedicalDepartment) => {
-    setValue('medicalDepartment', department?.code ?? '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
-    setSelectedDepartmentName(department?.name ?? '');
-  };
-
-  const handleSpecialtiesChange = (department?: MedicalDepartment) => {
-    if (department?.name === '선택 안함') {
-      setValue('specialties', '', {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      });
-      setSelectedSpecialtiesName('선택 안함');
+  const handleMedicalInstitutionChange = (institution?: HospitalInfo) => {
+    if (!institution) {
+      setValue(
+        'medicalInstitution',
+        {
+          hospitalCode: '',
+          name: '',
+          address: '',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
     } else {
-      setValue('specialties', department?.code ?? '', {
+      setValue('medicalInstitution', institution, {
         shouldValidate: true,
         shouldDirty: true,
         shouldTouch: true,
       });
-      setSelectedSpecialtiesName(department?.name ?? '');
+    }
+  };
+
+  const handleMedicalDepartmentChange = (department?: MedicalDepartmentInfo) => {
+    if (!department) {
+      setValue(
+        'medicalDepartment',
+        {
+          code: '',
+          name: '',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
+    } else {
+      setValue('medicalDepartment', department, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
+  };
+
+  const handleSpecialtiesChange = (department?: MedicalDepartmentInfo) => {
+    if (department?.name === '선택 안함') {
+      setValue(
+        'specialties',
+        {
+          code: '',
+          name: '선택 안함',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
+    } else {
+      setValue('specialties', department, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
     }
   };
 
@@ -366,9 +426,9 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
       name: data.name,
       licenseNumber: data.medicalLicense,
       phoneNumber: data.phoneNumber,
-      hospitalCode: data.medicalInstitution,
-      departmentCode: data.medicalDepartment,
-      ...(data.specialties && { specialtyField: data.specialties }),
+      hospitalCode: data.medicalInstitution.hospitalCode,
+      departmentCode: data.medicalDepartment.code,
+      ...(data.specialties && { specialtyField: data.specialties.code }),
       ...(data.specialistLicense && { specialistLicenseNumber: data.specialistLicense }),
       ...(data.nurseIds && { nurseIds: data.nurseIds }),
     };
@@ -502,7 +562,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             registration={register('medicalInstitution')}
             error={errors.medicalInstitution?.message}
             onChange={handleMedicalInstitutionChange}
-            selectedInstitutionName={selectedInstitutionName}
+            institutionInfo={medicalInstitution}
             required
           />
 
@@ -514,7 +574,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             registration={register('medicalDepartment')}
             error={errors.medicalDepartment?.message}
             onChange={handleMedicalDepartmentChange}
-            selectedDepartmentName={selectedDepartmentName}
+            medicalDepartmentInfo={medicalDepartment}
             required
           />
 
@@ -526,7 +586,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             registration={register('specialties')}
             error={errors.specialties?.message}
             onChange={handleSpecialtiesChange}
-            selectedDepartmentName={selectedSpecialtiesName}
+            medicalDepartmentInfo={specialties}
           />
 
           <OrthoInput
