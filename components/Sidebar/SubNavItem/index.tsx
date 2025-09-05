@@ -21,11 +21,11 @@ const SubNavItem: React.FC<SubNavItemProps> = ({ label, isActive = false, onClic
         onClick={onClick}
         aria-current={isActive ? 'page' : undefined}
       >
-        <div className="flex items-center gap-2 px-4">
+        <div className="flex items-center gap-2 pl-4">
           <div className="w-5 h-5 flex-shrink-0" />
           <span
             className={cn(
-              'overflow-hidden shrink-0 text-sm tracking-wide leading-6 whitespace-nowrap text-ellipsis w-[104px] text-left max-md:text-sm max-sm:text-xs text-[var(--aiortho-gray-600)]',
+              'shrink-0 text-sm tracking-wide leading-6 whitespace-nowrap w-[104px] text-left max-md:text-sm max-sm:text-xs text-[var(--aiortho-gray-600)]',
               isActive && 'text-[var(--aiortho-primary)] font-bold'
             )}
           >

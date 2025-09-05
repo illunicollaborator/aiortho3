@@ -31,7 +31,7 @@ const NavItem: React.FC<NavItemProps> = ({ icon, label, isActive = false, onClic
           </div>
           <span
             className={cn(
-              'overflow-hidden shrink-0 text-sm tracking-wide leading-6 whitespace-nowrap text-ellipsis w-[104px] text-left max-md:text-sm max-sm:text-xs text-[var(--aiortho-gray-600)]',
+              'overflow-hidden shrink-0 text-sm tracking-wide leading-6 whitespace-nowrap w-[104px] text-left max-md:text-sm max-sm:text-xs text-[var(--aiortho-gray-600)]',
               isActive && 'text-[var(--aiortho-primary)] font-bold'
             )}
           >
