@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import OrthoInput from '@/components/OrthoInput';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Hospital, Nurse } from '@/models';
+import { HospitalInfo, Nurse } from '@/models';
 import { useState } from 'react';
 import { usePhoneVerifyCheck } from '@/hooks/usePhoneVerifyCheck';
 import { usePhoneVerifySend } from '@/hooks/usePhoneVerifySend';
@@ -69,7 +69,11 @@ const schema = z
         },
         { message: '자음이나 모음만 사용할 수 없습니다' }
       ),
-    medicalInstitution: z.string().min(1, { message: '의료 기관명을 선택해주세요' }),
+    medicalInstitution: z.object({
+      hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+    }),
     phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
     certificationNumber: z.string(),
     certificationNumberCheckStatus: z
@@ -118,7 +122,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
       nextPassword: '',
       nextPasswordConfirm: '',
       name: profile.name,
-      medicalInstitution: profile.hospitalCode,
+      medicalInstitution: profile.hospitalInfo,
       phoneNumber: profile.phoneNumber,
       certificationNumber: '',
       certificationNumberCheckStatus: true,
@@ -128,6 +132,8 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
   const [showPassword, setShowPassword] = useState(false);
   const [showNextPassword, setShowNextPassword] = useState(false);
   const [showNextPasswordConfirm, setShowNextPasswordConfirm] = useState(false);
+
+  const medicalInstitution = watch('medicalInstitution');
 
   const phoneNumber = watch('phoneNumber');
   const [isPhoneReset, setIsPhoneReset] = useState(false);
@@ -153,7 +159,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
       password: data.nextPassword,
       name: data.name,
       phoneNumber: data.phoneNumber,
-      hospitalCode: data.medicalInstitution,
+      hospitalCode: data.medicalInstitution.hospitalCode,
     };
 
     updateNurseProfile(payload, {
@@ -170,12 +176,28 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
     if (value === 'nextConfirm') setShowNextPasswordConfirm(!showNextPasswordConfirm);
   };
 
-  const handleMedicalInstitutionChange = (institution?: Hospital) => {
-    setValue('medicalInstitution', institution?.hospitalCode ?? '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
-    });
+  const handleMedicalInstitutionChange = (institution?: HospitalInfo) => {
+    if (!institution) {
+      setValue(
+        'medicalInstitution',
+        {
+          hospitalCode: '',
+          name: '',
+          address: '',
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        }
+      );
+    } else {
+      setValue('medicalInstitution', institution, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      });
+    }
   };
 
   const handlePhoneNumberCheck = () => {
@@ -339,7 +361,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         registration={register('medicalInstitution')}
         error={errors.medicalInstitution?.message}
         onChange={handleMedicalInstitutionChange}
-        selectedInstitutionName={profile.hospitalInfo.name}
+        institutionInfo={medicalInstitution}
         required
       />
 
