@@ -83,7 +83,7 @@ export interface Doctor {
   nurseInfos: Nurse[];
   hospitalInfo: HospitalInfo;
   departmentInfo: MedicalDepartmentInfo;
-  specialtyFieldInfo?: MedicalDepartmentInfo;
+  specialityFieldInfo?: MedicalDepartmentInfo;
 }
 
 export interface Nurse {
