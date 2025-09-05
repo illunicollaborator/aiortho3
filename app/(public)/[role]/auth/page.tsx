@@ -41,9 +41,8 @@ export default function AuthPage() {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormValues>({
-    mode: 'onChange',
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: '',
@@ -59,7 +58,7 @@ export default function AuthPage() {
       onError: err => {
         setError('email', {
           type: 'manual',
-          message: ' ', // empty string, error ui
+          message: ' ',
         });
 
         if (err.statusSubCode === 4000) {
@@ -113,9 +112,9 @@ export default function AuthPage() {
             error={errors.password?.message}
             rightIcon={
               !showPassword ? (
-                <EyeOff size={20} color="#97A8C4" />
+                <EyeOff size={24} color="#97A8C4" />
               ) : (
-                <Eye size={20} color="#97A8C4" />
+                <Eye size={24} color="#97A8C4" />
               )
             }
             onRightIconClick={togglePasswordVisibility}
@@ -139,11 +138,7 @@ export default function AuthPage() {
             </p>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full text-white py-5 rounded-full h-12 cursor-pointer"
-            disabled={!isValid || loginMutation.isPending}
-          >
+          <Button type="submit" className="w-full text-white py-5 rounded-full h-12 cursor-pointer">
             {loginMutation.isPending ? <Spinner /> : '로그인'}
           </Button>
         </form>
