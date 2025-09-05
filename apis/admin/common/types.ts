@@ -1,4 +1,4 @@
-import { Hospital, MedicalDepartment } from '@/models';
+import { Hospital, MedicalDepartmentInfo } from '@/models';
 
 export interface LoginRequest {
   email: string;
@@ -69,7 +69,7 @@ export interface GetHospitalListResponse {
 
 export interface GetDepartmentListRequest {}
 
-export interface GetDepartmentListResponse extends Array<MedicalDepartment> {}
+export interface GetDepartmentListResponse extends Array<MedicalDepartmentInfo> {}
 
 export interface PostPhoneVerifySendRequest {
   phoneNumber: string;
