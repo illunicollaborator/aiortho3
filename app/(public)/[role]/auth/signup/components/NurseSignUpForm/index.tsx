@@ -322,9 +322,9 @@ export default function NurseSignUpForm() {
             error={errors.password?.message}
             rightIcon={
               !showPassword ? (
-                <EyeOff size={20} color="#97A8C4" />
+                <EyeOff size={24} color="#97A8C4" />
               ) : (
-                <Eye size={20} color="#97A8C4" />
+                <Eye size={24} color="#97A8C4" />
               )
             }
             onRightIconClick={togglePasswordVisibility}
@@ -342,9 +342,9 @@ export default function NurseSignUpForm() {
             error={errors.confirmPassword?.message}
             rightIcon={
               !showConfirmPassword ? (
-                <EyeOff size={20} color="#97A8C4" />
+                <EyeOff size={24} color="#97A8C4" />
               ) : (
-                <Eye size={20} color="#97A8C4" />
+                <Eye size={24} color="#97A8C4" />
               )
             }
             onRightIconClick={toggleConfirmPasswordVisibility}

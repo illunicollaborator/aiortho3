@@ -275,9 +275,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         isDirty={dirtyFields.password}
         rightIcon={
           !showPassword ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('current')}
@@ -292,9 +292,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         isDirty={dirtyFields.nextPassword}
         rightIcon={
           !showNextPassword ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('next')}
@@ -317,9 +317,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         isDirty={dirtyFields.nextPasswordConfirm}
         rightIcon={
           !showNextPasswordConfirm ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('nextConfirm')}

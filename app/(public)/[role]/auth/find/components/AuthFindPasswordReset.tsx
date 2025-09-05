@@ -115,7 +115,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           error={errors.password?.message}
           value={passwordValue}
           rightIcon={
-            !showPassword ? <EyeOff size={20} color="#97A8C4" /> : <Eye size={20} color="#97A8C4" />
+            !showPassword ? <EyeOff size={24} color="#97A8C4" /> : <Eye size={24} color="#97A8C4" />
           }
           onRightIconClick={togglePasswordVisibility}
         />
@@ -129,9 +129,9 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           value={confirmPasswordValue}
           rightIcon={
             !showConfirmPassword ? (
-              <EyeOff size={20} color="#97A8C4" />
+              <EyeOff size={24} color="#97A8C4" />
             ) : (
-              <Eye size={20} color="#97A8C4" />
+              <Eye size={24} color="#97A8C4" />
             )
           }
           onRightIconClick={toggleConfirmPasswordVisibility}
