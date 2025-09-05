@@ -75,15 +75,6 @@ apiClient.interceptors.response.use(
       }
     }
 
-    removeStorage(storage, TOKEN_KEY);
-    removeStorage(storage, REFRESH_KEY);
-
-    clearTokens();
-
-    if (typeof window !== 'undefined') {
-      window.location.href = '/';
-    }
-
     return Promise.reject(error.response.data.error);
   }
 );
