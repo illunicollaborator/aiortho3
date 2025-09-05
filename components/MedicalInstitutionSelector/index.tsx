@@ -1,7 +1,7 @@
 import { Search } from 'lucide-react';
 import { useState } from 'react';
 import MedicalInstitutionModal from './MedicalInstitutionModal';
-import { Hospital } from '@/models';
+import { Hospital, HospitalInfo } from '@/models';
 import { UseFormRegisterReturn } from 'react-hook-form';
 import { Label } from '../ui/label';
 import { cn } from '@/lib/utils';
@@ -12,7 +12,7 @@ interface MedicalInstitutionSelectorProps {
   required?: boolean;
   registration?: UseFormRegisterReturn;
   error?: string;
-  selectedInstitutionName?: string;
+  institutionInfo: HospitalInfo;
   onChange?: (institution?: Hospital) => void;
 }
 
@@ -21,11 +21,10 @@ export default function MedicalInstitutionSelector({
   required = false,
   registration,
   error,
-  selectedInstitutionName,
+  institutionInfo,
   onChange,
 }: MedicalInstitutionSelectorProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedInstitution, setSelectedInstitution] = useState<Hospital>();
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -35,11 +34,9 @@ export default function MedicalInstitutionSelector({
     setIsModalOpen(false);
   };
 
-  const handleSelectInstitution = (institution?: Hospital) => {
-    setSelectedInstitution(institution);
-
+  const handleSelectInstitution = (value?: Hospital) => {
     if (onChange) {
-      onChange(institution);
+      onChange(value);
     }
   };
 
@@ -75,11 +72,11 @@ export default function MedicalInstitutionSelector({
 
       {error && <p className="font-normal text-[var(--aiortho-danger)] text-xs mb-3">{error}</p>}
 
-      {selectedInstitutionName && (
+      {institutionInfo.name && (
         <OrthoInput
           registration={registration}
           required={required}
-          value={selectedInstitutionName ?? selectedInstitution?.name ?? ''}
+          value={institutionInfo.name}
           placeholder="선택된 의료기관이 없습니다"
           disabled
         />

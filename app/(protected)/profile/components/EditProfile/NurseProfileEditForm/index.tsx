@@ -25,7 +25,7 @@ const schema = z
         value => {
           if (!value) return true; // required 체크
           if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value);
+          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
         },
         {
           message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -38,7 +38,7 @@ const schema = z
         value => {
           if (!value) return true; // required 체크
           if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value);
+          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
         },
         {
           message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -51,7 +51,7 @@ const schema = z
         value => {
           if (!value) return true; // required 체크
           if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/.test(value);
+          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
         },
         {
           message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -275,9 +275,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         isDirty={dirtyFields.password}
         rightIcon={
           !showPassword ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('current')}
@@ -292,9 +292,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         isDirty={dirtyFields.nextPassword}
         rightIcon={
           !showNextPassword ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('next')}
@@ -317,9 +317,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         isDirty={dirtyFields.nextPasswordConfirm}
         rightIcon={
           !showNextPasswordConfirm ? (
-            <EyeOff size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <EyeOff size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           ) : (
-            <Eye size={20} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
+            <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
         onRightIconClick={() => togglePasswordVisibility('nextConfirm')}

@@ -62,8 +62,8 @@ const NavSection: React.FC<NavSectionProps> = ({
 
         <ChevronRight
           className={cn(
-            'w-5 h-5 transition-transform duration-400 ease-[cubic-bezier(0.4,0,0.2,1)] transform text-[var(--aiortho-gray-600)]',
-            isExpanded ? 'rotate-90 text-[var(--aiortho-gray-700)]' : '-rotate-90 ',
+            'w-5 h-5 transition-transform duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] transform text-[var(--aiortho-gray-600)]',
+            isExpanded && 'rotate-90 text-[var(--aiortho-gray-700)]',
             isActive && 'text-[var(--aiortho-gray-700)]'
           )}
         />

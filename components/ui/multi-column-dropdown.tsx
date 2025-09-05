@@ -28,9 +28,6 @@ export default function MultiColumnDropdown({
   onClose,
   items,
   width = 'w-full',
-  height = 'auto',
-  maxHeight = '360px',
-  containerStyle = {},
   columns = 4,
 }: MultiColumnDropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);

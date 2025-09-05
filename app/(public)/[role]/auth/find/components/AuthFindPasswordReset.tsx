@@ -22,7 +22,7 @@ const resetPasswordSchema = z
       .max(16, {
         message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
       })
-      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_\-+={\[}\]:;"'<,>.?/~])/, {
+      .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/, {
         message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
       }),
     confirmPassword: z.string().min(1, { message: '비밀번호를 다시 입력해주세요.' }),
@@ -115,7 +115,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           error={errors.password?.message}
           value={passwordValue}
           rightIcon={
-            !showPassword ? <EyeOff size={20} color="#97A8C4" /> : <Eye size={20} color="#97A8C4" />
+            !showPassword ? <EyeOff size={24} color="#97A8C4" /> : <Eye size={24} color="#97A8C4" />
           }
           onRightIconClick={togglePasswordVisibility}
         />
@@ -129,9 +129,9 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           value={confirmPasswordValue}
           rightIcon={
             !showConfirmPassword ? (
-              <EyeOff size={20} color="#97A8C4" />
+              <EyeOff size={24} color="#97A8C4" />
             ) : (
-              <Eye size={20} color="#97A8C4" />
+              <Eye size={24} color="#97A8C4" />
             )
           }
           onRightIconClick={toggleConfirmPasswordVisibility}

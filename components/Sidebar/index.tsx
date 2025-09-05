@@ -94,7 +94,7 @@ const Sidebar: React.FC = () => {
         )}
         aria-label="Main Navigation"
       >
-        <div className="flex flex-col items-start h-full">
+        <div className="flex flex-col w-60 items-start h-full">
           {/* 헤더 */}
           <div className="flex items-center gap-2 justify-center py-4 px-4 md:hidden">
             <Link href="/">
@@ -105,7 +105,7 @@ const Sidebar: React.FC = () => {
           </div>
 
           {/* 메인 네비게이션 */}
-          <div className="flex-1 pt-2">
+          <div className="flex-1 w-60 pt-2">
             <ul className="w-full flex flex-col gap-2">
               <NavItem
                 icon={<HomeIcon />}
