@@ -48,20 +48,12 @@ export default function ProfilePage() {
             <OrthoInput label="진료과" value={(profile as Doctor).departmentInfo.name} readOnly />
             <OrthoInput
               label="전문의 과목"
-              value={
-                (profile as Doctor).specialityFieldInfo
-                  ? (profile as Doctor).specialityFieldInfo.name
-                  : '전문의 과목이 없습니다'
-              }
+              value={(profile as Doctor).specialityFieldInfo?.name ?? '전문의 과목이 없습니다'}
               readOnly
             />
             <OrthoInput
               label="전문 면허 번호"
-              value={
-                (profile as Doctor).specialistLicenseNumber
-                  ? (profile as Doctor).specialistLicenseNumber
-                  : '전문 면허 번호가 없습니다'
-              }
+              value={(profile as Doctor).specialistLicenseNumber ?? '전문 면허 번호가 없습니다'}
               readOnly
             />
             {(profile as Doctor).nurseInfos.length ? (
