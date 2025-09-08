@@ -8,11 +8,12 @@ import { useFindPassword } from '../hooks/useFindPassword';
 import Spinner from '@/components/Spinner';
 import { AuthFindPasswordFormValues } from '../types';
 import { toast } from 'sonner';
+import { phoneNumberSchema } from '@/lib/utils';
 
 const findPasswordSchema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
   email: z.string().email({ message: '아이디(이메일)가 올바르지 않아요' }),
-  phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
+  phoneNumber: phoneNumberSchema,
 });
 
 type FormPasswordValues = z.infer<typeof findPasswordSchema>;
@@ -31,7 +32,6 @@ const AuthFindPasswordForm = ({ onSubmit }: AuthFindPasswordFormProps) => {
     formState: { errors, isValid },
   } = useForm<FormPasswordValues>({
     resolver: zodResolver(findPasswordSchema),
-    mode: 'onChange',
     defaultValues: {
       name: '',
       phoneNumber: '',
@@ -101,7 +101,7 @@ const AuthFindPasswordForm = ({ onSubmit }: AuthFindPasswordFormProps) => {
       <Button
         type="submit"
         className={'w-full py-5 mt-4 md:mb-16 rounded-full cursor-pointer h-12 text-white'}
-        disabled={!isValid || postFindPasswordMutation.isPending}
+        disabled={postFindPasswordMutation.isPending}
       >
         {postFindPasswordMutation.isPending ? <Spinner /> : '다음'}
       </Button>

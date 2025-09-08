@@ -10,7 +10,7 @@ import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector'
 import MedicalDepartmentSelector from '@/components/MedicalDepartmentSelector';
 import NurseManagerSelector from '@/components/NurseManagerSelector';
 import SignupCheckList from '../SignupCheckList';
-import { formatTime } from '@/lib/utils';
+import { formatTime, phoneNumberSchema } from '@/lib/utils';
 import { useTimer } from '@/hooks/useTimer';
 import { decodeJWT } from '@/lib/utils';
 import { HospitalInfo, MedicalDepartmentInfo } from '@/models';
@@ -75,7 +75,7 @@ const schema = z
         message: '담당 간호사는 최대 10명까지만 등록 가능합니다',
       })
       .optional(),
-    phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
+    phoneNumber: phoneNumberSchema,
     certificationNumber: z
       .string()
       .min(6, '6자리 이상 입력해주세요')
@@ -106,10 +106,10 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     setValue,
     setError,
     clearErrors,
+    trigger,
     formState: { errors, isValid, isSubmitting },
     watch,
   } = useForm<FormValues>({
-    mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: {
       signupCode: decodeJWT(signUpToken).code,
@@ -175,11 +175,6 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
 
   const DEFAULT_TIMER = 300;
   const { timer, isActive, setTimer, setIsActive } = useTimer();
-
-  // 선택된 의료기관 이름 관리
-  const [selectedInstitutionName, setSelectedInstitutionName] = useState<string>('');
-  const [selectedDepartmentName, setSelectedDepartmentName] = useState<string>('');
-  const [selectedSpecialtiesName, setSelectedSpecialtiesName] = useState<string>('');
 
   // 이메일 입력값 변경 감지
   useEffect(() => {
@@ -353,7 +348,14 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     });
   };
 
-  const handlePhoneNumberCheck = () => {
+  const handlePhoneNumberCheck = async () => {
+    // 휴대폰 번호 필드 검증
+    const isValid = await trigger('phoneNumber');
+
+    if (!isValid) {
+      return; // 검증 실패 시 API 호출하지 않음
+    }
+
     phoneVerifySendMutation.mutate(
       { phoneNumber },
       {
@@ -620,7 +622,6 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
-                    Boolean(errors.phoneNumber) ||
                     !phoneNumber ||
                     isActive
                   }

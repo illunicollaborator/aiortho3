@@ -5,12 +5,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useFindId } from '../hooks/useFindId';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { phoneNumberSchema } from '@/lib/utils';
 import { toast } from 'sonner';
 import { AuthFindIdFormValues } from '../types';
 
 const findIdSchema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
-  phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
+  phoneNumber: phoneNumberSchema,
 });
 
 type FormIdValues = z.infer<typeof findIdSchema>;
@@ -29,7 +30,6 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
     setError,
   } = useForm<FormIdValues>({
     resolver: zodResolver(findIdSchema),
-    mode: 'onChange',
     defaultValues: {
       name: '',
       phoneNumber: '',
@@ -88,7 +88,7 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
       <Button
         type="submit"
         className="w-full py-5 mt-4 rounded-full cursor-pointer h-12 text-white"
-        disabled={!isValid || postFindIdMutation.isPending}
+        disabled={postFindIdMutation.isPending}
       >
         {postFindIdMutation.isPending ? <Spinner /> : '다음'}
       </Button>

@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { UserRole } from '@/models';
+import { z } from 'zod';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -220,3 +221,64 @@ export function getPeriodYYYYMMDD(weeks: number): {
 export const isDoctorRole = (role: UserRole): role is 'Doctor' | 'Root' => {
   return role === 'Doctor' || role === 'Root';
 };
+
+// 휴대폰 번호 검증 스키마 생성 함수
+export const createPhoneNumberSchema = (options?: {
+  currentPhoneNumber?: string;
+  allowEmpty?: boolean;
+}) => {
+  const { currentPhoneNumber, allowEmpty = false } = options || {};
+
+  return (
+    z
+      .string()
+      // .refine(
+      //   value => {
+      //     if (allowEmpty && !value) return true;
+      //     return value.length >= 10 && value.length <= 11;
+      //   },
+      //   { message: '10자리 이상 11자리 이하로 입력해주세요' }
+      // )
+      // .refine(
+      //   value => {
+      //     if (allowEmpty && !value) return true;
+      //     return /^\d+$/.test(value);
+      //   },
+      //   { message: '숫자만 입력 가능합니다' }
+      // )
+      .refine(
+        value => {
+          if (allowEmpty && !value) return true;
+
+          if (currentPhoneNumber && value === currentPhoneNumber) {
+            return false;
+          }
+
+          if (value.length < 10 || value.length > 11) {
+            return false;
+          }
+
+          if (!/^\d+$/.test(value)) {
+            return false;
+          }
+
+          return true;
+        },
+        {
+          message: currentPhoneNumber
+            ? '현재 휴대폰 번호와 다른 번호를 입력해주세요'
+            : '휴대폰 번호를 다시 확인해주세요',
+        }
+      )
+  );
+};
+
+// 기본 휴대폰 번호 검증 스키마 (회원가입용)
+export const phoneNumberSchema = createPhoneNumberSchema();
+
+// 프로필 편집용 휴대폰 번호 검증 스키마 생성 함수
+export const createProfilePhoneNumberSchema = (currentPhoneNumber: string) =>
+  createPhoneNumberSchema({ currentPhoneNumber });
+
+// 선택적 휴대폰 번호 검증 스키마 (빈 값 허용)
+export const optionalPhoneNumberSchema = createPhoneNumberSchema({ allowEmpty: true });

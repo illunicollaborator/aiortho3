@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import OrthoInput from '@/components/OrthoInput';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { HospitalInfo, Nurse } from '@/models';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePhoneVerifyCheck } from '@/hooks/usePhoneVerifyCheck';
 import { usePhoneVerifySend } from '@/hooks/usePhoneVerifySend';
 import { useTimer } from '@/hooks/useTimer';
@@ -11,94 +11,93 @@ import { useUpdateNurseProfile } from '@/hooks/useUpdateNurseProfile';
 import { Eye, EyeOff } from 'lucide-react';
 import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector';
 import { Button } from '@/components/ui/button';
-import { formatTime } from '@/lib/utils';
+import { formatTime, createProfilePhoneNumberSchema } from '@/lib/utils';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useRouter } from 'next/navigation';
 
-const schema = z
-  .object({
-    email: z.string(),
-    password: z
-      .string()
-      .optional()
-      .refine(
-        value => {
-          if (!value) return true; // required 체크
-          if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
-        },
-        {
-          message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+const createNurseProfileSchema = (currentPhoneNumber: string) =>
+  z
+    .object({
+      email: z.string(),
+      password: z
+        .string()
+        .optional()
+        .refine(
+          value => {
+            if (!value) return true; // required 체크
+            if (value.length < 8 || value.length > 16) return false;
+            return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
+          },
+          {
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+          }
+        ),
+      nextPassword: z
+        .string()
+        .optional()
+        .refine(
+          value => {
+            if (!value) return true; // required 체크
+            if (value.length < 8 || value.length > 16) return false;
+            return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
+          },
+          {
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+          }
+        ),
+      nextPasswordConfirm: z
+        .string()
+        .optional()
+        .refine(
+          value => {
+            if (!value) return true; // required 체크
+            if (value.length < 8 || value.length > 16) return false;
+            return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
+          },
+          {
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+          }
+        ),
+      name: z
+        .string()
+        .min(2, { message: '이름은 2자 이상 입력해주세요' })
+        .max(10, { message: '이름은 10자 이하로 입력해주세요' })
+        .regex(/^[가-힣]+$/, { message: '한글만 입력 가능합니다' })
+        .refine(
+          val => {
+            const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
+            return !singleConsonantVowel.test(val);
+          },
+          { message: '자음이나 모음만 사용할 수 없습니다' }
+        ),
+      medicalInstitution: z.object({
+        hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+        name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+        address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      }),
+      phoneNumber: createProfilePhoneNumberSchema(currentPhoneNumber),
+      certificationNumber: z.string(),
+      certificationNumberCheckStatus: z
+        .boolean()
+        .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
+    })
+    .refine(
+      data => {
+        if (data.certificationNumberCheckStatus === false) {
+          if (!data.certificationNumber || data.certificationNumber.length < 6) {
+            return false;
+          }
+          if (data.certificationNumber.length > 6) {
+            return false;
+          }
         }
-      ),
-    nextPassword: z
-      .string()
-      .optional()
-      .refine(
-        value => {
-          if (!value) return true; // required 체크
-          if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
-        },
-        {
-          message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
-        }
-      ),
-    nextPasswordConfirm: z
-      .string()
-      .optional()
-      .refine(
-        value => {
-          if (!value) return true; // required 체크
-          if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
-        },
-        {
-          message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
-        }
-      ),
-    name: z
-      .string()
-      .min(2, { message: '이름은 2자 이상 입력해주세요' })
-      .max(10, { message: '이름은 10자 이하로 입력해주세요' })
-      .regex(/^[가-힣]+$/, { message: '한글만 입력 가능합니다' })
-      .refine(
-        val => {
-          const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
-          return !singleConsonantVowel.test(val);
-        },
-        { message: '자음이나 모음만 사용할 수 없습니다' }
-      ),
-    medicalInstitution: z.object({
-      hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
-      name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
-      address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
-    }),
-    phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
-    certificationNumber: z.string(),
-    certificationNumberCheckStatus: z
-      .boolean()
-      .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
-  })
-  .refine(
-    data => {
-      if (data.certificationNumberCheckStatus === false) {
-        if (!data.certificationNumber || data.certificationNumber.length < 6) {
-          return false;
-        }
-        if (data.certificationNumber.length > 6) {
-          return false;
-        }
+        return true;
+      },
+      {
+        message: '6자리로 입력해주세요',
+        path: ['certificationNumber'],
       }
-      return true;
-    },
-    {
-      message: '6자리로 입력해주세요',
-      path: ['certificationNumber'],
-    }
-  );
-
-type FormValues = z.infer<typeof schema>;
+    );
 
 interface NurseProfileEditFormProps {
   profile: Nurse;
@@ -106,15 +105,20 @@ interface NurseProfileEditFormProps {
 
 export default function NurseProfileEditForm({ profile }: NurseProfileEditFormProps) {
   const router = useRouter();
+
+  const schema = createNurseProfileSchema(profile.phoneNumber);
+  type FormValues = z.infer<typeof schema>;
+
   const {
     handleSubmit,
     register,
     watch,
     setValue,
     setError,
+    setFocus,
+    trigger,
     formState: { errors, isValid, isDirty, dirtyFields },
   } = useForm<FormValues>({
-    mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: {
       email: profile.email,
@@ -132,6 +136,9 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
   const [showPassword, setShowPassword] = useState(false);
   const [showNextPassword, setShowNextPassword] = useState(false);
   const [showNextPasswordConfirm, setShowNextPasswordConfirm] = useState(false);
+
+  const nextPassword = watch('nextPassword');
+  const nextPasswordConfirm = watch('nextPasswordConfirm');
 
   const medicalInstitution = watch('medicalInstitution');
 
@@ -200,7 +207,13 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
     }
   };
 
-  const handlePhoneNumberCheck = () => {
+  const handlePhoneNumberCheck = async () => {
+    // 휴대폰 번호 필드 검증
+    const isValid = await trigger('phoneNumber');
+    if (!isValid) {
+      return; // 검증 실패 시 API 호출하지 않음
+    }
+
     phoneVerifySend(
       { phoneNumber },
       {
@@ -224,19 +237,19 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
 
   const handlePhoneNumberReset = () => {
     setValue('phoneNumber', '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
     });
     setValue('certificationNumber', '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
     });
     setValue('certificationNumberCheckStatus', false, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
     });
     setIsPhoneReset(true);
   };
@@ -272,6 +285,12 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
     );
   };
 
+  useEffect(() => {
+    if (isPhoneReset) {
+      setFocus('phoneNumber');
+    }
+  }, [isPhoneReset, setFocus]);
+
   return (
     <form
       onSubmit={e => {
@@ -285,7 +304,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         registration={register('email')}
         error={errors.email?.message}
         isDirty={dirtyFields.email}
-        readOnly
+        disabled
       />
 
       <OrthoInput
@@ -332,7 +351,8 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
           dirtyFields.nextPasswordConfirm &&
           !errors.password &&
           !errors.nextPassword &&
-          !errors.nextPasswordConfirm
+          !errors.nextPasswordConfirm &&
+          nextPassword === nextPasswordConfirm
             ? '변경할 비밀번호와 일치해요'
             : undefined
         }
@@ -377,7 +397,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
               type="button"
               onClick={handlePhoneNumberCheck}
               className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
-              disabled={Boolean(errors.phoneNumber) || isPhoneVerifySendPending || isActive}
+              disabled={isPhoneVerifySendPending || isActive}
             >
               인증번호 전송
             </Button>
