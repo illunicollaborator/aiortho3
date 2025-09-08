@@ -101,7 +101,7 @@ export default function VerifyProfile({ role, profile, onClick }: VerifyProfileP
           label="아이디 (이메일)"
           registration={register('email')}
           error={errors.email?.message}
-          readOnly
+          disabled
         />
 
         <OrthoInput
