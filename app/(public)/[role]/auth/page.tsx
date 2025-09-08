@@ -51,29 +51,34 @@ export default function AuthPage() {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    loginMutation.mutate(data, {
-      onSuccess: () => {
-        router.push('/home');
-      },
-      onError: err => {
-        setError('email', {
-          type: 'manual',
-          message: ' ',
-        });
+    const loginRole = role === 'doctor' ? 'Doctor' : 'Nurse';
 
-        if (err.statusSubCode === 4000) {
-          setError('password', {
+    loginMutation.mutate(
+      { ...data, role: loginRole },
+      {
+        onSuccess: () => {
+          router.push('/home');
+        },
+        onError: err => {
+          setError('email', {
             type: 'manual',
-            message: '아이디(이메일) 혹은 비밀번호가 올바르지 않아요',
+            message: ' ',
           });
-        } else {
-          setError('password', {
-            type: 'manual',
-            message: '로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-          });
-        }
-      },
-    });
+
+          if (err.statusSubCode === 4000) {
+            setError('password', {
+              type: 'manual',
+              message: '아이디(이메일) 혹은 비밀번호가 올바르지 않아요',
+            });
+          } else {
+            setError('password', {
+              type: 'manual',
+              message: '로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+            });
+          }
+        },
+      }
+    );
   };
 
   const togglePasswordVisibility = () => {
