@@ -229,47 +229,29 @@ export const createPhoneNumberSchema = (options?: {
 }) => {
   const { currentPhoneNumber, allowEmpty = false } = options || {};
 
-  return (
-    z
-      .string()
-      // .refine(
-      //   value => {
-      //     if (allowEmpty && !value) return true;
-      //     return value.length >= 10 && value.length <= 11;
-      //   },
-      //   { message: '10자리 이상 11자리 이하로 입력해주세요' }
-      // )
-      // .refine(
-      //   value => {
-      //     if (allowEmpty && !value) return true;
-      //     return /^\d+$/.test(value);
-      //   },
-      //   { message: '숫자만 입력 가능합니다' }
-      // )
-      .refine(
-        value => {
-          if (allowEmpty && !value) return true;
+  return z.string().refine(
+    value => {
+      if (allowEmpty && !value) return true;
 
-          if (currentPhoneNumber && value === currentPhoneNumber) {
-            return false;
-          }
+      if (currentPhoneNumber && value === currentPhoneNumber) {
+        return false;
+      }
 
-          if (value.length < 10 || value.length > 11) {
-            return false;
-          }
+      if (value.length < 10 || value.length > 11) {
+        return false;
+      }
 
-          if (!/^\d+$/.test(value)) {
-            return false;
-          }
+      if (!/^\d+$/.test(value)) {
+        return false;
+      }
 
-          return true;
-        },
-        {
-          message: currentPhoneNumber
-            ? '현재 휴대폰 번호와 다른 번호를 입력해주세요'
-            : '휴대폰 번호를 다시 확인해주세요',
-        }
-      )
+      return true;
+    },
+    {
+      message: currentPhoneNumber
+        ? '현재 휴대폰 번호와 다른 번호를 입력해주세요'
+        : '휴대폰 번호를 다시 확인해주세요',
+    }
   );
 };
 
