@@ -29,7 +29,7 @@ const AuthFindPasswordForm = ({ onSubmit }: AuthFindPasswordFormProps) => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormPasswordValues>({
     resolver: zodResolver(findPasswordSchema),
     defaultValues: {
@@ -45,24 +45,9 @@ const AuthFindPasswordForm = ({ onSubmit }: AuthFindPasswordFormProps) => {
         onSubmit && onSubmit(data);
       },
       onError: err => {
-        if (err.statusSubCode === 4002) {
+        if (err.statusSubCode === 4002 || err.statusSubCode === 4028) {
           setError('phoneNumber', {
-            message: '유효하지 않은 휴대폰 번호입니다',
-          });
-          return;
-        }
-
-        if (err.statusSubCode === 4028) {
-          setError('name', {
-            message: ' ',
-          });
-
-          setError('email', {
-            message: ' ',
-          });
-
-          setError('phoneNumber', {
-            message: '올바른 정보를 입력해주세요',
+            message: '입력한 정보가 맞는지 다시 한 번 확인해주세요',
           });
 
           return;
@@ -82,20 +67,25 @@ const AuthFindPasswordForm = ({ onSubmit }: AuthFindPasswordFormProps) => {
         placeholder="이름을 입력해주세요"
         registration={register('name')}
         error={errors.name?.message}
+        hideErrorBorder
       />
 
       <OrthoInput
-        label="아이디 (이메일)"
-        placeholder="아이디 (이메일)를 입력해주세요"
+        label="아이디(이메일)"
+        placeholder="아이디(이메일)를 입력해주세요"
         registration={register('email')}
         error={errors.email?.message}
+        hideErrorBorder
       />
 
       <OrthoInput
         label="휴대폰 번호"
+        maxLength={11}
         placeholder="휴대폰 번호를 입력해주세요"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
+        numericOnly
+        hideErrorBorder
       />
 
       <Button
