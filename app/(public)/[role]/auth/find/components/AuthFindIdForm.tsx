@@ -26,7 +26,7 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     setError,
   } = useForm<FormIdValues>({
     resolver: zodResolver(findIdSchema),
@@ -42,21 +42,9 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
         onSubmit && onSubmit(data);
       },
       onError: err => {
-        if (err.statusSubCode === 4002) {
+        if (err.statusSubCode === 4002 || err.statusSubCode === 4028) {
           setError('phoneNumber', {
-            message: '유효하지 않은 휴대폰 번호입니다',
-          });
-
-          return;
-        }
-
-        if (err.statusSubCode === 4028) {
-          setError('name', {
-            message: ' ',
-          });
-
-          setError('phoneNumber', {
-            message: '올바른 정보를 입력해주세요',
+            message: '입력한 정보가 맞는지 다시 한 번 확인해주세요',
           });
 
           return;
@@ -76,13 +64,17 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
         placeholder="이름을 입력해주세요"
         registration={register('name')}
         error={errors.name?.message}
+        hideErrorBorder
       />
 
       <OrthoInput
         label="휴대폰 번호"
-        placeholder="휴대폰 번호를 입력해주세요 (01012345678)"
+        maxLength={11}
+        placeholder="휴대폰 번호를 입력해주세요"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
+        numericOnly
+        hideErrorBorder
       />
 
       <Button
