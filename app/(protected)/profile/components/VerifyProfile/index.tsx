@@ -16,7 +16,7 @@ const schema = z.object({
   password: z
     .string()
     .min(8, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+      message: '비밀번호를 입력해주세요',
     })
     .max(16, {
       message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
@@ -69,8 +69,9 @@ export default function VerifyProfile({ role, profile, onClick }: VerifyProfileP
           onClick?.();
         },
         onError: error => {
-          if (error.statusSubCode === 4028) {
-            setError('password', { message: '비밀번호가 일치하지 않습니다.' });
+          console.log(error);
+          if (error.statusSubCode === 4000) {
+            setError('password', { message: '비밀번호가 일치하지 않아요' });
           } else {
             toast.error('잠시 후 시도해주세요.');
           }
