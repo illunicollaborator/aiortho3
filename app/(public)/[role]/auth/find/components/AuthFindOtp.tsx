@@ -196,6 +196,7 @@ const AuthFindOtp = ({ formValues, onSubmit }: AuthFindOtpProps) => {
               </Button>
             </div>
           }
+          numericOnly
         />
 
         <Button
