@@ -27,8 +27,8 @@ const buttonVariants = cva(
         sm: 'h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'w-21 h-10 rounded-md px-4 py-3 has-[>svg]:px-4',
         icon: 'size-9',
-        inputConfirm: 'w-[72px] h-[32px] py-2',
-        inputCertify: 'w-[92px] h-[32px] py-2',
+        inputConfirm: 'w-[72px] h-[32px] px-[24.5px]py-2',
+        inputCertify: 'w-[92px] h-[32px] px-[10.5px] py-2',
       },
     },
     defaultVariants: {
