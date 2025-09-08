@@ -161,14 +161,14 @@ const AuthFindOtp = ({ formValues, onSubmit }: AuthFindOtpProps) => {
     };
   }, [timer, isActive]);
 
-  if (!formValues?.phoneNumber) return null;
+  if (!formValues?.phoneNumber) return;
 
   return (
     <div className="w-[95%] md:w-[40%] mx-auto">
       <div className="space-y-3">
         <h1 className="font-bold text-3xl text-[color:var(--aiortho-gray-900)]">인증 번호 입력</h1>
-        <p className="font-normal text-base text-[color:var(--aiortho-gray-600)]">
-          {formValues.phoneNumber}로 인증 번호를 보냈어요.
+        <p className="font-normal text-base text-[color:var(--aiortho-gray-600)] whitespace-pre-wrap">
+          {`${formValues.phoneNumber}로 인증 번호를 보냈어요.\n인증 번호가 오지 않았다면, 입력 정보를 다시 확인해주세요.`}
         </p>
       </div>
       <form onSubmit={handleSubmit(onSubmitOtp)} className="space-y-10 mt-8">
@@ -186,11 +186,12 @@ const AuthFindOtp = ({ formValues, onSubmit }: AuthFindOtpProps) => {
 
               <Button
                 type="button"
-                onClick={handleResendOtp}
-                className="text-white bg-[color:var(--aiortho-gray-500)] hover:bg-[color:var(--aiortho-gray-500)]/90 disabled:bg-[color:var(--aiortho-gray-200)] cursor-pointer"
+                variant="input"
+                size="inputCertify"
                 disabled={
                   postFindIdMutation.isPending || postFindIdOtpMutation.isPending || isActive
                 }
+                onClick={handleResendOtp}
               >
                 {postFindIdMutation.isPending ? <Spinner /> : '인증번호 전송'}
               </Button>
@@ -202,7 +203,7 @@ const AuthFindOtp = ({ formValues, onSubmit }: AuthFindOtpProps) => {
         <Button
           type="submit"
           disabled={!isActive || !isValid || postFindIdOtpMutation.isPending}
-          className="w-full text-white cursor-pointer py-5 mt-4 rounded-full"
+          className="w-full text-white cursor-pointer py-5 mt-4 rounded-full h-12"
         >
           {postFindIdOtpMutation.isPending ? <Spinner /> : '다음'}
         </Button>
