@@ -61,7 +61,7 @@ const AuthFindPasswordForm = ({ onSubmit }: AuthFindPasswordFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitPassword)} className="space-y-5 md:space-y-10 mt-4">
+    <form onSubmit={handleSubmit(onSubmitPassword)} className="space-y-5 md:space-y-10 mt-9">
       <OrthoInput
         label="이름"
         placeholder="이름을 입력해주세요"

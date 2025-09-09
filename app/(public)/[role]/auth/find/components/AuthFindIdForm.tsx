@@ -58,7 +58,7 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitId)} className="space-y-10 mt-8">
+    <form onSubmit={handleSubmit(onSubmitId)} className="space-y-10 mt-9">
       <OrthoInput
         label="이름"
         placeholder="이름을 입력해주세요"
