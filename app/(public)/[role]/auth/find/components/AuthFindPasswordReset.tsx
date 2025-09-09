@@ -144,6 +144,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
 
         <div className="grid grid-cols-2 gap-5">
           <Button
+            type="button"
             variant="secondary"
             className="w-full cursor-pointer py-5 rounded-full"
             onClick={onCancel}
