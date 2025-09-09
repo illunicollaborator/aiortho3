@@ -606,6 +606,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
 
           <OrthoInput
             label="휴대폰 번호"
+            maxLength={11}
             placeholder="휴대폰 번호를 입력해주세요"
             registration={register('phoneNumber')}
             apiResponse={phoneNumberCheckStatus !== null ? !phoneNumberCheckStatus : undefined}
@@ -632,6 +633,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
               </div>
             }
             readOnly={isActive}
+            numericOnly
             required
           />
 

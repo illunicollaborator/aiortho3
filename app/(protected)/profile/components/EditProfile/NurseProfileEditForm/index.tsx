@@ -387,6 +387,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
 
       <OrthoInput
         label="휴대폰 번호"
+        maxLength={11}
         placeholder="휴대폰 번호를 입력해주세요"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
@@ -412,6 +413,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
           )
         }
         readOnly={!isPhoneReset || isActive}
+        numericOnly
         required
       />
 
