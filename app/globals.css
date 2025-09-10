@@ -42,17 +42,18 @@
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
   --color-aiortho-primary: var(--aiortho-primary);
+  --color-aiortho-secondary: var(--aiortho-secondary);
   --color-aiortho-disabled: var(--aiortho-disabled);
-  --color--aiortho-gray-100: var(--aiortho-gray-100);
-  --color--aiortho-gray-200: var(--aiortho-gray-200);
-  --color--aiortho-gray-300: var(--aiortho-gray-300);
-  --color--aiortho-gray-400: var(--aiortho-gray-400);
-  --color--aiortho-gray-500: var(--aiortho-gray-500);
-  --color--aiortho-gray-600: var(--aiortho-gray-600);
-  --color--aiortho-gray-700: var(--aiortho-gray-700);
-  --color--aiortho-gray-800: var(--aiortho-gray-800);
-  --color--aiortho-gray-900: var(--aiortho-gray-900);
-  --color--aiortho-danger: var(--aiortho-danger);
+  --color-aiortho-gray-100: var(--aiortho-gray-100);
+  --color-aiortho-gray-200: var(--aiortho-gray-200);
+  --color-aiortho-gray-300: var(--aiortho-gray-300);
+  --color-aiortho-gray-400: var(--aiortho-gray-400);
+  --color-aiortho-gray-500: var(--aiortho-gray-500);
+  --color-aiortho-gray-600: var(--aiortho-gray-600);
+  --color-aiortho-gray-700: var(--aiortho-gray-700);
+  --color-aiortho-gray-800: var(--aiortho-gray-800);
+  --color-aiortho-gray-900: var(--aiortho-gray-900);
+  --color-aiortho-danger: var(--aiortho-danger);
 }
 
 :root {

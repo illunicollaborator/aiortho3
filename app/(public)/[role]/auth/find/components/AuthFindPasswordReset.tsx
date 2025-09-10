@@ -146,7 +146,8 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           <Button
             type="button"
             variant="secondary"
-            className="w-full cursor-pointer py-5 rounded-full"
+            size="cancle"
+            className="cursor-pointer rounded-full"
             onClick={onCancel}
           >
             취소
@@ -154,8 +155,9 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
 
           <Button
             type="submit"
+            size="confirm"
             disabled={!isValid || resetPasswordMutation.isPending}
-            className="w-full cursor-pointer py-5 rounded-full"
+            className="cursor-pointer rounded-full"
           >
             {resetPasswordMutation.isPending ? <Spinner /> : '변경 완료'}
           </Button>
