@@ -85,7 +85,7 @@ const OrthoInput: FC<OrthoInputProps> = ({
             error &&
               !hideErrorBorder &&
               'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',
-            readOnly && 'border-[#DADFE9] cursor-not-allowed text-[color:var(--aiortho-gray-600)]',
+            readOnly && 'border-[#DADFE9] cursor-default text-[color:var(--aiortho-gray-600)]',
             className
           )}
           {...props}
