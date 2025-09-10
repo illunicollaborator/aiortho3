@@ -13,7 +13,7 @@ type TableColumnLabel =
 
 export interface TableColumn {
   id: keyof Patient | 'createdAt';
-  flex: string;
+  className: string;
   label: TableColumnLabel;
   sortKey: PatientListSortKey;
 }

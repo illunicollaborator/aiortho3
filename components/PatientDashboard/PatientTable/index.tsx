@@ -189,7 +189,7 @@ const PatientTable = ({
       <div
         ref={tableRef}
         className={cn(
-          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5 w-full',
+          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5',
           isDataChanging && 'opacity-90'
         )}
       >
@@ -218,7 +218,7 @@ const PatientTable = ({
           </div>
 
           {showSearchBar && (
-            <div className="flex flex-col justify-center px-3 py-2.5 rounded-2xl bg-slate-100 fill-slate-100 border border-transparent focus-within:border-[#0054A6] focus-within:border-2 focus-within:bg-white transition-colors">
+            <div className="flex flex-col justify-center px-3 py-2.5 rounded-full bg-slate-100 fill-slate-100 border border-transparent focus-within:border-[#0054A6] focus-within:bg-white transition-colors">
               <div className="flex gap-2 items-center">
                 <Search className="w-5 h-5 text-slate-400" />
                 <input
@@ -226,7 +226,7 @@ const PatientTable = ({
                   placeholder="검색"
                   value={search}
                   onChange={handleSearchChange}
-                  className="flex-1 bg-transparent border-none outline-none text-slate-400 placeholder:text-slate-400 focus:text-[#161621]"
+                  className="flex-1 bg-transparent border-none outline-none text-[#343F4E] placeholder:text-aiortho-gray-500"
                   aria-label="환자 검색"
                 />
               </div>
@@ -234,7 +234,7 @@ const PatientTable = ({
           )}
         </div>
 
-        <div className="mt-7 w-full overflow-x-auto">
+        <div className="mt-3 w-full overflow-x-auto">
           {/* 드래그 가능한 헤더 */}
           <PatientTableHeader
             columns={columns}
@@ -271,20 +271,12 @@ const PatientTable = ({
                 )}
               >
                 {patients.map((patient, index) => (
-                  <React.Fragment key={`${patient.patientId}-${index}`}>
-                    <PatientTableRow
-                      patient={patient}
-                      columnOrder={columns}
-                      onClick={() => handleTableRowClick(String(patient.patientId))}
-                    />
-                    {index < patients.length - 1 && (
-                      <img
-                        src="https://cdn.builder.io/api/v1/image/assets/304aa4871c104446b0f8164e96d049f4/c914df031f0a54b8061f5d8235a95b70eec4cdf0?placeholderIfAbsent=true"
-                        className="object-contain w-full stroke-[0.4px] stroke-slate-400"
-                        alt=""
-                      />
-                    )}
-                  </React.Fragment>
+                  <PatientTableRow
+                    key={`${patient.patientId}-${index}`}
+                    patient={patient}
+                    columnOrder={columns}
+                    onClick={() => handleTableRowClick(String(patient.patientId))}
+                  />
                 ))}
               </div>
             )}

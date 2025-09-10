@@ -5,7 +5,7 @@ import { StatusBadge } from '@/components/Badge';
 import { Patient, PrescriptionStatus } from '@/models';
 import { formatPeriod, formatISODate } from '@/lib/utils';
 import { TableColumn } from '../types';
-
+import { cn } from '@/lib/utils';
 interface PatientTableRowProps {
   patient: Patient;
   columnOrder: TableColumn[];
@@ -60,19 +60,21 @@ const PatientTableRow = ({ patient, columnOrder, onClick }: PatientTableRowProps
 
   return (
     <div
-      className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors"
+      className="flex items-center w-full px-3 min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors border-b-[0.4px] border-aiortho-gray-100"
       onClick={onClick}
     >
       {columnOrder.map(column => (
         <div
           key={column.id}
-          className={`flex justify-center items-center self-stretch px-2.5 py-7 my-auto min-h-[68px] ${column.flex} ${
+          className={cn(
+            'flex items-center px-3 py-[25.5px] self-stretch min-h-[68px] flex-1',
             column.label === '처방 상태'
               ? 'font-bold leading-none text-center whitespace-nowrap'
-              : 'whitespace-nowrap'
-          }`}
+              : 'whitespace-nowrap',
+            column.className
+          )}
         >
-          <div className="opacity-80 text-zinc-900 truncate text-ellipsis">
+          <div className="text-aiortho-gray-900 truncate text-ellipsis">
             {renderCellContent(column.label)}
           </div>
         </div>

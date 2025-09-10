@@ -24,7 +24,7 @@ const HomePage = () => {
   const { name, adminId } = profile;
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="flex flex-col">
       {/* HomeProfile */}
       <HomeProfile name={name} role={auth.role} code={adminId} />
 

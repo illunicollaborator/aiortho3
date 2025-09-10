@@ -33,27 +33,31 @@ function DraggableHeaderCell({
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex justify-center items-center px-3 py-3 my-auto min-h-12 ${column.flex} cursor-grab active:cursor-grabbing ${
-        isDragging ? 'z-50 opacity-50' : ''
-      }`}
+      className={cn(
+        'flex items-center px-3 py-3 min-h-12 cursor-grab flex-1 active:cursor-grabbing',
+        column.className,
+        isDragging && 'z-50 opacity-50'
+      )}
       {...attributes}
       {...listeners}
     >
-      <h2 className="text-sm font-bold opacity-80 text-zinc-900 select-none">{column.label}</h2>
+      <h2 className="text-sm font-bold text-aiortho-gray-900 select-none shrink-0">
+        {column.label}
+      </h2>
 
       <div
-        className="ml-1 shrink-0 cursor-pointer flex flex-col gap-0"
+        className="ml-2 shrink-0 cursor-pointer flex flex-col gap-0"
         onClick={() => onColumnSortChange(column.sortKey, column.id)}
       >
         <FaSortUp
           className={cn(
-            'w-3 h-3 text-zinc-400 -mb-1',
+            'w-5 h-4 text-aiortho-gray-200 -mb-1',
             sortBy && sortDirection === 'asc' && 'text-[var(--aiortho-primary)]'
           )}
         />
         <FaSortDown
           className={cn(
-            'w-3 h-3 text-zinc-400 -mt-1',
+            'w-5 h-4 text-aiortho-gray-200 -mt-1',
             sortBy && sortDirection === 'desc' && 'text-[var(--aiortho-primary)]'
           )}
         />
