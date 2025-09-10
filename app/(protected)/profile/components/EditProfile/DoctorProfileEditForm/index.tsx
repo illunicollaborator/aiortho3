@@ -410,7 +410,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
           if (error.statusCode === 4002) {
             setError('certificationNumber', { message: '유효하지 않은 전화번호입니다' });
           } else {
-            setError('certificationNumber', { message: '유효하지 않은 인증 코드입니다' });
+            setError('certificationNumber', { message: '인증 번호가 일치하지 않아요' });
           }
 
           setValue('certificationNumberCheckStatus', false, {
