@@ -73,7 +73,7 @@ export default function MultiColumnDropdown({
   return (
     <div
       ref={dropdownRef}
-      className={`scrollable absolute z-50 bg-white border border-gray-200 rounded-xl overflow-y-scroll ${width} ${className} shadow-[0_0_30px_0_#9FABC44D] max-h-[292px] p-2`}
+      className={`scrollable absolute z-50 bg-white rounded-xl overflow-y-scroll ${width} ${className} shadow-[0_0_30px_0_#9FABC44D] max-h-[292px] p-2`}
     >
       <div className={`grid ${gridClass} gap-1`}>
         {toMatrix(items, columns).map(row =>

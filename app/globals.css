@@ -156,18 +156,16 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* Custom scrollbar for elements with .scrollable class */
+/* 스크롤바 스타일 */
 .scrollable::-webkit-scrollbar {
-  width: 4px;
+  width: 12px; /* 전체 스크롤 영역 */
 }
 
 .scrollable::-webkit-scrollbar-thumb {
   background: var(--aiortho-gray-400);
-  border-radius: 12px; /* 스크롤바 둥근 테두리 */
-}
-
-.scrollable::-webkit-scrollbar-button {
-  display: none; /* Removes up/down arrows */
+  border-radius: 12px;
+  border: 4px solid transparent; /* 양쪽 여백 확보 */
+  background-clip: content-box; /* thumb를 4px로 보이게 */
 }
 
 .scrollable::-webkit-scrollbar-button:vertical:start:decrement,
@@ -180,6 +178,10 @@ body::-webkit-scrollbar {
 .scrollable::-webkit-scrollbar-button:vertical:end:increment {
   display: block;
   height: 6px;
+}
+
+.scrollable::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* Autocomplete 배경색 변경 방지 */
