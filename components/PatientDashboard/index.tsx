@@ -23,7 +23,7 @@ const PatientDashboard = ({}: PatientDashboardProps) => {
 
         <Button
           type="button"
-          className="cursor-pointer h-12"
+          className="cursor-pointer h-12 rounded-[14px]"
           onClick={() => router.push('/prescriptions/patients/register')}
         >
           환자 등록하기

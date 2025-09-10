@@ -9,18 +9,18 @@ export function StatusBadge({ status }: StatusBadgeProps) {
   const colorClasses: Record<PrescriptionStatus, { text: string; bg: string; dot: string }> = {
     [PrescriptionStatus.Pending]: {
       text: 'text-[#0CA147]',
-      bg: 'bg-[#73E484]/20',
+      bg: 'bg-[#E3FAE6]',
       dot: 'bg-[#0CA147]',
     },
     [PrescriptionStatus.Not_Created]: {
-      text: 'text-sky-600',
-      bg: 'bg-sky-500/20',
-      dot: 'bg-sky-600',
+      text: 'text-[#007DEB]',
+      bg: 'bg-[#D8EDFF]',
+      dot: 'bg-[#007DEB]',
     },
     [PrescriptionStatus.Prescripted]: {
-      text: 'text-zinc-900',
-      bg: 'bg-zinc-900/10',
-      dot: 'bg-zinc-900',
+      text: 'text-[#66798D]',
+      bg: 'bg-[#E1E5ED]',
+      dot: 'bg-[#66798D]',
     },
   };
 
@@ -28,11 +28,8 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
   return (
     <div className={`flex gap-1 justify-center items-center px-3 py-1 rounded-2xl ${bg} min-h-7`}>
-      <div
-        className={`flex shrink-0 self-stretch my-auto w-2 h-2 ${dot} rounded-full`}
-        aria-hidden="true"
-      />
-      <div className={`self-stretch my-auto ${text}`}>{PrescriptionStatusLabel[status]}</div>
+      <span className={`flex shrink-0 w-2 h-2 ${dot} rounded-full`} aria-hidden="true" />
+      <span className={`font-bold ${text}`}>{PrescriptionStatusLabel[status]}</span>
     </div>
   );
 }

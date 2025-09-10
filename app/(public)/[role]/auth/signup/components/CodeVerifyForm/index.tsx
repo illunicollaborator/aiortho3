@@ -51,16 +51,16 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
         },
         onError: error => {
           if (error.statusSubCode === 4012) {
-            setError('code', { message: '유효하지 않은 코드 입니다.' });
+            setError('code', { message: '가입 코드가 일치하지 않아요' });
             return;
           }
 
           if (error.statusSubCode === 4025) {
-            setError('code', { message: '이미 사용된 코드 입니다.' });
+            setError('code', { message: '이미 사용된 가입 코드에요' });
             return;
           }
 
-          setError('code', { message: '잠시 후 다시 시도해주세요.' });
+          setError('code', { message: '잠시 후 다시 시도해주세요' });
         },
       }
     );

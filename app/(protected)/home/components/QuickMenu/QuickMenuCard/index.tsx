@@ -10,7 +10,7 @@ interface QuickMenuCardProps {
 const QuickMenuCard: React.FC<QuickMenuCardProps> = ({ subtitle, title, icon, onClick }) => {
   return (
     <article
-      className="flex flex-col gap-2.5 items-start px-6 py-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-200 min-h-[120px] w-full sm:px-8 sm:py-7 cursor-pointer"
+      className="flex flex-col gap-2.5 items-start px-6 py-6 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] transition-shadow duration-200 min-h-[120px] w-full sm:px-8 sm:py-7 cursor-pointer"
       onClick={onClick}
     >
       <div className="flex gap-4 items-center justify-between w-full sm:gap-8 lg:gap-16">

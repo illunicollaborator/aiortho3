@@ -21,7 +21,7 @@ import { useAuthStore } from '@/store/authStore';
 import { useCreatePrescriptionRequest } from './hooks/useCreatePrescriptionRequest';
 
 const formSchema = z.object({
-  period: z.string().min(1, '치료 기간을 선택해주세요.'),
+  period: z.string().min(1, '치료 기간을 선택해주세요'),
 });
 
 export type FormValues = z.infer<typeof formSchema>;

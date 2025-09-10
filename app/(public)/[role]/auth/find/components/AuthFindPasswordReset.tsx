@@ -17,7 +17,7 @@ const resetPasswordSchema = z
   .object({
     password: z
       .string()
-      .min(1, { message: '비밀번호를 입력해주세요.' })
+      .min(1, { message: '비밀번호를 입력해주세요' })
       .min(8, { message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요' })
       .max(16, {
         message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
@@ -25,7 +25,7 @@ const resetPasswordSchema = z
       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/, {
         message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
       }),
-    confirmPassword: z.string().min(1, { message: '비밀번호를 다시 입력해주세요.' }),
+    confirmPassword: z.string().min(1, { message: '비밀번호를 다시 입력해주세요' }),
   })
   .refine(data => data.password === data.confirmPassword, {
     message: '변경할 비밀번호와 일치하지 않아요',

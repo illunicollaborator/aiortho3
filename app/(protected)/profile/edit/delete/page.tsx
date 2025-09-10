@@ -22,13 +22,13 @@ const schema = z.object({
   password: z
     .string()
     .min(8, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
     })
     .max(16, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
     })
     .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
     }),
 });
 
@@ -82,7 +82,7 @@ export default function ProfileDeletePage() {
         },
         onError: error => {
           if (error.statusSubCode === 4028) {
-            setError('password', { message: '비밀번호가 일치하지 않습니다.' });
+            setError('password', { message: '비밀번호가 일치하지 않습니다' });
           } else {
             toast.error('잠시 후 시도해주세요.');
           }

@@ -68,7 +68,7 @@ function DraggableTableHeader({
   };
 
   return (
-    <div className="flex items-center w-full rounded-xl bg-slate-100 bg-opacity-50 min-h-12">
+    <div className="flex items-center w-full rounded-xl bg-slate-100 bg-opacity-50 min-h-12 px-3">
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

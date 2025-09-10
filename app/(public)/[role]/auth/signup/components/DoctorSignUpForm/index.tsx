@@ -24,17 +24,17 @@ import { useMedicalLicenseCheck, usePhoneVerifyCheck, usePhoneVerifySend } from 
 const schema = z
   .object({
     signupCode: z.string(),
-    email: z.string().email({ message: '올바르지 않은 아이디 (이메일) 형식이에요.' }),
+    email: z.string().email({ message: '올바르지 않은 아이디 (이메일) 형식이에요' }),
     password: z
       .string()
       .min(8, {
-        message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+        message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
       })
       .max(16, {
-        message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+        message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
       })
       .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/, {
-        message: '영문, 숫자, 특수문자를 모두 포함해야 합니다.',
+        message: '영문, 숫자, 특수문자를 모두 포함해야 합니다',
       }),
     confirmPassword: z.string(),
     name: z
@@ -82,14 +82,14 @@ const schema = z
       .max(6, '6자리 이하 입력해주세요'),
     certificationNumberCheckStatus: z
       .boolean()
-      .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
+      .refine(val => val === true, { message: '인증번호 확인이 필요합니다' }),
     requiredTermsAgreed: z
       .boolean()
-      .refine(val => val === true, { message: '필수 약관에 동의해주세요.' }),
+      .refine(val => val === true, { message: '필수 약관에 동의해주세요' }),
   })
   .refine(data => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
-    message: '비밀번호가 일치하지 않습니다.',
+    message: '비밀번호가 일치하지 않습니다',
   });
 
 type FormValues = z.infer<typeof schema>;
@@ -399,7 +399,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           if (error.statusCode === 4002) {
             setError('certificationNumber', { message: '유효하지 않은 전화번호입니다' });
           } else {
-            setError('certificationNumber', { message: '유효하지 않은 인증 코드입니다' });
+            setError('certificationNumber', { message: '인증 번호가 일치하지 않아요' });
           }
 
           setValue('certificationNumberCheckStatus', false, {
@@ -467,7 +467,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             apiResponse={emailCheckStatus !== null ? !emailCheckStatus : undefined}
             apiResponseMessage={
               emailCheckStatus && !Boolean(errors.email)
-                ? '사용가능한 아이디 (이메일)에요.'
+                ? '사용가능한 아이디 (이메일)에요'
                 : undefined
             }
             error={errors.email?.message}
@@ -610,9 +610,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             placeholder="휴대폰 번호를 입력해주세요"
             registration={register('phoneNumber')}
             apiResponse={phoneNumberCheckStatus !== null ? !phoneNumberCheckStatus : undefined}
-            apiResponseMessage={
-              phoneNumberCheckStatus === true ? '사용 가능한 전화번호입니다.' : ''
-            }
+            apiResponseMessage={phoneNumberCheckStatus === true ? '사용 가능한 전화번호입니다' : ''}
             error={errors.phoneNumber?.message}
             rightIcon={
               <div className="flex items-center gap-2 md:gap-5 py-2">
