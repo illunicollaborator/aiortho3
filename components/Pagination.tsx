@@ -73,7 +73,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         >
           <path
             d="M10 12L6 8L10 4"
-            stroke="#8395AC"
+            stroke="#66798D"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -122,7 +122,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         >
           <path
             d="M10 12L6 8L10 4"
-            stroke="#8395AC"
+            stroke="#66798D"
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
