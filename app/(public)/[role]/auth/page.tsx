@@ -14,9 +14,13 @@ import { AutoLoginCheckIcon } from '@/components/Icon';
 
 // Define schema with Zod
 const loginSchema = z.object({
-  email: z.string().email({ message: '올바르지 않은 아이디 (이메일) 형식이에요.' }),
+  email: z
+    .string()
+    .min(1, { message: '아이디를 입력해주세요' })
+    .email({ message: '올바르지 않은 아이디 (이메일) 형식이에요.' }),
   password: z
     .string()
+    .min(1, { message: '비밀번호를 입력해주세요' })
     .min(8, { message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요' })
     .max(16, {
       message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
