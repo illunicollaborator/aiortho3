@@ -3,7 +3,10 @@ interface AutoLoginCheckIconProps {
   onClick?: () => void;
 }
 
-export const AutoLoginCheckIcon = ({ isChecked = false, onClick }: AutoLoginCheckIconProps) => {
+export default function AutoLoginCheckIcon({
+  isChecked = false,
+  onClick,
+}: AutoLoginCheckIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,4 +32,4 @@ export const AutoLoginCheckIcon = ({ isChecked = false, onClick }: AutoLoginChec
       />
     </svg>
   );
-};
+}

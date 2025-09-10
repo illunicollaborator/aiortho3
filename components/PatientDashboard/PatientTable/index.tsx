@@ -5,7 +5,6 @@ import { TableColumn } from './types';
 import { loadColumnOrder, saveColumnOrder } from '../utils';
 import { Search } from 'lucide-react';
 import { useDebounce } from '@/hooks/useDebounce';
-import { SquareCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePatients } from '@/hooks/usePatients';
 import Spinner from '@/components/Spinner';
@@ -13,6 +12,7 @@ import Pagination from '@/components/Pagination';
 import Divider from '@/components/Divider';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { SquareCheck } from '@/components/Icon';
 
 const PER_PAGE_SIZE = 10;
 
@@ -204,20 +204,14 @@ const PatientTable = ({
             </div>
 
             {showMyPatientFilter && (
-              <div className="flex gap-2 items-center text-sm font-medium leading-non text-slate-400">
+              <div className="flex gap-3 items-center text-sm font-medium leading-non text-slate-400">
                 <button
                   type="button"
-                  className="self-stretch my-auto flex items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  className="self-stretch my-auto flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                   aria-label="내 환자만 보기 필터 적용"
                   onClick={handleFindMyPatientToggle}
                 >
-                  <SquareCheck
-                    className={cn(
-                      'w-4 h-4 text-gray-500',
-                      isFindMyPatient && 'text-white fill-sky-700'
-                    )}
-                  />
-                  내 환자만 보기
+                  <SquareCheck isChecked={isFindMyPatient} />내 환자만 보기
                 </button>
               </div>
             )}
