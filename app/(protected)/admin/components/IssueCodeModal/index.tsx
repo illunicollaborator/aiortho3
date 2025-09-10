@@ -53,7 +53,7 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
         onError: error => {
           if (error.statusSubCode === 4003) {
             setError('phoneNumber', {
-              message: '이미 등록된 전화번호입니다',
+              message: '이미 가입된 휴대폰 번호예요',
             });
 
             return;
