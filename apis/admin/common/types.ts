@@ -1,8 +1,9 @@
-import { Hospital, MedicalDepartmentInfo } from '@/models';
+import { Hospital, MedicalDepartmentInfo, UserRole } from '@/models';
 
 export interface LoginRequest {
   email: string;
   password: string;
+  role: UserRole;
 }
 
 export interface LoginResponse {

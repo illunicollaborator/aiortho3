@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import OrthoInput from '@/components/OrthoInput';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,119 +17,9 @@ import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector'
 import MedicalDepartmentSelector from '@/components/MedicalDepartmentSelector';
 import NurseManagerSelector from '@/components/NurseManagerSelector';
 import { useTimer } from '@/hooks/useTimer';
-import { formatTime } from '@/lib/utils';
+import { formatTime, createProfilePhoneNumberSchema } from '@/lib/utils';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useRouter } from 'next/navigation';
-
-const schema = z
-  .object({
-    signupCode: z.string(),
-    email: z.string(),
-    password: z
-      .string()
-      .optional()
-      .refine(
-        value => {
-          if (!value) return true; // required 체크
-          if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
-        },
-        {
-          message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
-        }
-      ),
-    nextPassword: z
-      .string()
-      .optional()
-      .refine(
-        value => {
-          if (!value) return true; // required 체크
-          if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
-        },
-        {
-          message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
-        }
-      ),
-    nextPasswordConfirm: z
-      .string()
-      .optional()
-      .refine(
-        value => {
-          if (!value) return true; // required 체크
-          if (value.length < 8 || value.length > 16) return false;
-          return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
-        },
-        {
-          message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
-        }
-      ),
-    name: z
-      .string()
-      .min(2, { message: '이름은 2자 이상 입력해주세요' })
-      .max(10, { message: '이름은 10자 이하로 입력해주세요' })
-      .regex(/^[가-힣]+$/, { message: '한글만 입력 가능합니다' })
-      .refine(
-        val => {
-          const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
-          return !singleConsonantVowel.test(val);
-        },
-        { message: '자음이나 모음만 사용할 수 없습니다' }
-      ),
-    medicalLicense: z
-      .string()
-      .min(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' })
-      .max(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' }),
-    medicalLicenseCheckStatus: z.boolean().refine(val => val === true, {
-      message: '의료 면허 번호를 검증해주세요.',
-    }),
-    medicalInstitution: z.object({
-      hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
-      name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
-      address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
-    }),
-    medicalDepartment: z.object({
-      code: z.string().min(1, { message: '진료과를 선택해주세요' }),
-      name: z.string().min(1, { message: '진료과를 선택해주세요' }),
-    }),
-    specialties: z
-      .object({
-        code: z.string(),
-        name: z.string(),
-      })
-      .optional(),
-    specialistLicense: z.string().optional(),
-    nurseIds: z
-      .array(z.string())
-      .refine(val => !val || val.length <= 10, {
-        message: '담당 간호사는 최대 10명까지 선택할 수 있습니다.',
-      })
-      .optional(),
-    phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
-    certificationNumber: z.string(),
-    certificationNumberCheckStatus: z
-      .boolean()
-      .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
-  })
-  .refine(
-    data => {
-      if (data.certificationNumberCheckStatus === false) {
-        if (!data.certificationNumber || data.certificationNumber.length < 6) {
-          return false;
-        }
-        if (data.certificationNumber.length > 6) {
-          return false;
-        }
-      }
-      return true;
-    },
-    {
-      message: '6자리로 입력해주세요',
-      path: ['certificationNumber'],
-    }
-  );
-
-type FormValues = z.infer<typeof schema>;
 
 interface DoctorProfileEditFormProps {
   profile: Doctor;
@@ -138,15 +28,139 @@ interface DoctorProfileEditFormProps {
 export default function DoctorProfileEditForm({ profile }: DoctorProfileEditFormProps) {
   const router = useRouter();
 
+  const schema = z
+    .object({
+      signupCode: z.string(),
+      email: z.string(),
+      password: z
+        .string()
+        .optional()
+        .refine(
+          value => {
+            if (!value) return true; // required 체크
+            if (value.length < 8 || value.length > 16) return false;
+            return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
+          },
+          {
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+          }
+        ),
+      nextPassword: z
+        .string()
+        .optional()
+        .refine(
+          value => {
+            if (!value) return true; // required 체크
+            if (value.length < 8 || value.length > 16) return false;
+            return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
+          },
+          {
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+          }
+        ),
+      nextPasswordConfirm: z
+        .string()
+        .optional()
+        .refine(
+          value => {
+            if (!value) return true; // required 체크
+            if (value.length < 8 || value.length > 16) return false;
+            return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
+          },
+          {
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+          }
+        ),
+      name: z
+        .string()
+        .min(2, { message: '이름은 2자 이상 입력해주세요' })
+        .max(10, { message: '이름은 10자 이하로 입력해주세요' })
+        .regex(/^[가-힣]+$/, { message: '한글만 입력 가능합니다' })
+        .refine(
+          val => {
+            const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
+            return !singleConsonantVowel.test(val);
+          },
+          { message: '자음이나 모음만 사용할 수 없습니다' }
+        ),
+      medicalLicense: z
+        .string()
+        .min(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' })
+        .max(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' }),
+      medicalLicenseCheckStatus: z.boolean().refine(val => val === true, {
+        message: '의료 면허 번호를 검증해주세요.',
+      }),
+      medicalInstitution: z.object({
+        hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+        name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+        address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
+      }),
+      medicalDepartment: z.object({
+        code: z.string().min(1, { message: '진료과를 선택해주세요' }),
+        name: z.string().min(1, { message: '진료과를 선택해주세요' }),
+      }),
+      specialties: z
+        .object({
+          code: z.string(),
+          name: z.string(),
+        })
+        .optional(),
+      specialistLicense: z.string().optional(),
+      nurseIds: z
+        .array(z.string())
+        .refine(val => !val || val.length <= 10, {
+          message: '담당 간호사는 최대 10명까지 선택할 수 있습니다.',
+        })
+        .optional(),
+      phoneNumber: createProfilePhoneNumberSchema(profile.phoneNumber),
+      certificationNumber: z.string(),
+      certificationNumberCheckStatus: z
+        .boolean()
+        .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
+    })
+    .refine(
+      data => {
+        if (data.certificationNumberCheckStatus === false) {
+          if (!data.certificationNumber || data.certificationNumber.length < 6) {
+            return false;
+          }
+          if (data.certificationNumber.length > 6) {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: '6자리로 입력해주세요',
+        path: ['certificationNumber'],
+      }
+    )
+    .refine(
+      data => {
+        // 비밀번호 변경 시 일치 확인
+        if (data.nextPassword || data.nextPasswordConfirm) {
+          return data.nextPassword === data.nextPasswordConfirm;
+        }
+        return true;
+      },
+      {
+        message: '변경할 비밀번호가 일치하지 않습니다',
+        path: ['nextPasswordConfirm'],
+      }
+    );
+
+  type FormValues = z.infer<typeof schema>;
+
   const {
     handleSubmit,
     register,
     watch,
     setValue,
     setError,
+    setFocus,
+    trigger,
     formState: { errors, isValid, isDirty, dirtyFields },
   } = useForm<FormValues>({
-    mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: {
       signupCode: profile.signupCode,
@@ -159,7 +173,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
       medicalLicenseCheckStatus: true,
       medicalInstitution: profile.hospitalInfo,
       medicalDepartment: profile.departmentInfo,
-      specialties: profile.specialityFieldInfo,
+      specialties: profile.specialityFieldInfo ?? { code: '', name: '' },
       specialistLicense: profile.specialistLicenseNumber,
       nurseIds: profile.nurseIds,
       phoneNumber: profile.phoneNumber,
@@ -168,12 +182,12 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
     },
   });
 
-  console.log(errors);
-  console.log(isDirty, isValid, dirtyFields);
-
   const [showPassword, setShowPassword] = useState(false);
   const [showNextPassword, setShowNextPassword] = useState(false);
   const [showNextPasswordConfirm, setShowNextPasswordConfirm] = useState(false);
+
+  const nextPassword = watch('nextPassword');
+  const nextPasswordConfirm = watch('nextPasswordConfirm');
 
   const medicalInstitution = watch('medicalInstitution');
   const medicalDepartment = watch('medicalDepartment');
@@ -333,24 +347,30 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
 
   const handlePhoneNumberReset = () => {
     setValue('phoneNumber', '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
     });
     setValue('certificationNumber', '', {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
     });
     setValue('certificationNumberCheckStatus', false, {
-      shouldValidate: true,
-      shouldDirty: true,
-      shouldTouch: true,
+      shouldValidate: false,
+      shouldDirty: false,
+      shouldTouch: false,
     });
     setIsPhoneReset(true);
   };
 
-  const handlePhoneNumberCheck = () => {
+  const handlePhoneNumberCheck = async () => {
+    // 휴대폰 번호 필드 검증
+    const isValid = await trigger('phoneNumber');
+    if (!isValid) {
+      return; // 검증 실패 시 API 호출하지 않음
+    }
+
     phoneVerifySend(
       { phoneNumber },
       {
@@ -402,6 +422,12 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
       }
     );
   };
+
+  useEffect(() => {
+    if (isPhoneReset) {
+      setFocus('phoneNumber');
+    }
+  }, [isPhoneReset, setFocus]);
 
   return (
     <form
@@ -471,7 +497,8 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
           dirtyFields.nextPasswordConfirm &&
           !errors.password &&
           !errors.nextPassword &&
-          !errors.nextPasswordConfirm
+          !errors.nextPasswordConfirm &&
+          nextPassword === nextPasswordConfirm
             ? '변경할 비밀번호와 일치해요'
             : undefined
         }
@@ -515,14 +542,15 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         rightIcon={
           <Button
             type="button"
-            onClick={() => handleMedicalLicenseCheck()}
-            className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
+            variant="input"
+            size="inputConfirm"
             disabled={
               medicalLicenseCheckStatus === true ||
               Boolean(errors.medicalLicense) ||
               !dirtyFields.medicalLicense ||
               !medicalLicense
             }
+            onClick={() => handleMedicalLicenseCheck()}
           >
             중복확인
           </Button>
@@ -583,6 +611,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
 
       <OrthoInput
         label="휴대폰 번호"
+        maxLength={11}
         placeholder="휴대폰 번호를 입력해주세요"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
@@ -591,23 +620,26 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
           isPhoneReset ? (
             <Button
               type="button"
+              variant="input"
+              size="inputCertify"
+              disabled={isPhoneVerifySendPending || isActive}
               onClick={handlePhoneNumberCheck}
-              className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
-              disabled={Boolean(errors.phoneNumber) || isPhoneVerifySendPending || isActive}
             >
               인증번호 전송
             </Button>
           ) : (
             <Button
               type="button"
+              variant="input"
+              size="inputCertify"
               onClick={handlePhoneNumberReset}
-              className="text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer"
             >
               다른번호 변경
             </Button>
           )
         }
         readOnly={!isPhoneReset || isActive}
+        numericOnly
         required
       />
 
@@ -634,6 +666,8 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
               )}
               <Button
                 type="button"
+                variant="input"
+                size="inputConfirm"
                 onClick={handleCertificationNumberCheck}
                 disabled={
                   Boolean(errors.certificationNumber) ||
@@ -641,7 +675,6 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
                   !isActive ||
                   isPhoneVerifyCheckPending
                 }
-                className={`text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer`}
               >
                 확인
               </Button>
@@ -664,7 +697,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         <Button
           type="submit"
           className="flex-1 h-12 rounded-full cursor-pointer"
-          disabled={isUpdateDoctorProfilePending || !isDirty || !isValid}
+          disabled={isUpdateDoctorProfilePending || !isValid}
         >
           수정 완료
         </Button>

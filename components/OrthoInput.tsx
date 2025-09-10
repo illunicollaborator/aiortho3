@@ -22,6 +22,8 @@ interface OrthoInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 's
   className?: string;
   value?: string;
   isDirty?: boolean;
+  numericOnly?: boolean;
+  hideErrorBorder?: boolean;
 }
 
 const OrthoInput: FC<OrthoInputProps> = ({
@@ -43,6 +45,8 @@ const OrthoInput: FC<OrthoInputProps> = ({
   value,
   readOnly,
   isDirty,
+  numericOnly = false,
+  hideErrorBorder = false,
   ...props
 }) => {
   const [hasValue, setHasValue] = useState(false);
@@ -79,20 +83,26 @@ const OrthoInput: FC<OrthoInputProps> = ({
           className={cn(
             'w-full placeholder:text-[color:var(--aiortho-gray-400)] h-12 rounded-xl',
             error &&
+              !hideErrorBorder &&
               'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',
-            isDirty &&
-              hasValue &&
-              !error &&
-              'border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]',
             readOnly && 'border-[#DADFE9] cursor-not-allowed text-[color:var(--aiortho-gray-600)]',
             className
           )}
+          {...props}
           {...registration}
           onChange={e => {
-            setHasValue(e.target.value.length > 0);
+            let newValue = e.target.value;
+
+            if (numericOnly) {
+              newValue = newValue.replace(/[^0-9]/g, '');
+              e.target.value = newValue;
+            }
+
+            setHasValue(newValue.length > 0);
             registration?.onChange && registration.onChange(e);
             onChange && onChange(e);
           }}
+          inputMode={numericOnly ? 'numeric' : undefined}
           onFocus={e => {
             if (readOnly) {
               e.target.blur();
@@ -101,7 +111,6 @@ const OrthoInput: FC<OrthoInputProps> = ({
           maxLength={maxLength}
           minLength={minLength}
           value={value}
-          {...props}
         />
         {rightIcon && (
           <div

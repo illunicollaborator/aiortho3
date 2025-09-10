@@ -5,12 +5,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useFindId } from '../hooks/useFindId';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { phoneNumberSchema } from '@/lib/utils';
 import { toast } from 'sonner';
 import { AuthFindIdFormValues } from '../types';
 
 const findIdSchema = z.object({
   name: z.string().min(1, '이름을 입력해주세요'),
-  phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
+  phoneNumber: phoneNumberSchema,
 });
 
 type FormIdValues = z.infer<typeof findIdSchema>;
@@ -25,11 +26,10 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     setError,
   } = useForm<FormIdValues>({
     resolver: zodResolver(findIdSchema),
-    mode: 'onChange',
     defaultValues: {
       name: '',
       phoneNumber: '',
@@ -42,21 +42,9 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
         onSubmit && onSubmit(data);
       },
       onError: err => {
-        if (err.statusSubCode === 4002) {
+        if (err.statusSubCode === 4002 || err.statusSubCode === 4028) {
           setError('phoneNumber', {
-            message: '유효하지 않은 휴대폰 번호입니다',
-          });
-
-          return;
-        }
-
-        if (err.statusSubCode === 4028) {
-          setError('name', {
-            message: ' ',
-          });
-
-          setError('phoneNumber', {
-            message: '올바른 정보를 입력해주세요',
+            message: '입력한 정보가 맞는지 다시 한 번 확인해주세요',
           });
 
           return;
@@ -70,25 +58,29 @@ export default function AuthFindIdForm({ onSubmit }: AuthFindIdFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmitId)} className="space-y-10 mt-8">
+    <form onSubmit={handleSubmit(onSubmitId)} className="space-y-10 mt-9">
       <OrthoInput
         label="이름"
         placeholder="이름을 입력해주세요"
         registration={register('name')}
         error={errors.name?.message}
+        hideErrorBorder
       />
 
       <OrthoInput
         label="휴대폰 번호"
-        placeholder="휴대폰 번호를 입력해주세요 (01012345678)"
+        maxLength={11}
+        placeholder="휴대폰 번호를 입력해주세요"
         registration={register('phoneNumber')}
         error={errors.phoneNumber?.message}
+        numericOnly
+        hideErrorBorder
       />
 
       <Button
         type="submit"
         className="w-full py-5 mt-4 rounded-full cursor-pointer h-12 text-white"
-        disabled={!isValid || postFindIdMutation.isPending}
+        disabled={postFindIdMutation.isPending}
       >
         {postFindIdMutation.isPending ? <Spinner /> : '다음'}
       </Button>

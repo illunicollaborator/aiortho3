@@ -51,29 +51,29 @@ export default function AuthPage() {
   });
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
-    loginMutation.mutate(data, {
-      onSuccess: () => {
-        router.push('/home');
-      },
-      onError: err => {
-        setError('email', {
-          type: 'manual',
-          message: ' ',
-        });
+    const loginRole = role === 'doctor' ? 'Doctor' : 'Nurse';
 
-        if (err.statusSubCode === 4000) {
-          setError('password', {
-            type: 'manual',
-            message: '아이디(이메일) 혹은 비밀번호가 올바르지 않아요',
-          });
-        } else {
-          setError('password', {
-            type: 'manual',
-            message: '로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
-          });
-        }
-      },
-    });
+    loginMutation.mutate(
+      { ...data, role: loginRole },
+      {
+        onSuccess: () => {
+          router.push('/home');
+        },
+        onError: err => {
+          if (err.statusSubCode === 4000) {
+            setError('password', {
+              type: 'manual',
+              message: '아이디(이메일) 혹은 비밀번호가 올바르지 않아요',
+            });
+          } else {
+            setError('password', {
+              type: 'manual',
+              message: '로그인 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.',
+            });
+          }
+        },
+      }
+    );
   };
 
   const togglePasswordVisibility = () => {
@@ -102,6 +102,7 @@ export default function AuthPage() {
             placeholder="아이디를 입력해주세요"
             registration={register('email')}
             error={errors.email?.message}
+            hideErrorBorder={loginMutation.isError}
           />
 
           <OrthoInput
@@ -118,6 +119,7 @@ export default function AuthPage() {
               )
             }
             onRightIconClick={togglePasswordVisibility}
+            hideErrorBorder={loginMutation.isError}
           />
 
           <div className="flex justify-between items-center w-full ">

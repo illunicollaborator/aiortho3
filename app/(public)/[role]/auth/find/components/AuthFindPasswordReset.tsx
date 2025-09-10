@@ -9,7 +9,7 @@ import OrthoInput from '@/components/OrthoInput';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import Spinner from '@/components/Spinner';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useResetPassword } from '../hooks/useResetPassword';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 
@@ -41,6 +41,7 @@ interface AuthFindPasswordResetProps {
 
 const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) => {
   const router = useRouter();
+  const { role } = useParams();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -85,7 +86,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
       {
         onSuccess: () => {
           showSuccessToast('비밀번호 변경 완료', '다시 로그인 해주세요.');
-          router.push('/');
+          router.push(`/${role}/auth`);
         },
         onError: err => {
           toast.error('서버 에러가 발생했습니다.', {
@@ -143,8 +144,10 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
 
         <div className="grid grid-cols-2 gap-5">
           <Button
+            type="button"
             variant="secondary"
-            className="w-full cursor-pointer py-5 rounded-full"
+            size="cancle"
+            className="cursor-pointer rounded-full"
             onClick={onCancel}
           >
             취소
@@ -152,8 +155,9 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
 
           <Button
             type="submit"
+            size="confirm"
             disabled={!isValid || resetPasswordMutation.isPending}
-            className="w-full cursor-pointer py-5 rounded-full"
+            className="cursor-pointer rounded-full"
           >
             {resetPasswordMutation.isPending ? <Spinner /> : '변경 완료'}
           </Button>

@@ -8,7 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import { useCheckEmail, useNurseSignUp } from '../../hooks';
 import MedicalInstitutionSelector from '@/components/MedicalInstitutionSelector';
 import SignupCheckList from '../SignupCheckList';
-import { formatTime } from '@/lib/utils';
+import { formatTime, phoneNumberSchema } from '@/lib/utils';
 import { useTimer } from '@/hooks/useTimer';
 import { HospitalInfo } from '@/models';
 import { useRouter } from 'next/navigation';
@@ -48,7 +48,7 @@ const schema = z
       name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
       address: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
     }),
-    phoneNumber: z.string().min(10, '10자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
+    phoneNumber: phoneNumberSchema,
     certificationNumber: z
       .string()
       .min(6, '6자리 이상 입력해주세요')
@@ -76,10 +76,10 @@ export default function NurseSignUpForm() {
     setValue,
     setError,
     clearErrors,
+    trigger,
     formState: { errors, isValid, isSubmitting },
     watch,
   } = useForm<FormValues>({
-    mode: 'onChange',
     resolver: zodResolver(schema),
     defaultValues: {
       email: '',
@@ -124,9 +124,6 @@ export default function NurseSignUpForm() {
   const { timer, isActive, setTimer, setIsActive } = useTimer();
 
   const nurseSignUpMutation = useNurseSignUp();
-
-  // 선택된 의료기관 이름 관리
-  const [selectedInstitutionName, setSelectedInstitutionName] = useState<string>('');
 
   // 이메일 입력값 변경 감지
   useEffect(() => {
@@ -217,7 +214,13 @@ export default function NurseSignUpForm() {
     }
   };
 
-  const handlePhoneNumberCheck = () => {
+  const handlePhoneNumberCheck = async () => {
+    // 휴대폰 번호 필드 검증
+    const isValid = await trigger('phoneNumber');
+    if (!isValid) {
+      return; // 검증 실패 시 API 호출하지 않음
+    }
+
     phoneVerifySendMutation.mutate(
       { phoneNumber },
       {
@@ -395,6 +398,7 @@ export default function NurseSignUpForm() {
 
           <OrthoInput
             label="휴대폰 번호"
+            maxLength={11}
             placeholder="휴대폰 번호를 입력해주세요"
             registration={register('phoneNumber')}
             apiResponse={phoneNumberCheckStatus !== null ? !phoneNumberCheckStatus : undefined}
@@ -412,7 +416,6 @@ export default function NurseSignUpForm() {
                   disabled={
                     phoneVerifySendMutation.isPending ||
                     phoneVerifySendMutation.isError ||
-                    Boolean(errors.phoneNumber) ||
                     !phoneNumber ||
                     isActive
                   }
@@ -422,6 +425,7 @@ export default function NurseSignUpForm() {
               </div>
             }
             readOnly={isActive}
+            numericOnly
             required
           />
 
