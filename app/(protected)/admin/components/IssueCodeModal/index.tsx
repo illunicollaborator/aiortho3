@@ -10,9 +10,9 @@ import { showSuccessToast } from '@/components/ui/toast-notification';
 const phoneNumberSchema = z.object({
   phoneNumber: z
     .string()
-    .min(10, '올바른 휴대폰 번호 형식이 아니에요.')
-    .max(11, '올바른 휴대폰 번호 형식이 아니에요.')
-    .regex(/^01[0-9]{8,9}$/, '올바른 휴대폰 번호 형식이 아니에요.'),
+    .min(10, '올바른 휴대폰 번호 형식이 아니에요')
+    .max(11, '올바른 휴대폰 번호 형식이 아니에요')
+    .regex(/^01[0-9]{8,9}$/, '올바른 휴대폰 번호 형식이 아니에요'),
 });
 
 type FormValues = z.infer<typeof phoneNumberSchema>;
@@ -68,7 +68,7 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
           }
 
           setError('phoneNumber', {
-            message: '잠시 후 다시 시도해주세요.',
+            message: '잠시 후 다시 시도해주세요',
           });
         },
       }

@@ -12,7 +12,7 @@ import { showSuccessToast } from '@/components/ui/toast-notification';
 // Define schema with Zod
 const preRegisterSchema = z.object({
   phoneNumber: z.string().min(9, '9자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),
-  email: z.string().email({ message: '올바르지 않은 이메일 형식이에요.' }),
+  email: z.string().email({ message: '올바르지 않은 이메일 형식이에요' }),
   hospitalName: z.string().min(1, { message: '병원명을 입력해주세요' }),
   hospitalAddress: z.string().min(1, { message: '병원 주소를 입력해주세요' }),
   hospitalPhone: z.string().min(9, '9자리 이상 입력해주세요').max(11, '11자리 이하 입력해주세요'),

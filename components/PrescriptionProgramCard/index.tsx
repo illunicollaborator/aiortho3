@@ -42,15 +42,15 @@ interface PrescriptionProgramCardProps {
 
 // 검증 스키마 정의
 const exerciseSchema = z.object({
-  exerciseId: z.string().min(1, '운동 종류를 선택해주세요.'),
-  duration: z.number().min(1, '운동 시간을 선택해주세요.'),
+  exerciseId: z.string().min(1, '운동 종류를 선택해주세요'),
+  duration: z.number().min(1, '운동 시간을 선택해주세요'),
   direction: z.nativeEnum(ExerciseDirection),
   description: z.string().optional(),
   name: z.string(),
 });
 
 const formSchema = z.object({
-  exercises: z.array(exerciseSchema).min(1, '최소 1개의 운동이 필요합니다.'),
+  exercises: z.array(exerciseSchema).min(1, '최소 1개의 운동이 필요합니다'),
   repetitions: z.number().min(3).max(12),
 });
 

@@ -42,7 +42,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
           }
         ),
       nextPassword: z
@@ -55,7 +55,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
           }
         ),
       nextPasswordConfirm: z
@@ -68,7 +68,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
           }
         ),
       name: z
@@ -88,7 +88,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         .min(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' })
         .max(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' }),
       medicalLicenseCheckStatus: z.boolean().refine(val => val === true, {
-        message: '의료 면허 번호를 검증해주세요.',
+        message: '의료 면허 번호를 검증해주세요',
       }),
       medicalInstitution: z.object({
         hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
@@ -109,14 +109,14 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
       nurseIds: z
         .array(z.string())
         .refine(val => !val || val.length <= 10, {
-          message: '담당 간호사는 최대 10명까지 선택할 수 있습니다.',
+          message: '담당 간호사는 최대 10명까지 선택할 수 있습니다',
         })
         .optional(),
       phoneNumber: createProfilePhoneNumberSchema(profile.phoneNumber),
       certificationNumber: z.string(),
       certificationNumberCheckStatus: z
         .boolean()
-        .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
+        .refine(val => val === true, { message: '인증번호 확인이 필요합니다' }),
     })
     .refine(
       data => {
@@ -159,7 +159,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
     setError,
     setFocus,
     trigger,
-    formState: { errors, isValid, isDirty, dirtyFields },
+    formState: { errors, isValid, dirtyFields },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -529,7 +529,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         error={
           errors.medicalLicense?.message ||
           (dirtyFields.medicalLicense && medicalLicenseCheckStatus === false
-            ? '의사 면허 번호를 검증해주세요.'
+            ? '의사 면허 번호를 검증해주세요'
             : '')
         }
         apiResponse={dirtyFields.medicalLicense && !medicalLicenseCheckStatus}

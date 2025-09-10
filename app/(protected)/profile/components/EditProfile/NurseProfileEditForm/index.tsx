@@ -29,7 +29,7 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
           }
         ),
       nextPassword: z
@@ -42,7 +42,7 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
           }
         ),
       nextPasswordConfirm: z
@@ -55,7 +55,7 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요.',
+            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
           }
         ),
       name: z
@@ -79,7 +79,7 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
       certificationNumber: z.string(),
       certificationNumberCheckStatus: z
         .boolean()
-        .refine(val => val === true, { message: '인증번호 확인이 필요합니다.' }),
+        .refine(val => val === true, { message: '인증번호 확인이 필요합니다' }),
     })
     .refine(
       data => {
