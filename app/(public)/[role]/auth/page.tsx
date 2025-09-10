@@ -60,11 +60,6 @@ export default function AuthPage() {
           router.push('/home');
         },
         onError: err => {
-          setError('email', {
-            type: 'manual',
-            message: ' ',
-          });
-
           if (err.statusSubCode === 4000) {
             setError('password', {
               type: 'manual',
@@ -107,6 +102,7 @@ export default function AuthPage() {
             placeholder="아이디를 입력해주세요"
             registration={register('email')}
             error={errors.email?.message}
+            hideErrorBorder={loginMutation.isError}
           />
 
           <OrthoInput
@@ -123,6 +119,7 @@ export default function AuthPage() {
               )
             }
             onRightIconClick={togglePasswordVisibility}
+            hideErrorBorder={loginMutation.isError}
           />
 
           <div className="flex justify-between items-center w-full ">
