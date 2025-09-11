@@ -23,6 +23,26 @@ export function formatTime(seconds: number): string {
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
+// 초단위를 한국어 시간 형태로 반환하는 함수 (0인 경우 해당 단위 생략)
+export function formatDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (minutes === 0 && remainingSeconds === 0) {
+    return '0초';
+  }
+
+  if (minutes === 0) {
+    return `${remainingSeconds}초`;
+  }
+
+  if (remainingSeconds === 0) {
+    return `${minutes}분`;
+  }
+
+  return `${minutes}분 ${remainingSeconds}초`;
+}
+
 // 날짜 형식 변환 함수 (YYYYMMDD -> YYYY.MM.DD 또는 YYYY.MM.DD (요일))
 export function formatDate(dateString: string, includeDayOfWeek: boolean = false): string {
   if (!dateString || dateString.length !== 8) return '-';
