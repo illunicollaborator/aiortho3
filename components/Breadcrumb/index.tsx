@@ -52,6 +52,7 @@ export const generateBreadcrumbs = (pathname: string): Array<Breadcrumb> => {
       breadcrumbs.push({
         ...routeInfo,
         label,
+        path: currentPath, // 동적 라우트 패턴 대신 실제 경로 사용
         isClickable: false,
         routeExists,
       });
