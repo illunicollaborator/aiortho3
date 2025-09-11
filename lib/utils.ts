@@ -118,6 +118,94 @@ export function calculateWeeks(startDate: string, endDate: string): number {
   }
 }
 
+// YYYYMMDD 형식의 날짜를 Date 객체로 변환하는 헬퍼 함수
+export function parseYYYYMMDD(dateString: string): Date | null {
+  if (!dateString || dateString.length !== 8) return null;
+
+  try {
+    const year = parseInt(dateString.substring(0, 4));
+    const month = parseInt(dateString.substring(4, 6)) - 1; // 월은 0부터 시작
+    const day = parseInt(dateString.substring(6, 8));
+
+    const date = new Date(year, month, day);
+
+    // 유효한 날짜인지 확인
+    if (isNaN(date.getTime())) return null;
+
+    return date;
+  } catch (error) {
+    return null;
+  }
+}
+
+// 시작일과 종료일 사이의 총 일 수를 계산하는 함수
+export function calculateTotalDays(startDate: string, endDate: string): number {
+  const start = parseYYYYMMDD(startDate);
+  const end = parseYYYYMMDD(endDate);
+
+  if (!start || !end) return 0;
+
+  const timeDiff = end.getTime() - start.getTime();
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1을 해서 시작일도 포함
+
+  return Math.max(0, daysDiff);
+}
+
+// 시작일로부터 현재까지 경과한 일 수를 계산하는 함수
+export function calculateElapsedDays(startDate: string, currentDate?: string): number {
+  const start = parseYYYYMMDD(startDate);
+  const current = currentDate ? parseYYYYMMDD(currentDate) : new Date();
+
+  if (!start || !current) return 0;
+
+  const timeDiff = current.getTime() - start.getTime();
+  const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1; // +1을 해서 시작일도 포함
+
+  return Math.max(0, daysDiff);
+}
+
+// 진행률(퍼센트)을 계산하는 함수
+export function calculateProgressPercentage(
+  startDate: string,
+  endDate: string,
+  currentDate?: string
+): number {
+  const totalDays = calculateTotalDays(startDate, endDate);
+  const elapsedDays = calculateElapsedDays(startDate, currentDate);
+
+  if (totalDays === 0) return 0;
+
+  const percentage = (elapsedDays / totalDays) * 100;
+
+  // 0% 이상 100% 이하로 제한
+  return Math.min(100, Math.max(0, Math.round(percentage)));
+}
+
+interface CalculateDateProgressProps {
+  startDate: string;
+  endDate: string;
+  currentDate?: string;
+}
+
+// 날짜 진행 정보를 종합적으로 반환하는 함수
+export function calculateDateProgress({
+  startDate,
+  endDate,
+  currentDate,
+}: CalculateDateProgressProps) {
+  const totalDays = calculateTotalDays(startDate, endDate);
+  const elapsedDays = calculateElapsedDays(startDate, currentDate);
+  const remainingDays = Math.max(0, totalDays - elapsedDays);
+  const progressPercentage = calculateProgressPercentage(startDate, endDate, currentDate);
+
+  return {
+    totalDays,
+    elapsedDays,
+    remainingDays,
+    progressPercentage,
+  };
+}
+
 // 휴대폰 번호 포맷팅 함수
 export const formatPhoneNumber = (value: string) => {
   const numbers = value.replace(/[^0-9]/g, '');
@@ -193,6 +281,15 @@ export function getCurrentDateYYYYMMDD(): string {
   const day = String(now.getDate()).padStart(2, '0');
 
   return `${year}${month}${day}`;
+}
+
+// 현재 날짜 또는 특정 날짜를 YYYYMM 형태로 반환하는 함수
+export function getCurrentDateYYYYMM(date?: Date): string {
+  const targetDate = date || new Date();
+  const year = targetDate.getFullYear().toString();
+  const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+
+  return `${year}${month}`;
 }
 
 // 현재 날짜를 기준으로 몇 주 뒤의 날짜를 YYYYMMDD 형태로 반환하는 함수
