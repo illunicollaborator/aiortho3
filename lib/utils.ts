@@ -294,8 +294,8 @@ export const saveColumnOrder = <T extends GenericTableColumn>(
 };
 
 // 현재 날짜를 YYYYMMDD 형태로 반환하는 함수
-export function getCurrentDateYYYYMMDD(): string {
-  const now = new Date();
+export function getCurrentDateYYYYMMDD(date?: Date): string {
+  const now = date || new Date();
   const year = now.getFullYear().toString();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');

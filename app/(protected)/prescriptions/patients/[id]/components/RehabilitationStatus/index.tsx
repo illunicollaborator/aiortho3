@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useActivities } from '../../hooks';
 import RehabilitationProgress from './RehabilitationProgress';
 import RehabilitationReport from './RehabilitationReport';
@@ -8,15 +8,15 @@ interface RehabilitationStatusProps {
   patientId: number;
 }
 
-const initialDateYYYYMMDD = getCurrentDateYYYYMMDD();
-const initialDateYYYYMM = getCurrentDateYYYYMM();
+const initialDate = new Date();
 
 export default function RehabilitationStatus({ patientId }: RehabilitationStatusProps) {
-  const [dateYYYYMM, setDateYYYYMM] = useState(initialDateYYYYMM);
+  const [date, setDate] = useState(initialDate);
+  const [month, setMonth] = useState(initialDate);
 
   const { data: activities } = useActivities({
     patientId,
-    date: dateYYYYMM,
+    date: getCurrentDateYYYYMM(month),
   });
 
   const {
@@ -40,11 +40,15 @@ export default function RehabilitationStatus({ patientId }: RehabilitationStatus
   } = calculateDateProgress({
     startDate: prescriptionStartDate,
     endDate: prescriptionEndDate,
-    currentDate: initialDateYYYYMMDD,
+    currentDate: getCurrentDateYYYYMMDD(date),
   });
 
+  const handleDateChange = useCallback((date: Date) => {
+    setDate(date);
+  }, []);
+
   const handleMonthChange = useCallback((month: Date) => {
-    setDateYYYYMM(getCurrentDateYYYYMM(month));
+    setMonth(month);
   }, []);
 
   return (
@@ -66,9 +70,12 @@ export default function RehabilitationStatus({ patientId }: RehabilitationStatus
             progressPercentage={progressPercentage}
           />
           <RehabilitationReport
+            date={date}
+            month={month}
             reports={reports}
             totalDays={totalDaysFromActivities}
             totalTherapyTime={totalTherapyTime}
+            onDateChange={handleDateChange}
             onMonthChange={handleMonthChange}
           />
         </div>
