@@ -159,7 +159,7 @@ export interface PatientActivityReport {
   exercises: Exercise[];
 }
 export interface PatientActivity {
-  report: PatientActivityReport[];
+  reports: PatientActivityReport[];
   totalDays: number;
   totalTherapyTime: number;
   prescriptionStartDate: string;
