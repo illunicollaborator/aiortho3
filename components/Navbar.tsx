@@ -91,32 +91,35 @@ const Navbar = () => {
                   MY
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0" align="end" alignOffset={0}>
-                <div className="grid gap-4 p-4">
-                  <div className="font-medium">
-                    {auth.role === 'Nurse' ? `${profile.name}간호사 님` : `${profile.name}의사 님`}
+              <PopoverContent
+                className="w-[244px] p-0 shadow-[0px_0px_32px_rgba(159, 171, 196, 0.3)"
+                align="end"
+                alignOffset={0}
+              >
+                <div className="flex flex-col">
+                  <div className="flex flex-col gap-2 p-4">
+                    <span className="font-bold text-[#343A47]">
+                      {auth.role === 'Nurse'
+                        ? `${profile.name}간호사 님`
+                        : `${profile.name}의사 님`}
+                    </span>
+                    <span className="text-[13px] text-aiortho-gray-600 font-medium">
+                      {auth.role === 'Nurse'
+                        ? `간호사 코드 (${profile.adminId})`
+                        : `의사 코드 (${profile.adminId})`}
+                    </span>
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {auth.role === 'Nurse'
-                      ? `간호사 코드 (${profile.adminId})`
-                      : `의사 코드 (${profile.adminId})`}
+
+                  <hr className="border border-aiortho-gray-100" />
+
+                  <div className="p-4">
+                    <button
+                      className="text-[14px] text-[#343A47] cursor-pointer"
+                      onClick={handleLogout}
+                    >
+                      로그아웃
+                    </button>
                   </div>
-                  <hr className="my-2" />
-                  <Link
-                    href="/profile/edit"
-                    className="text-sm hover:bg-accent hover:text-accent-foreground rounded p-2 -mx-2"
-                    onClick={() => {
-                      setOpen(false);
-                    }}
-                  >
-                    프로필 설정
-                  </Link>
-                  <button
-                    className="text-sm text-red-500 hover:bg-red-50 text-left rounded p-2 -mx-2 cursor-pointer"
-                    onClick={handleLogout}
-                  >
-                    로그아웃
-                  </button>
                 </div>
               </PopoverContent>
             </Popover>
