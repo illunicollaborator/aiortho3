@@ -26,20 +26,23 @@ export default function RehabilitationCalendar({
 }: RehabilitationCalendarProps) {
   const isCurrentMonth = (targetMonth: Date) => {
     return (
-      targetMonth.getFullYear() === date.getFullYear() && targetMonth.getMonth() === date.getMonth()
+      targetMonth.getFullYear() === today.getFullYear() &&
+      targetMonth.getMonth() === today.getMonth()
     );
   };
 
   const isFutureMonth = (targetMonth: Date) => {
     return (
-      targetMonth.getFullYear() > date.getFullYear() ||
-      (targetMonth.getFullYear() === date.getFullYear() && targetMonth.getMonth() > date.getMonth())
+      targetMonth.getFullYear() > today.getFullYear() ||
+      (targetMonth.getFullYear() === today.getFullYear() &&
+        targetMonth.getMonth() > today.getMonth())
     );
   };
 
   const handleDateChange = (newDate?: Date) => {
     if (newDate) {
       onDateChange(newDate);
+      onMonthChange(newDate);
     }
   };
 
@@ -64,7 +67,7 @@ export default function RehabilitationCalendar({
           'cursor-pointer size-6 text-[#66798D] aria-disabled:text-aiortho-gray-400 aria-disabled:cursor-not-allowed',
         button_next: cn(
           'cursor-pointer size-6 text-[#66798D] aria-disabled:text-aiortho-gray-400 aria-disabled:cursor-not-allowed',
-          isCurrentMonth(date) && 'text-aiortho-gray-400 cursor-not-allowed'
+          isCurrentMonth(month) && 'text-aiortho-gray-400 cursor-not-allowed'
         ),
         month_caption: 'w-full h-6 flex items-center justify-center',
         caption_label: 'font-medium text-base text-aiortho-gray-900',

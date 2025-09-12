@@ -14,7 +14,15 @@ export default function RehabilitationStatus({ patientId }: RehabilitationStatus
   const [date, setDate] = useState(initialDate);
   const [month, setMonth] = useState(initialDate);
 
-  const { data: activities } = useActivities({
+  const {
+    data: activities = {
+      reports: [],
+      totalDays: 0,
+      totalTherapyTime: 0,
+      prescriptionStartDate: '',
+      prescriptionEndDate: '',
+    },
+  } = useActivities({
     patientId,
     date: getCurrentDateYYYYMM(month),
   });
@@ -25,13 +33,7 @@ export default function RehabilitationStatus({ patientId }: RehabilitationStatus
     reports,
     totalDays: totalDaysFromActivities,
     totalTherapyTime,
-  } = activities || {
-    reports: [],
-    totalDays: 0,
-    totalTherapyTime: 0,
-    prescriptionStartDate: '',
-    prescriptionEndDate: '',
-  };
+  } = activities;
 
   const {
     totalDays: totalDaysFromProgress,
@@ -40,7 +42,7 @@ export default function RehabilitationStatus({ patientId }: RehabilitationStatus
   } = calculateDateProgress({
     startDate: prescriptionStartDate,
     endDate: prescriptionEndDate,
-    currentDate: getCurrentDateYYYYMMDD(date),
+    currentDate: getCurrentDateYYYYMMDD(initialDate),
   });
 
   const handleDateChange = useCallback((date: Date) => {
