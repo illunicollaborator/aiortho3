@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { PatientActivityReport } from '@/models';
 import { formatKoreanDate, formatDuration } from '@/lib/utils';
 import Divider from '@/components/Divider';
@@ -40,8 +41,8 @@ export default function RehabilitationExercises({ report }: RehabilitationExerci
 
         <div className="flex flex-col">
           {exercises.map(({ exerciseId, exerciseName, goodTherapyTime, therapyTime }, index) => (
-            <>
-              <div key={exerciseId} className="flex gap-1">
+            <Fragment key={exerciseId}>
+              <div className="flex gap-1">
                 <div className="w-5 h-5 flex items-center justify-center">
                   <span className="w-[14px] h-[14px] border border-aiortho-gray-800 rounded-full text-aiortho-gray-800 font-medium text-[10px] leading-5 flex items-center justify-center">
                     {index + 1}
@@ -74,7 +75,7 @@ export default function RehabilitationExercises({ report }: RehabilitationExerci
               {index !== exercises.length - 1 && (
                 <Divider className="border-aiortho-gray-100 my-3" />
               )}
-            </>
+            </Fragment>
           ))}
         </div>
       </div>
