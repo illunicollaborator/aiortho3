@@ -1,6 +1,8 @@
+import { useState, useMemo } from 'react';
 import { PatientActivityReport } from '@/models';
-import { formatDuration } from '@/lib/utils';
+import { formatDuration, getCurrentDateYYYYMMDD } from '@/lib/utils';
 import RehabilitationCalendar from '../RehabilitationCalendar';
+import RehabilitationExercises from '../RehabilitationExercises';
 
 interface RehabilitationReportProps {
   date: Date;
@@ -21,8 +23,10 @@ export default function RehabilitationReport({
   onDateChange,
   onMonthChange,
 }: RehabilitationReportProps) {
-  // TODO: 운동섹션 조건부 UI 추가
-  console.log(reports);
+  const currentReport = useMemo(() => {
+    return reports.find(report => report.date === getCurrentDateYYYYMMDD(date));
+  }, [date]);
+
   return (
     <div className="flex flex-col">
       <span className="text-aiortho-gray-900 text-xl font-semibold leading-6 tracking-[0.2px]">
@@ -41,9 +45,11 @@ export default function RehabilitationReport({
       </div>
 
       {/* Exercise Section */}
-      <div className="mt-3 w-full border border-[#DADFE999]/60 rounded-xl p-6">
-        {/* <ExerciseGrid /> */}
-      </div>
+      {currentReport && (
+        <div className="mt-3">
+          <RehabilitationExercises report={currentReport} />
+        </div>
+      )}
     </div>
   );
 }
