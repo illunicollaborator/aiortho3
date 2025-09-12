@@ -1,7 +1,7 @@
 import { Patient, PatientListSortKey } from '@/models';
 
 export interface GetPatientRequest {
-  patientId: string;
+  patientId: number;
 }
 
 export interface GetPatientResponse extends Patient {}
@@ -32,7 +32,7 @@ export interface PostCreatePatientRequest {
 export interface PostCreatePatientResponse extends Patient {}
 
 export interface UpdatePatientRequest {
-  patientId: string;
+  patientId: number;
   params: {
     name: string;
     residentRegistrationNumber: string;

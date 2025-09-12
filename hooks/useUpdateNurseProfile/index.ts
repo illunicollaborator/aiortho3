@@ -12,7 +12,7 @@ export const useUpdateNurseProfile = () => {
   return useMutation<PostUpdateNurseProfileResponse, ErrorResponse, PostUpdateNurseProfileRequest>({
     mutationFn: putUpdateNurseProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [NURSE_PROFILE_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: NURSE_PROFILE_QUERY_KEY });
     },
   });
 };

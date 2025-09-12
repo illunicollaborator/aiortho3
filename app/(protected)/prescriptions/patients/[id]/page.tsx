@@ -18,7 +18,7 @@ import { showWarningToast } from '@/components/ui/toast-warning';
 export default function PatientDetailPage({}) {
   const { id } = useParams();
   const router = useRouter();
-  const patientQuery = usePatient(id as string);
+  const patientQuery = usePatient(Number(id));
   const activePrescriptionQuery = useActivePrescription(Number(id));
   const deletePatientMutation = useDeletePatient();
 

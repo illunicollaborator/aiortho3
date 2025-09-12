@@ -13,7 +13,7 @@ export const useUpdateStandardProgram = () => {
   return useMutation<UpdateStandardProgramResponse, ErrorResponse, UpdateStandardProgramRequest>({
     mutationFn: updateStandardProgram,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [STANDARD_PROGRAM_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: STANDARD_PROGRAM_QUERY_KEY });
     },
   });
 };

@@ -8,7 +8,7 @@ interface UseDoctorProfileProps extends Partial<UseQueryOptions> {
 
 export const useDoctorProfile = ({ enabled = true }: UseDoctorProfileProps) => {
   return useQuery({
-    queryKey: [DOCTOR_PROFILE_QUERY_KEY],
+    queryKey: DOCTOR_PROFILE_QUERY_KEY,
     queryFn: getDoctorProfile,
     enabled,
   });

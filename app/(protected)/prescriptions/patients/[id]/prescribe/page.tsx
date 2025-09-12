@@ -8,7 +8,7 @@ import { Plus } from 'lucide-react';
 import { PrescriptionPeriodSelector, ProgramCreateModal } from './components';
 import { useCreatePrescription } from './hooks';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
-import { Prescription } from '@/models';
+import { Prescription, Program } from '@/models';
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -32,7 +32,7 @@ export default function CreatePrescriptionPage() {
   const router = useRouter();
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const patientQuery = usePatient(id as string);
+  const patientQuery = usePatient(Number(id));
   const standardProgramQuery = useStandardProgram();
   const createPrescriptionMutation = useCreatePrescription();
   const createPrescriptionRequestMutation = useCreatePrescriptionRequest();
@@ -55,8 +55,12 @@ export default function CreatePrescriptionPage() {
     setIsModalOpen(false);
   };
 
-  const handleSetProgram = (program: Prescription) => {
-    setPrescriptionProgram(program);
+  const handleSetProgram = (program: Program) => {
+    setPrescriptionProgram({
+      ...program,
+      patientId: Number(id),
+    });
+
     setIsEditing(true);
   };
 
@@ -186,6 +190,7 @@ export default function CreatePrescriptionPage() {
 
       <div className="flex gap-5 w-full mt-18">
         <Button
+          type="button"
           variant="secondary"
           className="flex-1 h-12 rounded-full cursor-pointer bg-[var(--aiortho-gray-600)] text-white hover:bg-[var(--aiortho-gray-600)]/80"
           onClick={() => router.back()}

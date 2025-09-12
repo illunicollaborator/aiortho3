@@ -13,7 +13,7 @@ export const useDeleteStandardProgram = () => {
   return useMutation<DeleteStandardProgramResponse, ErrorResponse, DeleteStandardProgramRequest>({
     mutationFn: deleteStandardProgram,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [STANDARD_PROGRAM_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: STANDARD_PROGRAM_QUERY_KEY });
     },
   });
 };

@@ -8,7 +8,7 @@ interface UseNurseProfileProps extends Partial<UseQueryOptions> {
 
 export const useNurseProfile = ({ enabled = true }: UseNurseProfileProps) => {
   return useQuery({
-    queryKey: [NURSE_PROFILE_QUERY_KEY],
+    queryKey: NURSE_PROFILE_QUERY_KEY,
     queryFn: getNurseProfile,
     enabled,
   });

@@ -132,7 +132,7 @@ export interface Patient {
 export interface Prescription {
   prescriptionId?: string;
   name: string;
-  patientId?: number;
+  patientId: number;
   createdAt?: string;
   updatedAt?: string;
   exercises: Exercise[];
