@@ -151,12 +151,19 @@ export interface Exercise {
   description?: string;
 }
 
+export interface PatientActivityExercise {
+  exerciseId: string;
+  exerciseName: string;
+  goodTherapyTime: number;
+  therapyTime: number;
+}
+
 export interface PatientActivityReport {
   date: string;
   completionRate: PatientActivityCompletionRate;
   subTotalTherapyTime: number;
   subTotalGoodTherapyTime: number;
-  exercises: Exercise[];
+  exercises: PatientActivityExercise[];
 }
 export interface PatientActivity {
   reports: PatientActivityReport[];
