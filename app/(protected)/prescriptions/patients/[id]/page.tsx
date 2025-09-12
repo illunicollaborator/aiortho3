@@ -15,7 +15,7 @@ import { useDeletePatient } from './hooks';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { showWarningToast } from '@/components/ui/toast-warning';
 
-export default function PatientDetailPage({}) {
+export default function PatientDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const patientQuery = usePatient(Number(id));
@@ -52,7 +52,7 @@ export default function PatientDetailPage({}) {
       <ActivePrescription prescription={activePrescription} onClick={handleRoutePrescribe} />
       <PrescriptionHistory patientId={Number(id)} />
       <RehabilitationStatus patientId={Number(id)} license={patient.license} />
-      <MedicalLicenseDetails />
+      <MedicalLicenseDetails patientId={Number(id)} license={patient.license} />
       <PatientController
         name={patient.name}
         onClick={handleRoutePrescribe}
