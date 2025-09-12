@@ -48,7 +48,7 @@ export default function CreatePrescriptionPage() {
   const [prescriptionProgram, setPrescriptionProgram] = useState<Prescription>();
   const [prescriptionProgramIsDirty, setPrescriptionProgramIsDirty] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [minPeriod, setMinPeriod] = useState(0);
+  const [minPeriod, setMinPeriod] = useState(1);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -81,7 +81,8 @@ export default function CreatePrescriptionPage() {
   const onSubmit = (data: FormValues) => {
     if (!prescriptionProgram) return;
 
-    const { startDate, endDate } = getPeriodYYYYMMDD(Number(data.period));
+    const initialStartDate = activePrescriptionQuery.data?.startDate ?? '';
+    const { startDate, endDate } = getPeriodYYYYMMDD(Number(data.period), initialStartDate);
 
     const payload = {
       exercises: prescriptionProgram.exercises,

@@ -334,10 +334,18 @@ export function getCurrentDateYYYYMM(date?: Date): string {
   return `${year}${month}`;
 }
 
-// 현재 날짜를 기준으로 몇 주 뒤의 날짜를 YYYYMMDD 형태로 반환하는 함수
-export function getDateAfterWeeksYYYYMMDD(weeks: number): string {
-  const now = new Date();
-  const endDate = new Date(now.getTime() + weeks * 7 * 24 * 60 * 60 * 1000);
+// 현재 날짜 또는 지정된 날짜를 기준으로 몇 주 뒤의 날짜를 YYYYMMDD 형태로 반환하는 함수
+export function getDateAfterWeeksYYYYMMDD(weeks: number, startDate?: string): string {
+  let baseDate: Date;
+
+  if (startDate) {
+    const parsedDate = parseYYYYMMDD(startDate);
+    baseDate = parsedDate || new Date(); // 유효하지 않은 날짜인 경우 현재 날짜 사용
+  } else {
+    baseDate = new Date();
+  }
+
+  const endDate = new Date(baseDate.getTime() + weeks * 7 * 24 * 60 * 60 * 1000);
 
   const year = endDate.getFullYear().toString();
   const month = String(endDate.getMonth() + 1).padStart(2, '0');
@@ -346,14 +354,20 @@ export function getDateAfterWeeksYYYYMMDD(weeks: number): string {
   return `${year}${month}${day}`;
 }
 
-// 현재 날짜와 주 수를 받아서 startDate와 endDate를 YYYYMMDD 형태로 반환하는 함수
-export function getPeriodYYYYMMDD(weeks: number): {
+// 시작일과 주 수를 받아서 startDate와 endDate를 YYYYMMDD 형태로 반환하는 함수
+// 시작일이 없는 경우 오늘 날짜를 기준으로, 있는 경우 해당 날짜를 기준으로 기간을 계산
+export function getPeriodYYYYMMDD(
+  weeks: number,
+  startDate?: string
+): {
   startDate: string;
   endDate: string;
 } {
+  const calculatedStartDate = startDate || getCurrentDateYYYYMMDD();
+
   return {
-    startDate: getCurrentDateYYYYMMDD(),
-    endDate: getDateAfterWeeksYYYYMMDD(weeks),
+    startDate: calculatedStartDate,
+    endDate: getDateAfterWeeksYYYYMMDD(weeks, calculatedStartDate),
   };
 }
 
