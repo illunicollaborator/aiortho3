@@ -46,12 +46,14 @@ export default function PatientDetailPage({}) {
 
   if (!patient) return null;
 
+  console.log(patient);
+
   return (
     <div className="flex flex-col gap-30 max-w-[572px] pb-17">
       <PatientInfoCard patient={patient} />
       <ActivePrescription prescription={activePrescription} onClick={handleRoutePrescribe} />
       <PrescriptionHistory patientId={Number(id)} />
-      <RehabilitationStatus patientId={Number(id)} />
+      <RehabilitationStatus patientId={Number(id)} license={patient.license} />
       <MedicalLicenseDetails />
       <PatientController
         name={patient.name}

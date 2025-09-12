@@ -6,11 +6,12 @@ import { getCurrentDateYYYYMM, calculateDateProgress, getCurrentDateYYYYMMDD } f
 
 interface RehabilitationStatusProps {
   patientId: number;
+  license?: string;
 }
 
 const initialDate = new Date();
 
-export default function RehabilitationStatus({ patientId }: RehabilitationStatusProps) {
+export default function RehabilitationStatus({ patientId, license }: RehabilitationStatusProps) {
   const [date, setDate] = useState(initialDate);
   const [month, setMonth] = useState(initialDate);
 
@@ -64,7 +65,7 @@ export default function RehabilitationStatus({ patientId }: RehabilitationStatus
         </span>
       </div>
 
-      {Boolean(patientId) ? (
+      {Boolean(license) ? (
         <div className="flex flex-col gap-9">
           <RehabilitationProgress
             totalDays={totalDaysFromProgress}
