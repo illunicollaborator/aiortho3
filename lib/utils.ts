@@ -158,6 +158,28 @@ export function parseYYYYMMDD(dateString: string): Date | null {
   }
 }
 
+// YYYYMMDD 형식을 한국어 날짜 형식으로 변환하는 함수 (YYYY년 M월 D일)
+export function formatKoreanDate(dateString: string, options?: { padding?: boolean }): string {
+  if (!dateString || dateString.length !== 8) return '-';
+
+  const { padding = false } = options || {};
+
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  // 유효한 날짜인지 확인
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+
+  if (isNaN(date.getTime())) return '';
+
+  // 패딩 옵션에 따라 월/일 형식 결정
+  const formattedMonth = padding ? month : parseInt(month).toString();
+  const formattedDay = padding ? day : parseInt(day).toString();
+
+  return `${year}년 ${formattedMonth}월 ${formattedDay}일`;
+}
+
 // 시작일과 종료일 사이의 총 일 수를 계산하는 함수
 export function calculateTotalDays(startDate: string, endDate: string): number {
   const start = parseYYYYMMDD(startDate);
