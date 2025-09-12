@@ -11,9 +11,17 @@ import { FormValues } from '../../page';
 
 interface PrescriptionPeriodSelectorProps {
   field: ControllerRenderProps<FormValues, 'period'>;
+  minPeriod?: number;
+  maxPeriod?: number;
 }
 
-export default function PrescriptionPeriodSelector({ field }: PrescriptionPeriodSelectorProps) {
+export default function PrescriptionPeriodSelector({
+  field,
+  minPeriod = 1,
+  maxPeriod = 12,
+}: PrescriptionPeriodSelectorProps) {
+  const period = Array.from({ length: maxPeriod - minPeriod + 1 }, (_, idx) => idx + minPeriod);
+
   return (
     <div className="flex flex-col w-full">
       <h1 className="text-2xl font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mt-22 mb-3">
@@ -30,9 +38,9 @@ export default function PrescriptionPeriodSelector({ field }: PrescriptionPeriod
             <SelectValue placeholder="기간을 선택해주세요." />
           </SelectTrigger>
           <SelectContent>
-            {Array.from({ length: 12 }).map((_, idx) => (
-              <SelectItem className="cursor-pointer" key={`period-${idx}`} value={String(idx + 1)}>
-                {`${idx + 1}주`}
+            {period.map(value => (
+              <SelectItem className="cursor-pointer" key={`period-${value}`} value={String(value)}>
+                {`${value}주`}
               </SelectItem>
             ))}
           </SelectContent>

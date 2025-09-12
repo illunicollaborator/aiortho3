@@ -8,6 +8,8 @@ import {
   PostCreatePrescriptionRequestRequest,
   PostCreatePrescriptionResponse,
   PostCreatePrescriptionRequestResponse,
+  PutPrescriptionResponse,
+  PutPrescriptionRequest,
 } from './types';
 
 const RESOURCE = '/ums/prescriptions';
@@ -31,3 +33,8 @@ export const postCreatePrescriptionRequest = async (
   params: PostCreatePrescriptionRequestRequest
 ): Promise<PostCreatePrescriptionRequestResponse> =>
   await apiClient.post(`${RESOURCE}/request`, params);
+
+export const putPrescription = async (
+  prescriptionId: string,
+  params: PutPrescriptionRequest
+): Promise<PutPrescriptionResponse> => await apiClient.put(`${RESOURCE}/${prescriptionId}`, params);

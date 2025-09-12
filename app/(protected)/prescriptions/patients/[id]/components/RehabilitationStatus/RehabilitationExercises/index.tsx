@@ -8,7 +8,6 @@ interface RehabilitationExercisesProps {
 
 export default function RehabilitationExercises({ report }: RehabilitationExercisesProps) {
   const { date, subTotalTherapyTime, subTotalGoodTherapyTime, exercises } = report;
-  console.log(report);
 
   return (
     <div className="rounded-xl border border-[rgba(218,223,233,0.6)] w-full p-6 flex flex-col">
