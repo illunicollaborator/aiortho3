@@ -8,17 +8,24 @@ import { Plus } from 'lucide-react';
 import { PrescriptionPeriodSelector, ProgramCreateModal } from './components';
 import { useCreatePrescription } from './hooks';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
-import { Prescription } from '@/models';
+import { Prescription, Program } from '@/models';
 import { Form, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
-import { calculateWeeks, getPeriodYYYYMMDD, isDoctorRole } from '@/lib/utils';
+import {
+  calculateWeeks,
+  getCurrentDateYYYYMMDD,
+  getPeriodYYYYMMDD,
+  isDoctorRole,
+} from '@/lib/utils';
 import { showWarningToast } from '@/components/ui/toast-warning';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useAuthStore } from '@/store/authStore';
 import { useCreatePrescriptionRequest } from './hooks/useCreatePrescriptionRequest';
+import { useActivePrescription } from '../hooks';
+import { useUpdatePrescription } from './hooks/useUpdatePrescription';
 
 const formSchema = z.object({
   period: z.string().min(1, '치료 기간을 선택해주세요'),
@@ -32,13 +39,16 @@ export default function CreatePrescriptionPage() {
   const router = useRouter();
   const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const patientQuery = usePatient(id as string);
+  const patientQuery = usePatient(Number(id));
+  const activePrescriptionQuery = useActivePrescription(Number(id));
   const standardProgramQuery = useStandardProgram();
   const createPrescriptionMutation = useCreatePrescription();
   const createPrescriptionRequestMutation = useCreatePrescriptionRequest();
+  const updatePrescriptionMutation = useUpdatePrescription();
   const [prescriptionProgram, setPrescriptionProgram] = useState<Prescription>();
   const [prescriptionProgramIsDirty, setPrescriptionProgramIsDirty] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [minPeriod, setMinPeriod] = useState(1);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -55,8 +65,12 @@ export default function CreatePrescriptionPage() {
     setIsModalOpen(false);
   };
 
-  const handleSetProgram = (program: Prescription) => {
-    setPrescriptionProgram(program);
+  const handleSetProgram = (program: Program) => {
+    setPrescriptionProgram({
+      ...program,
+      patientId: Number(id),
+    });
+
     setIsEditing(true);
   };
 
@@ -67,7 +81,8 @@ export default function CreatePrescriptionPage() {
   const onSubmit = (data: FormValues) => {
     if (!prescriptionProgram) return;
 
-    const { startDate, endDate } = getPeriodYYYYMMDD(Number(data.period));
+    const initialStartDate = activePrescriptionQuery.data?.startDate ?? '';
+    const { startDate, endDate } = getPeriodYYYYMMDD(Number(data.period), initialStartDate);
 
     const payload = {
       exercises: prescriptionProgram.exercises,
@@ -78,51 +93,81 @@ export default function CreatePrescriptionPage() {
       name: prescriptionProgram.name,
     };
 
-    if (isDoctorRole(auth.role)) {
-      createPrescriptionMutation.mutateAsync(payload, {
+    if (prescriptionProgram) {
+      // 수정
+      if (!prescriptionProgram.prescriptionId) return;
+
+      const updatePayload = {
+        prescriptionId: prescriptionProgram.prescriptionId,
+        params: {
+          exercises: prescriptionProgram.exercises,
+          repeatCount: prescriptionProgram.repeatCount,
+          endDate,
+          name: prescriptionProgram.name,
+        },
+      };
+
+      updatePrescriptionMutation.mutateAsync(updatePayload, {
         onSuccess: () => {
           showSuccessToast(
-            '프로그램 처방 완료',
+            '프로그램 처방 수정 완료',
             '처방된 프로그램 내역은 처방 상세 내역에서 확인할 수 있어요.'
           );
           router.push(`/prescriptions/patients/${id}`);
         },
-        onError: () => {
-          showWarningToast('프로그램 처방 실패', '잠시 후 시도하세요.');
-        },
       });
     } else {
-      createPrescriptionRequestMutation.mutateAsync(payload, {
-        onSuccess: () => {
-          showSuccessToast('프로그램 처방 요청 완료', '처방 요청이 완료되었습니다.');
-          router.push(`/prescriptions/patients/${id}`);
-        },
-      });
+      // 최초 생성
+      if (isDoctorRole(auth.role)) {
+        createPrescriptionMutation.mutateAsync(payload, {
+          onSuccess: () => {
+            showSuccessToast(
+              '프로그램 처방 완료',
+              '처방된 프로그램 내역은 처방 상세 내역에서 확인할 수 있어요.'
+            );
+            router.push(`/prescriptions/patients/${id}`);
+          },
+          onError: () => {
+            showWarningToast('프로그램 처방 실패', '잠시 후 시도하세요.');
+          },
+        });
+      } else {
+        createPrescriptionRequestMutation.mutateAsync(payload, {
+          onSuccess: () => {
+            showSuccessToast('프로그램 처방 요청 완료', '처방 요청이 완료되었습니다.');
+            router.push(`/prescriptions/patients/${id}`);
+          },
+        });
+      }
     }
   };
 
   useEffect(() => {
-    if (patientQuery.data?.prescription) {
-      setPrescriptionProgram(patientQuery.data.prescription);
+    if (activePrescriptionQuery.data) {
+      setPrescriptionProgram(activePrescriptionQuery.data);
     }
 
-    if (patientQuery.data?.prescription?.startDate && patientQuery.data?.prescription?.endDate) {
+    if (activePrescriptionQuery.data?.startDate && activePrescriptionQuery.data?.endDate) {
       const initialPeriod = calculateWeeks(
-        patientQuery.data.prescription.startDate,
-        patientQuery.data.prescription.endDate
+        activePrescriptionQuery.data.startDate,
+        activePrescriptionQuery.data.endDate
+      );
+
+      const minPeriod = calculateWeeks(
+        activePrescriptionQuery.data.startDate,
+        getCurrentDateYYYYMMDD(new Date())
       );
 
       form.setValue('period', String(initialPeriod));
+      setMinPeriod(minPeriod);
     }
 
-    if (patientQuery.data?.prescription) {
+    if (activePrescriptionQuery.data) {
       setIsEditing(true);
     }
-  }, [patientQuery.data?.prescription]);
+  }, [activePrescriptionQuery.data]);
 
-  if (!patientQuery.data || !standardProgramQuery.data) {
-    return null;
-  }
+  if (!patientQuery.data || !standardProgramQuery.data) return;
 
   const { data: patient } = patientQuery;
   const { data: standardProgram } = standardProgramQuery;
@@ -152,10 +197,12 @@ export default function CreatePrescriptionPage() {
             onStopEditing={() => setIsEditing(false)}
             onUpdate={handleSetProgram}
             onDelete={handleDeleteProgram}
-            showControl={patient.prescription ? false : true}
-            checkIsDirty={patient.prescription ? true : false}
+            // FIXME: 조건부 기획 구체화 필요
+            // showControl={patient.prescription ? false : true}
+            // checkIsDirty={patient.prescription ? true : false}
             setIsDirty={setPrescriptionProgramIsDirty}
             defaultIsOpen
+            showControl
           />
 
           <Form {...form}>
@@ -165,7 +212,7 @@ export default function CreatePrescriptionPage() {
                 name="period"
                 render={({ field }) => (
                   <FormItem>
-                    <PrescriptionPeriodSelector field={field} />
+                    <PrescriptionPeriodSelector field={field} minPeriod={minPeriod} />
                     <FormMessage />
                   </FormItem>
                 )}
@@ -186,6 +233,7 @@ export default function CreatePrescriptionPage() {
 
       <div className="flex gap-5 w-full mt-18">
         <Button
+          type="button"
           variant="secondary"
           className="flex-1 h-12 rounded-full cursor-pointer bg-[var(--aiortho-gray-600)] text-white hover:bg-[var(--aiortho-gray-600)]/80"
           onClick={() => router.back()}
@@ -199,6 +247,7 @@ export default function CreatePrescriptionPage() {
             !prescriptionProgram ||
             isEditing ||
             createPrescriptionMutation.isPending ||
+            updatePrescriptionMutation.isPending ||
             !isDirty
           }
           onClick={form.handleSubmit(onSubmit)}

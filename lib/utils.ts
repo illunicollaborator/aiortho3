@@ -23,6 +23,26 @@ export function formatTime(seconds: number): string {
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
 
+// 초단위를 한국어 시간 형태로 반환하는 함수 (0인 경우 해당 단위 생략)
+export function formatDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (minutes === 0 && remainingSeconds === 0) {
+    return '0초';
+  }
+
+  if (minutes === 0) {
+    return `${remainingSeconds}초`;
+  }
+
+  if (remainingSeconds === 0) {
+    return `${minutes}분`;
+  }
+
+  return `${minutes}분 ${remainingSeconds}초`;
+}
+
 // 날짜 형식 변환 함수 (YYYYMMDD -> YYYY.MM.DD 또는 YYYY.MM.DD (요일))
 export function formatDate(dateString: string, includeDayOfWeek: boolean = false): string {
   if (!dateString || dateString.length !== 8) return '-';
@@ -118,6 +138,116 @@ export function calculateWeeks(startDate: string, endDate: string): number {
   }
 }
 
+// YYYYMMDD 형식의 날짜를 Date 객체로 변환하는 헬퍼 함수
+export function parseYYYYMMDD(dateString: string): Date | null {
+  if (!dateString || dateString.length !== 8) return null;
+
+  try {
+    const year = parseInt(dateString.substring(0, 4));
+    const month = parseInt(dateString.substring(4, 6)) - 1; // 월은 0부터 시작
+    const day = parseInt(dateString.substring(6, 8));
+
+    const date = new Date(year, month, day);
+
+    // 유효한 날짜인지 확인
+    if (isNaN(date.getTime())) return null;
+
+    return date;
+  } catch (error) {
+    return null;
+  }
+}
+
+// YYYYMMDD 형식을 한국어 날짜 형식으로 변환하는 함수 (YYYY년 M월 D일)
+export function formatKoreanDate(dateString: string, options?: { padding?: boolean }): string {
+  if (!dateString || dateString.length !== 8) return '-';
+
+  const { padding = false } = options || {};
+
+  const year = dateString.substring(0, 4);
+  const month = dateString.substring(4, 6);
+  const day = dateString.substring(6, 8);
+
+  // 유효한 날짜인지 확인
+  const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+
+  if (isNaN(date.getTime())) return '';
+
+  // 패딩 옵션에 따라 월/일 형식 결정
+  const formattedMonth = padding ? month : parseInt(month).toString();
+  const formattedDay = padding ? day : parseInt(day).toString();
+
+  return `${year}년 ${formattedMonth}월 ${formattedDay}일`;
+}
+
+// 시작일과 종료일 사이의 총 일 수를 계산하는 함수
+export function calculateTotalDays(startDate: string, endDate: string): number {
+  const start = parseYYYYMMDD(startDate);
+  const end = parseYYYYMMDD(endDate);
+
+  if (!start || !end) return 0;
+
+  const timeDiff = end.getTime() - start.getTime();
+  const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1; // +1을 해서 시작일도 포함
+
+  return Math.max(0, daysDiff);
+}
+
+// 시작일로부터 현재까지 경과한 일 수를 계산하는 함수
+export function calculateElapsedDays(startDate: string, currentDate?: string): number {
+  const start = parseYYYYMMDD(startDate);
+  const current = currentDate ? parseYYYYMMDD(currentDate) : new Date();
+
+  if (!start || !current) return 0;
+
+  const timeDiff = current.getTime() - start.getTime();
+  const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24)) + 1; // +1을 해서 시작일도 포함
+
+  return Math.max(0, daysDiff);
+}
+
+// 진행률(퍼센트)을 계산하는 함수
+export function calculateProgressPercentage(
+  startDate: string,
+  endDate: string,
+  currentDate?: string
+): number {
+  const totalDays = calculateTotalDays(startDate, endDate);
+  const elapsedDays = calculateElapsedDays(startDate, currentDate);
+
+  if (totalDays === 0) return 0;
+
+  const percentage = (elapsedDays / totalDays) * 100;
+
+  // 0% 이상 100% 이하로 제한
+  return Math.min(100, Math.max(0, Math.round(percentage)));
+}
+
+interface CalculateDateProgressProps {
+  startDate: string;
+  endDate: string;
+  currentDate?: string;
+}
+
+// 날짜 진행 정보를 종합적으로 반환하는 함수
+export function calculateDateProgress({
+  startDate,
+  endDate,
+  currentDate,
+}: CalculateDateProgressProps) {
+  const totalDays = calculateTotalDays(startDate, endDate);
+  const elapsedDays = calculateElapsedDays(startDate, currentDate);
+  const remainingDays = Math.max(0, totalDays - elapsedDays);
+  const progressPercentage = calculateProgressPercentage(startDate, endDate, currentDate);
+
+  return {
+    totalDays,
+    elapsedDays,
+    remainingDays,
+    progressPercentage,
+  };
+}
+
 // 휴대폰 번호 포맷팅 함수
 export const formatPhoneNumber = (value: string) => {
   const numbers = value.replace(/[^0-9]/g, '');
@@ -186,8 +316,8 @@ export const saveColumnOrder = <T extends GenericTableColumn>(
 };
 
 // 현재 날짜를 YYYYMMDD 형태로 반환하는 함수
-export function getCurrentDateYYYYMMDD(): string {
-  const now = new Date();
+export function getCurrentDateYYYYMMDD(date?: Date): string {
+  const now = date || new Date();
   const year = now.getFullYear().toString();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
@@ -195,10 +325,27 @@ export function getCurrentDateYYYYMMDD(): string {
   return `${year}${month}${day}`;
 }
 
-// 현재 날짜를 기준으로 몇 주 뒤의 날짜를 YYYYMMDD 형태로 반환하는 함수
-export function getDateAfterWeeksYYYYMMDD(weeks: number): string {
-  const now = new Date();
-  const endDate = new Date(now.getTime() + weeks * 7 * 24 * 60 * 60 * 1000);
+// 현재 날짜 또는 특정 날짜를 YYYYMM 형태로 반환하는 함수
+export function getCurrentDateYYYYMM(date?: Date): string {
+  const targetDate = date || new Date();
+  const year = targetDate.getFullYear().toString();
+  const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+
+  return `${year}${month}`;
+}
+
+// 현재 날짜 또는 지정된 날짜를 기준으로 몇 주 뒤의 날짜를 YYYYMMDD 형태로 반환하는 함수
+export function getDateAfterWeeksYYYYMMDD(weeks: number, startDate?: string): string {
+  let baseDate: Date;
+
+  if (startDate) {
+    const parsedDate = parseYYYYMMDD(startDate);
+    baseDate = parsedDate || new Date(); // 유효하지 않은 날짜인 경우 현재 날짜 사용
+  } else {
+    baseDate = new Date();
+  }
+
+  const endDate = new Date(baseDate.getTime() + weeks * 7 * 24 * 60 * 60 * 1000);
 
   const year = endDate.getFullYear().toString();
   const month = String(endDate.getMonth() + 1).padStart(2, '0');
@@ -207,14 +354,20 @@ export function getDateAfterWeeksYYYYMMDD(weeks: number): string {
   return `${year}${month}${day}`;
 }
 
-// 현재 날짜와 주 수를 받아서 startDate와 endDate를 YYYYMMDD 형태로 반환하는 함수
-export function getPeriodYYYYMMDD(weeks: number): {
+// 시작일과 주 수를 받아서 startDate와 endDate를 YYYYMMDD 형태로 반환하는 함수
+// 시작일이 없는 경우 오늘 날짜를 기준으로, 있는 경우 해당 날짜를 기준으로 기간을 계산
+export function getPeriodYYYYMMDD(
+  weeks: number,
+  startDate?: string
+): {
   startDate: string;
   endDate: string;
 } {
+  const calculatedStartDate = startDate || getCurrentDateYYYYMMDD();
+
   return {
-    startDate: getCurrentDateYYYYMMDD(),
-    endDate: getDateAfterWeeksYYYYMMDD(weeks),
+    startDate: calculatedStartDate,
+    endDate: getDateAfterWeeksYYYYMMDD(weeks, calculatedStartDate),
   };
 }
 

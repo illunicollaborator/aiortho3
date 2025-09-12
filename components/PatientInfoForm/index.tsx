@@ -22,9 +22,9 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   const { id } = useParams();
   const router = useRouter();
 
-  const { data: patient, isLoading } = usePatient(id as string);
+  const { data: patient, isLoading } = usePatient(Number(id));
   const createPatientMutation = useCreatePatient();
-  const editPatientMutation = useEditPatient(id as string);
+  const editPatientMutation = useEditPatient(Number(id));
 
   const isEditMode = mode === 'edit';
 

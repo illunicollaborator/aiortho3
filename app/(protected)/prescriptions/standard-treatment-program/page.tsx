@@ -7,7 +7,7 @@ import {
   useDeleteStandardProgram,
   useUpdateStandardProgram,
 } from '@/hooks';
-import { Prescription } from '@/models';
+import { Prescription, Program } from '@/models';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
@@ -25,7 +25,7 @@ export default function StandardTreatmentProgramPage() {
   const createStandardProgramMutation = useCreateStandardProgram();
   const updateStandardProgramMutation = useUpdateStandardProgram();
   const deleteStandardProgramMutation = useDeleteStandardProgram();
-  const [standardProgram, setStandardProgram] = useState<Prescription[]>([]);
+  const [standardProgram, setStandardProgram] = useState<Program[]>([]);
   const [currentCustomStandardProgramNumber, setCurrentCustomStandardProgramNumber] =
     useState<number>(1);
   const [editingPrograms, setEditingPrograms] = useState<boolean[]>([]);
@@ -64,7 +64,7 @@ export default function StandardTreatmentProgramPage() {
     setEditingPrograms(prev => prev.map((isEditing, i) => (i === index ? false : isEditing)));
   };
 
-  const handleUpdateProgram = (program: Prescription, index: number) => {
+  const handleUpdateProgram = (program: Program, index: number) => {
     const isNewProgram = newProgramIndices.has(index);
 
     if (isNewProgram) {
@@ -137,7 +137,7 @@ export default function StandardTreatmentProgramPage() {
         {standardProgram.map((program, idx) => (
           <PrescriptionProgramCard
             key={`${program.name}-${idx}`}
-            prescription={program}
+            prescription={{ ...program, patientId: 0 }}
             isEditing={editingPrograms[idx]}
             isPending={
               createStandardProgramMutation.isPending ||

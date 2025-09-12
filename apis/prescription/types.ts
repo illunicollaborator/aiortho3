@@ -38,3 +38,12 @@ export interface PostCreatePrescriptionRequestRequest {
 }
 
 export interface PostCreatePrescriptionRequestResponse extends Prescription {}
+
+export interface PutPrescriptionRequest {
+  exercises: Exercise[];
+  repeatCount: number;
+  endDate: string;
+  name: string;
+}
+
+export interface PutPrescriptionResponse extends Prescription {}

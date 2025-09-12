@@ -9,7 +9,7 @@ export const useUpdateDoctorProfile = () => {
   return useMutation<PutDoctorProfileResponse, ErrorResponse, PutDoctorProfileRequest>({
     mutationFn: putDoctorProfile,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [DOCTOR_PROFILE_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: DOCTOR_PROFILE_QUERY_KEY });
     },
   });
 };

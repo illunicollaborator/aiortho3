@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import { getPatientList } from '@/apis/patients';
 import { GetPatientListRequest } from '@/apis/patients/types';
-
-const QUERY_KEY = 'patients';
+import { PATIENTS_QUERY_KEY } from '@/constants/queryKey';
 
 export const usePatients = (params: GetPatientListRequest) => {
   return useQuery({
-    queryKey: [QUERY_KEY, params],
+    queryKey: PATIENTS_QUERY_KEY(params),
     queryFn: () => getPatientList(params),
   });
 };

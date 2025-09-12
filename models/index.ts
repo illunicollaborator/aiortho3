@@ -17,6 +17,13 @@ export enum ExerciseDirection {
   Right = 'right',
 }
 
+export enum PatientActivityCompletionRate {
+  NONE = 'NONE',
+  BAD = 'BAD',
+  OK = 'OK',
+  GOOD = 'GOOD',
+}
+
 export const ExerciseDirectionLabel = {
   [ExerciseDirection.Left]: '왼쪽 (Lt)',
   [ExerciseDirection.Right]: '오른쪽 (Rt)',
@@ -125,7 +132,7 @@ export interface Patient {
 export interface Prescription {
   prescriptionId?: string;
   name: string;
-  patientId?: number;
+  patientId: number;
   createdAt?: string;
   updatedAt?: string;
   exercises: Exercise[];
@@ -142,4 +149,26 @@ export interface Exercise {
   duration: number;
   direction: ExerciseDirection;
   description?: string;
+}
+
+export interface PatientActivityExercise {
+  exerciseId: string;
+  exerciseName: string;
+  goodTherapyTime: number;
+  therapyTime: number;
+}
+
+export interface PatientActivityReport {
+  date: string;
+  completionRate: PatientActivityCompletionRate;
+  subTotalTherapyTime: number;
+  subTotalGoodTherapyTime: number;
+  exercises: PatientActivityExercise[];
+}
+export interface PatientActivity {
+  reports: PatientActivityReport[];
+  totalDays: number;
+  totalTherapyTime: number;
+  prescriptionStartDate: string;
+  prescriptionEndDate: string;
 }

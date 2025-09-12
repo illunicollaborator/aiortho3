@@ -17,7 +17,7 @@ export const useCreateStandardProgram = () => {
   >({
     mutationFn: postCreateStandardProgram,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [STANDARD_PROGRAM_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: STANDARD_PROGRAM_QUERY_KEY });
     },
   });
 };
