@@ -13,6 +13,7 @@ import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useParams, useRouter } from 'next/navigation';
 import { usePatient } from '@/hooks';
 import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface PatientInfoFormProps {
   mode: 'create' | 'edit';
@@ -36,7 +37,6 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
     reset,
   } = useForm<PatientFormData>({
     resolver: zodResolver(patientFormSchema),
-    mode: 'onBlur',
     defaultValues: {
       patientName: '',
       birthDate: '',
@@ -125,7 +125,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-4 md:mt-[57px] w-full max-w-[800px] space-y-6 min-w-[320px] shrink-0"
+      className="mt-4 md:mt-[57px] w-full max-w-[800px] space-y-12 min-w-[320px] shrink-0"
     >
       <OrthoInput
         label="환자명"
@@ -144,7 +144,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
       >
         <Label
           htmlFor="birthDate"
-          className="text-sm font-medium text-[color:var(--aiortho-gray-500)] relative mb-2"
+          className="text-sm font-medium text-[color:var(--aiortho-gray-500)] relative mb-3"
         >
           <span className="-mr-2 -mb-1">주민등록번호</span>
           <span
@@ -159,7 +159,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
           </span>
         </Label>
 
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full h-12">
           <div className="relative w-[50%]">
             <Input
               id="birthDate"
@@ -185,7 +185,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
             )}
           </div>
 
-          <span className="text-[var(--aiortho-gray-400)] text-lg m-4">-</span>
+          <span className="text-[var(--aiortho-gray-400)] text-lg m-1.5">-</span>
 
           <div className="relative">
             <Input
@@ -239,7 +239,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
 
       <OrthoInput
         label="보호자 휴대폰 번호"
-        placeholder="010-1234-5678"
+        placeholder="휴대폰 번호를 입력해주세요"
         error={errors.guardianPhone?.message}
         registration={register('guardianPhone', {
           onChange: handlePhoneChange,
@@ -249,23 +249,14 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         required
       />
 
-      <div className="flex mt-12 justify-end gap-5">
-        <button
-          type="button"
-          className="bg-[var(--aiortho-secondary)] font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-secondary)]/70 transition-colors cursor-pointer"
-          onClick={() => router.back()}
-        >
-          취소
-        </button>
-
-        <button
-          type="submit"
-          className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
-          disabled={isSubmitting || !isValid || (isEditMode && !isDirty)}
-        >
-          {isEditMode ? '수정하기' : '등록하기'}
-        </button>
-      </div>
+      <Button
+        type="submit"
+        size="confirm"
+        className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
+        disabled={isSubmitting || !isValid || (isEditMode && !isDirty)}
+      >
+        등록하기
+      </Button>
     </form>
   );
 }
