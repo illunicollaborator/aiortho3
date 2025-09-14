@@ -548,6 +548,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             label="의사 면허 번호"
             placeholder="의사 면허 번호을 입력해주세요"
             registration={register('medicalLicense')}
+            // maxLength={20} // FIXME: 의사 면허 번호 입력 길이 기획 보류에 따른 주석 처리
             error={errors.medicalLicense?.message}
             apiResponse={
               medicalLicenseCheckStatus !== null ? !medicalLicenseCheckStatus : undefined
