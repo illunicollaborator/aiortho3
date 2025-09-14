@@ -186,7 +186,7 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
       role="tablist"
       aria-label="상태 선택"
     >
-      {options.map((option, index) => {
+      {options.map(option => {
         const isObject = typeof option === 'object';
         const value = isObject ? option.value : option;
         const label = isObject ? option.label : option;
@@ -208,17 +208,12 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
                 isObject && option.activeClassName
               )
             : cn(
-                'text-[#8395AC]',
+                'text-[#8395AC] cursor-pointer',
                 inactiveButtonClassName,
                 !readOnly && 'hover:text-[#66798D] hover:bg-gray-50',
                 isObject && option.inactiveClassName
               ),
-          isDisabled &&
-            cn(
-              // 'opacity-50 cursor-not-allowed',
-              disabledButtonClassName,
-              isObject && option.disabledClassName
-            ),
+          isDisabled && cn(disabledButtonClassName, isObject && option.disabledClassName),
           isObject && option.buttonClassName,
           readOnly && 'cursor-default'
         );

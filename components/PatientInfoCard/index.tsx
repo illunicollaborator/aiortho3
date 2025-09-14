@@ -4,6 +4,7 @@ import StatusToggle from '../ui/status-toggle';
 import EditIcon from './icon';
 import { formatPhoneNumber } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { useEditPatient } from '../PatientInfoForm/hooks';
 
 interface PatientInfoCardProps {
   patient: Patient;
@@ -33,6 +34,20 @@ export default function PatientInfoCard({
   hidePrescription = false,
 }: PatientInfoCardProps) {
   const router = useRouter();
+  const { mutateAsync: editPatient, isPending } = useEditPatient(patient.patientId);
+
+  const handlePrescriptionStatusChange = (option: string) => {
+    const payload = {
+      name: patient.name,
+      residentRegistrationNumber: `${patient.birth}-${patient.gender}`,
+      hospitalPatientNum: patient.hospitalPatientNum,
+      guardianName: patient.guardianName,
+      guardianPhoneNum: patient.guardianPhoneNum,
+      prescriptionStatus: option as PrescriptionStatus,
+    };
+
+    editPatient(payload);
+  };
 
   const handleEdit = () => {
     router.push(`/prescriptions/patients/${patient.patientId}/edit`);
@@ -56,10 +71,12 @@ export default function PatientInfoCard({
 
           {!hidePrescription && (
             <StatusToggle
+              className="max-w-[185px]"
               options={statusOptions}
               activeOption={patient.prescriptionStatus}
-              className="max-w-[185px]"
-              readOnly
+              disabledButtonClassName="cursor-not-allowed"
+              onOptionChange={handlePrescriptionStatusChange}
+              disabled={isPending}
             />
           )}
         </div>
