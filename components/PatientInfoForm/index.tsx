@@ -65,22 +65,22 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const formatted = formatPhoneNumber(value);
-    setValue('guardianPhone', formatted, { shouldValidate: true, shouldDirty: true });
+    setValue('guardianPhone', formatted, { shouldValidate: false, shouldDirty: true });
   };
 
   const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
-    setValue('birthDate', value, { shouldValidate: true, shouldDirty: true });
+    setValue('birthDate', value, { shouldValidate: false, shouldDirty: true });
   };
 
   const handleGenderDigitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 1);
-    setValue('genderDigit', value, { shouldValidate: true, shouldDirty: true });
+    setValue('genderDigit', value, { shouldValidate: false, shouldDirty: true });
   };
 
   const handleHospitalNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
-    setValue('hospitalNumber', value, { shouldValidate: true, shouldDirty: true });
+    setValue('hospitalNumber', value, { shouldValidate: false, shouldDirty: true });
   };
 
   const onSubmit = async (data: PatientFormData) => {
@@ -133,15 +133,11 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         error={errors.patientName?.message}
         registration={register('patientName')}
         isDirty={dirtyFields.patientName}
+        maxLength={10}
         required
       />
 
-      <div
-        className={cn(
-          'flex flex-col w-full',
-          (errors.birthDate?.message || errors.genderDigit?.message) && 'mb-10'
-        )}
-      >
+      <div className="flex flex-col w-full">
         <Label
           htmlFor="birthDate"
           className="text-sm font-medium text-[color:var(--aiortho-gray-500)] relative mb-3"
@@ -150,7 +146,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
           <span
             className={cn(
               `inline-block`,
-              errors.birthDate?.message
+              errors.birthDate?.message || errors.genderDigit?.message
                 ? 'text-[color:var(--aiortho-danger)]'
                 : 'text-[color:var(--aiortho-primary)]'
             )}
@@ -178,11 +174,6 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
                 onChange: handleBirthDateChange,
               })}
             />
-            {errors.birthDate?.message && (
-              <p className="absolute font-normal text-xs text-[color:var(--aiortho-danger)] mt-1">
-                {errors.birthDate.message}
-              </p>
-            )}
           </div>
 
           <span className="text-[var(--aiortho-gray-400)] text-lg m-1.5">-</span>
@@ -204,17 +195,19 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
                 onChange: handleGenderDigitChange,
               })}
             />
-            {errors.genderDigit?.message && (
-              <p className="absolute font-normal text-xs text-[color:var(--aiortho-danger)] mt-1 whitespace-nowrap">
-                {errors.genderDigit.message}
-              </p>
-            )}
           </div>
 
           <span className="ml-2 text-[var(--aiortho-gray-700)] text-sm font-mono tracking-widest">
             ●●●●●●
           </span>
         </div>
+
+        {/* 에러 메시지를 OrthoInput과 동일하게 레이아웃 플로우에 포함 */}
+        {(errors.birthDate?.message || errors.genderDigit?.message) && (
+          <p className="font-normal text-[color:var(--aiortho-danger)] text-xs mt-2">
+            {errors.birthDate?.message || errors.genderDigit?.message}
+          </p>
+        )}
       </div>
 
       <OrthoInput
@@ -234,6 +227,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         error={errors.guardianName?.message}
         registration={register('guardianName')}
         isDirty={dirtyFields.guardianName}
+        maxLength={10}
         required
       />
 
@@ -252,7 +246,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
       <Button
         type="submit"
         size="confirm"
-        className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
+        className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] h-12 w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
         disabled={isSubmitting || !isValid || (isEditMode && !isDirty)}
       >
         등록하기
