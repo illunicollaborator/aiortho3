@@ -164,10 +164,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
               className={cn(
                 'w-full placeholder:text-[var(--aiortho-gray-400)] h-12',
                 errors.birthDate?.message &&
-                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',
-                dirtyFields.birthDate &&
-                  !errors.birthDate?.message &&
-                  'border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]'
+                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0'
               )}
               maxLength={6}
               {...register('birthDate', {
@@ -185,10 +182,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
               className={cn(
                 'w-[45px] placeholder:text-[var(--aiortho-gray-400)] h-12',
                 errors.genderDigit?.message &&
-                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',
-                dirtyFields.genderDigit &&
-                  !errors.genderDigit?.message &&
-                  'border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]'
+                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0'
               )}
               maxLength={1}
               {...register('genderDigit', {
