@@ -14,6 +14,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { usePatient } from '@/hooks';
 import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
+import { PrescriptionStatus } from '@/models';
 
 interface PatientInfoFormProps {
   mode: 'create' | 'edit';
@@ -32,7 +33,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid, dirtyFields, isDirty },
+    formState: { errors, isSubmitting, isValid, dirtyFields },
     setValue,
     reset,
   } = useForm<PatientFormData>({
@@ -90,7 +91,9 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
       hospitalPatientNum: data.hospitalNumber,
       guardianName: data.guardianName,
       guardianPhoneNum: data.guardianPhone,
-      prescriptionStatus: 'not_created',
+      prescriptionStatus: isEditMode
+        ? patient?.prescriptionStatus || PrescriptionStatus.Not_Created
+        : PrescriptionStatus.Not_Created,
     };
 
     if (isEditMode) {

@@ -1,4 +1,4 @@
-import { Patient, PatientListSortKey } from '@/models';
+import { Patient, PatientListSortKey, PrescriptionStatus } from '@/models';
 
 export interface GetPatientRequest {
   patientId: number;
@@ -39,7 +39,7 @@ export interface UpdatePatientRequest {
     hospitalPatientNum: string;
     guardianName: string;
     guardianPhoneNum: string;
-    prescriptionStatus: string;
+    prescriptionStatus: PrescriptionStatus;
   };
 }
 
