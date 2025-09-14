@@ -243,14 +243,36 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         required
       />
 
-      <Button
-        type="submit"
-        size="confirm"
-        className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] h-12 w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
-        disabled={isSubmitting || !isValid || (isEditMode && !isDirty)}
-      >
-        등록하기
-      </Button>
+      {isEditMode ? (
+        <div className="flex mt-12 gap-5">
+          <Button
+            type="button"
+            size="confirm"
+            className="flex-1 text-aiortho-gray-700 bg-[var(--aiortho-secondary)]/60 font-bold rounded-full h-12 hover:bg-[var(--aiortho-secondary)]/70 transition-colors cursor-pointer"
+            onClick={() => router.back()}
+          >
+            취소
+          </Button>
+
+          <Button
+            type="submit"
+            size="confirm"
+            className="flex-1 text-[#ffffff] bg-[#66798D] font-bold rounded-full h-12 hover:bg-[#66798D]/90 transition-colors disabled:bg-[#ADBED0] disabled:cursor-not-allowed cursor-pointer"
+            disabled={isSubmitting || !isValid}
+          >
+            수정 완료
+          </Button>
+        </div>
+      ) : (
+        <Button
+          type="submit"
+          size="confirm"
+          className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] h-12 w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
+          disabled={isSubmitting || !isValid}
+        >
+          등록하기
+        </Button>
+      )}
     </form>
   );
 }
