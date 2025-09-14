@@ -99,7 +99,10 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
       await editPatientMutation.mutateAsync(payload, {
         onSuccess: () => {
           router.back();
-          showSuccessToast('환자 정보 수정 완료', '환자 정보가 수정되었습니다.');
+
+          setTimeout(() => {
+            showSuccessToast('환자 정보 수정 완료', '환자 정보가 수정되었습니다.');
+          }, 100);
         },
         onError: () => {
           toast.error('환자 정보 수정에 실패했습니다.', {
@@ -110,8 +113,11 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
     } else {
       await createPatientMutation.mutateAsync(payload, {
         onSuccess: ({ patientId }) => {
-          showSuccessToast('환자 등록 완료', '환자 정보가 등록되었습니다.');
           router.push(`/prescriptions/patients/${patientId}`);
+
+          setTimeout(() => {
+            showSuccessToast('환자 등록 완료', '환자 정보가 등록되었습니다.');
+          }, 100);
         },
         onError: () => {
           toast.error('환자 정보 등록에 실패했습니다.', {
