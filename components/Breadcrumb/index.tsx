@@ -16,12 +16,21 @@ const isClickableLink = (path: string, routeExists: boolean): boolean => {
   // routes.ts에 정의되지 않은 경로는 클릭 불가
   if (!routeExists) return false;
 
-  // 동적 라우트 매개변수 패턴 확인 (숫자로만 구성된 세그먼트는 동적 매개변수로 간주)
+  // 동적 라우트 매개변수 패턴 확인
   const segments = path.split('/').filter(Boolean);
   const lastSegment = segments[segments.length - 1];
 
-  // 숫자로만 구성된 세그먼트는 ID 등의 동적 매개변수로 간주하여 클릭 불가
+  // 숫자로만 구성된 세그먼트가 있는 경우
   if (lastSegment && /^\d+$/.test(lastSegment)) {
+    // routes.ts에 정의된 동적 라우트와 매칭되는지 확인
+    const routeInfo = findRouteByPath(path);
+
+    // 동적 라우트 패턴([id], [slug] 등)과 매칭되는 경우에는 클릭 가능
+    if (routeInfo && routeInfo.path.includes('[') && routeInfo.path.includes(']')) {
+      return true;
+    }
+
+    // 그 외의 경우는 클릭 불가
     return false;
   }
 
