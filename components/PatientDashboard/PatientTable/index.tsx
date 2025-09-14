@@ -246,6 +246,40 @@ const PatientTable = ({
 
           {/* 테이블 본문 */}
           <div className="w-full">
+            {patients.length === 0 ? (
+              <div className="flex flex-col items-center w-full mt-10 xl:mt-15 justify-center">
+                <p className="text-[var(--aiortho-gray-600)] mb-4 ">
+                  ‘환자 등록’ 후 처방이 가능합니다.
+                </p>
+                <Button
+                  type="button"
+                  className="cursor-pointer h-12"
+                  onClick={() => router.push('/prescriptions/patients/register')}
+                >
+                  환자 등록하기
+                </Button>
+              </div>
+            ) : (
+              <div
+                className={cn(
+                  'transition-all duration-700 ease-in-out',
+                  isDataChanging && 'opacity-75'
+                )}
+              >
+                {patients.map((patient, index) => (
+                  <PatientTableRow
+                    key={`${patient.patientId}-${index}`}
+                    patient={patient}
+                    columnOrder={columns}
+                    onClick={() => handleTableRowClick(String(patient.patientId))}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* FIXME: Spinner 모션 여부 논의 필요 */}
+          {/* <div className="w-full">
             {isDataChanging ? (
               <div className="flex items-center justify-center w-full h-full">
                 <Spinner className="my-10 w-16 h-16" />
@@ -280,7 +314,7 @@ const PatientTable = ({
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
 
