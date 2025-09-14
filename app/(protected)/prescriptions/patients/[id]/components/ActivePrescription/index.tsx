@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
 import { Prescription } from '@/models';
-import { cn, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 interface ActivePrescriptionProps {
   prescription?: Prescription;
@@ -24,7 +24,7 @@ export default function ActivePrescription({ prescription, onClick }: ActivePres
         {prescription ? (
           <Button
             type="button"
-            className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-xl text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
+            className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
             onClick={onClick}
           >
             수정
@@ -32,7 +32,7 @@ export default function ActivePrescription({ prescription, onClick }: ActivePres
         ) : (
           <Button
             type="button"
-            className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-xl text-sm font-semibold"
+            className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold"
             onClick={onClick}
           >
             처방하기
