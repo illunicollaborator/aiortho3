@@ -207,7 +207,7 @@ const PatientTable = ({
               <div className="flex gap-3 items-center text-sm font-medium leading-non text-slate-400">
                 <button
                   type="button"
-                  className="self-stretch my-auto flex items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                  className="self-stretch my-auto flex items-center gap-2 text-[#8395AC] transition-colors cursor-pointer"
                   aria-label="내 환자만 보기 필터 적용"
                   onClick={handleFindMyPatientToggle}
                 >
