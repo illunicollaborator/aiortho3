@@ -13,6 +13,8 @@ import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useParams, useRouter } from 'next/navigation';
 import { usePatient } from '@/hooks';
 import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { PrescriptionStatus } from '@/models';
 
 interface PatientInfoFormProps {
   mode: 'create' | 'edit';
@@ -31,12 +33,11 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid, dirtyFields, isDirty },
+    formState: { errors, isSubmitting, isValid, dirtyFields },
     setValue,
     reset,
   } = useForm<PatientFormData>({
     resolver: zodResolver(patientFormSchema),
-    mode: 'onBlur',
     defaultValues: {
       patientName: '',
       birthDate: '',
@@ -65,22 +66,22 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const formatted = formatPhoneNumber(value);
-    setValue('guardianPhone', formatted, { shouldValidate: true, shouldDirty: true });
+    setValue('guardianPhone', formatted, { shouldValidate: false, shouldDirty: true });
   };
 
   const handleBirthDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 6);
-    setValue('birthDate', value, { shouldValidate: true, shouldDirty: true });
+    setValue('birthDate', value, { shouldValidate: false, shouldDirty: true });
   };
 
   const handleGenderDigitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 1);
-    setValue('genderDigit', value, { shouldValidate: true, shouldDirty: true });
+    setValue('genderDigit', value, { shouldValidate: false, shouldDirty: true });
   };
 
   const handleHospitalNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9]/g, '');
-    setValue('hospitalNumber', value, { shouldValidate: true, shouldDirty: true });
+    setValue('hospitalNumber', value, { shouldValidate: false, shouldDirty: true });
   };
 
   const onSubmit = async (data: PatientFormData) => {
@@ -90,7 +91,9 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
       hospitalPatientNum: data.hospitalNumber,
       guardianName: data.guardianName,
       guardianPhoneNum: data.guardianPhone,
-      prescriptionStatus: 'not_created',
+      prescriptionStatus: isEditMode
+        ? patient?.prescriptionStatus || PrescriptionStatus.Not_Created
+        : PrescriptionStatus.Not_Created,
     };
 
     if (isEditMode) {
@@ -99,7 +102,10 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
       await editPatientMutation.mutateAsync(payload, {
         onSuccess: () => {
           router.back();
-          showSuccessToast('환자 정보 수정 완료', '환자 정보가 수정되었습니다.');
+
+          setTimeout(() => {
+            showSuccessToast('환자 정보 수정 완료', '환자 정보가 수정되었습니다.');
+          }, 100);
         },
         onError: () => {
           toast.error('환자 정보 수정에 실패했습니다.', {
@@ -110,8 +116,11 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
     } else {
       await createPatientMutation.mutateAsync(payload, {
         onSuccess: ({ patientId }) => {
-          showSuccessToast('환자 등록 완료', '환자 정보가 등록되었습니다.');
           router.push(`/prescriptions/patients/${patientId}`);
+
+          setTimeout(() => {
+            showSuccessToast('환자 등록 완료', '환자 정보가 등록되었습니다.');
+          }, 100);
         },
         onError: () => {
           toast.error('환자 정보 등록에 실패했습니다.', {
@@ -125,7 +134,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="mt-4 md:mt-[57px] w-full max-w-[800px] space-y-6 min-w-[320px] shrink-0"
+      className="mt-4 md:mt-[57px] w-full max-w-[800px] space-y-12 min-w-[320px] shrink-0"
     >
       <OrthoInput
         label="환자명"
@@ -133,24 +142,20 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         error={errors.patientName?.message}
         registration={register('patientName')}
         isDirty={dirtyFields.patientName}
+        maxLength={10}
         required
       />
 
-      <div
-        className={cn(
-          'flex flex-col w-full',
-          (errors.birthDate?.message || errors.genderDigit?.message) && 'mb-10'
-        )}
-      >
+      <div className="flex flex-col w-full">
         <Label
           htmlFor="birthDate"
-          className="text-sm font-medium text-[color:var(--aiortho-gray-500)] relative mb-2"
+          className="text-sm font-medium text-[color:var(--aiortho-gray-500)] relative mb-3"
         >
           <span className="-mr-2 -mb-1">주민등록번호</span>
           <span
             className={cn(
               `inline-block`,
-              errors.birthDate?.message
+              errors.birthDate?.message || errors.genderDigit?.message
                 ? 'text-[color:var(--aiortho-danger)]'
                 : 'text-[color:var(--aiortho-primary)]'
             )}
@@ -159,7 +164,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
           </span>
         </Label>
 
-        <div className="flex items-center w-full">
+        <div className="flex items-center w-full h-12">
           <div className="relative w-[50%]">
             <Input
               id="birthDate"
@@ -168,24 +173,16 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
               className={cn(
                 'w-full placeholder:text-[var(--aiortho-gray-400)] h-12',
                 errors.birthDate?.message &&
-                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',
-                dirtyFields.birthDate &&
-                  !errors.birthDate?.message &&
-                  'border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]'
+                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0'
               )}
               maxLength={6}
               {...register('birthDate', {
                 onChange: handleBirthDateChange,
               })}
             />
-            {errors.birthDate?.message && (
-              <p className="absolute font-normal text-xs text-[color:var(--aiortho-danger)] mt-1">
-                {errors.birthDate.message}
-              </p>
-            )}
           </div>
 
-          <span className="text-[var(--aiortho-gray-400)] text-lg m-4">-</span>
+          <span className="text-[var(--aiortho-gray-400)] text-lg m-1.5">-</span>
 
           <div className="relative">
             <Input
@@ -194,27 +191,26 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
               className={cn(
                 'w-[45px] placeholder:text-[var(--aiortho-gray-400)] h-12',
                 errors.genderDigit?.message &&
-                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',
-                dirtyFields.genderDigit &&
-                  !errors.genderDigit?.message &&
-                  'border-[color:var(--aiortho-primary)] ring-1 ring-[color:var(--aiortho-primary)]'
+                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0'
               )}
               maxLength={1}
               {...register('genderDigit', {
                 onChange: handleGenderDigitChange,
               })}
             />
-            {errors.genderDigit?.message && (
-              <p className="absolute font-normal text-xs text-[color:var(--aiortho-danger)] mt-1 whitespace-nowrap">
-                {errors.genderDigit.message}
-              </p>
-            )}
           </div>
 
           <span className="ml-2 text-[var(--aiortho-gray-700)] text-sm font-mono tracking-widest">
             ●●●●●●
           </span>
         </div>
+
+        {/* 에러 메시지를 OrthoInput과 동일하게 레이아웃 플로우에 포함 */}
+        {(errors.birthDate?.message || errors.genderDigit?.message) && (
+          <p className="font-normal text-[color:var(--aiortho-danger)] text-xs mt-2">
+            {errors.birthDate?.message || errors.genderDigit?.message}
+          </p>
+        )}
       </div>
 
       <OrthoInput
@@ -234,12 +230,13 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         error={errors.guardianName?.message}
         registration={register('guardianName')}
         isDirty={dirtyFields.guardianName}
+        maxLength={10}
         required
       />
 
       <OrthoInput
         label="보호자 휴대폰 번호"
-        placeholder="010-1234-5678"
+        placeholder="휴대폰 번호를 입력해주세요"
         error={errors.guardianPhone?.message}
         registration={register('guardianPhone', {
           onChange: handlePhoneChange,
@@ -249,23 +246,36 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
         required
       />
 
-      <div className="flex mt-12 justify-end gap-5">
-        <button
-          type="button"
-          className="bg-[var(--aiortho-secondary)] font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-secondary)]/70 transition-colors cursor-pointer"
-          onClick={() => router.back()}
-        >
-          취소
-        </button>
+      {isEditMode ? (
+        <div className="flex mt-12 gap-5">
+          <Button
+            type="button"
+            size="confirm"
+            className="flex-1 text-aiortho-gray-700 bg-[var(--aiortho-secondary)]/60 font-bold rounded-full h-12 hover:bg-[var(--aiortho-secondary)]/70 transition-colors cursor-pointer"
+            onClick={() => router.back()}
+          >
+            취소
+          </Button>
 
-        <button
+          <Button
+            type="submit"
+            size="confirm"
+            className="flex-1 text-[#ffffff] bg-[#66798D] font-bold rounded-full h-12 hover:bg-[#66798D]/90 transition-colors disabled:bg-[#ADBED0] disabled:cursor-not-allowed cursor-pointer"
+            disabled={isSubmitting || !isValid}
+          >
+            수정 완료
+          </Button>
+        </div>
+      ) : (
+        <Button
           type="submit"
-          className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] min-h-[48px] w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
-          disabled={isSubmitting || !isValid || (isEditMode && !isDirty)}
+          size="confirm"
+          className="bg-[var(--aiortho-primary)] text-white font-bold rounded-full min-w-[240px] h-12 w-full px-5 py-3 hover:bg-[var(--aiortho-primary)]/90 transition-colors disabled:bg-[var(--aiortho-disabled)] disabled:cursor-not-allowed cursor-pointer"
+          disabled={isSubmitting || !isValid}
         >
-          {isEditMode ? '수정하기' : '등록하기'}
-        </button>
-      </div>
+          등록하기
+        </Button>
+      )}
     </form>
   );
 }

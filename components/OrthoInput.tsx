@@ -81,7 +81,7 @@ const OrthoInput: FC<OrthoInputProps> = ({
           type={type}
           placeholder={placeholder}
           className={cn(
-            'w-full placeholder:text-[color:var(--aiortho-gray-400)] h-12 rounded-xl',
+            'w-full placeholder:text-[color:var(--aiortho-gray-400)] h-12 rounded-3',
             error &&
               !hideErrorBorder &&
               'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0',

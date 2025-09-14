@@ -171,7 +171,11 @@ export default function NurseSignUpForm() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleEmailCheck = (email: string) => {
+  const handleEmailCheck = async (email: string) => {
+    const isValid = await trigger('email');
+
+    if (!isValid) return;
+
     emailCheckMutation.mutate(
       { email },
       {
@@ -215,11 +219,9 @@ export default function NurseSignUpForm() {
   };
 
   const handlePhoneNumberCheck = async () => {
-    // 휴대폰 번호 필드 검증
     const isValid = await trigger('phoneNumber');
-    if (!isValid) {
-      return; // 검증 실패 시 API 호출하지 않음
-    }
+
+    if (!isValid) return;
 
     phoneVerifySendMutation.mutate(
       { phoneNumber },
@@ -334,7 +336,7 @@ export default function NurseSignUpForm() {
                 variant="input"
                 size="inputConfirm"
                 onClick={() => handleEmailCheck(email)}
-                disabled={emailCheckStatus || Boolean(errors.email) || !email}
+                disabled={Boolean(emailCheckStatus)}
               >
                 중복확인
               </Button>
@@ -411,12 +413,7 @@ export default function NurseSignUpForm() {
                   onClick={handlePhoneNumberCheck}
                   variant="input"
                   size="inputCertify"
-                  disabled={
-                    phoneVerifySendMutation.isPending ||
-                    phoneVerifySendMutation.isError ||
-                    !phoneNumber ||
-                    isActive
-                  }
+                  disabled={phoneVerifySendMutation.isPending || isActive}
                 >
                   인증번호 전송
                 </Button>

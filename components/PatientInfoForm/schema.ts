@@ -4,44 +4,55 @@ import { z } from 'zod';
 export const patientFormSchema = z.object({
   patientName: z
     .string()
-    .min(2, { message: '이름은 2자 이상 입력해주세요' })
-    .max(10, { message: '이름은 10자 이하로 입력해주세요' })
-    .regex(/^[가-힣]+$/, { message: '한글만 입력 가능합니다' })
+    .min(2, { message: '환자명을 입력해주세요' })
+    .max(10, { message: '환자명은 2자 이상 입력해주세요' })
+    .regex(/^[가-힣]+$/, { message: '환자명은 2자 이상 입력해주세요' })
     .refine(
       val => {
         const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
         return !singleConsonantVowel.test(val);
       },
-      { message: '자음이나 모음만 사용할 수 없습니다' }
+      { message: '환자명은 2자 이상 입력해주세요' }
     ),
   birthDate: z
     .string()
-    .length(6, '생년월일 6자리를 입력해주세요')
-    .regex(/^\d{6}$/, '생년월일은 숫자 6자리여야 합니다')
+    .length(6, '주민등록번호 앞자리를 입력해주세요')
+    .regex(/^\d{6}$/, '주민등록번호 앞자리를 다시 확인해주세요')
     .refine(val => {
       const num = parseInt(val, 10);
       return num >= 190001 && num <= 999999;
-    }, '올바른 생년월일을 입력해주세요'),
+    }, '주민등록번호 앞자리를 다시 확인해주세요'),
   genderDigit: z
     .string()
-    .min(1, '성별을 입력해주세요')
-    .regex(/^[1-4]$/, '성별은 1, 2, 3, 4 중 하나여야 합니다'),
+    .min(1, '주민등록번호 뒷자리를 입력해주세요')
+    .regex(/^[1-4]$/, '주민등록번호 뒷자리를 다시 확인해주세요'),
   hospitalNumber: z
     .string()
     .min(1, '병원 환자 번호를 입력해주세요')
-    .regex(/^\d+$/, '병원 환자 번호는 숫자여야 합니다'),
-  guardianName: z.string().min(1, '보호자명을 입력해주세요'),
+    .regex(/^\d+$/, '병원 환자 번호를 다시 확인해주세요'),
+  guardianName: z
+    .string()
+    .min(1, '보호자명을 입력해주세요')
+    .max(10, { message: '보호자명은 2자 이상 입력해주세요' })
+    .regex(/^[가-힣]+$/, { message: '보호자명은 2자 이상 입력해주세요' })
+    .refine(
+      val => {
+        const singleConsonantVowel = /[ㄱ-ㅎㅏ-ㅣ]/;
+        return !singleConsonantVowel.test(val);
+      },
+      { message: '보호자명은 2자 이상 입력해주세요' }
+    ),
   guardianPhone: z
     .string()
     .min(1, '보호자 휴대폰 번호를 입력해주세요')
     .refine(val => {
       const numbers = val.replace(/[^0-9]/g, '');
       return numbers.length === 11;
-    }, '휴대폰 번호는 11자리여야 합니다')
+    }, '보호자 휴대폰 번호를 다시 확인해주세요')
     .refine(val => {
       const numbers = val.replace(/[^0-9]/g, '');
       return numbers.startsWith('010');
-    }, '휴대폰 번호는 010으로 시작해야 합니다')
+    }, '보호자 휴대폰 번호를 다시 확인해주세요')
     .transform(val => val.replace(/[^0-9]/g, '')),
 });
 

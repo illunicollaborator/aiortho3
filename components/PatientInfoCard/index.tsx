@@ -4,6 +4,7 @@ import StatusToggle from '../ui/status-toggle';
 import EditIcon from './icon';
 import { formatPhoneNumber } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
+import { useEditPatient } from '../PatientInfoForm/hooks';
 
 interface PatientInfoCardProps {
   patient: Patient;
@@ -33,6 +34,20 @@ export default function PatientInfoCard({
   hidePrescription = false,
 }: PatientInfoCardProps) {
   const router = useRouter();
+  const { mutateAsync: editPatient, isPending } = useEditPatient(patient.patientId);
+
+  const handlePrescriptionStatusChange = (option: string) => {
+    const payload = {
+      name: patient.name,
+      residentRegistrationNumber: `${patient.birth}-${patient.gender}`,
+      hospitalPatientNum: patient.hospitalPatientNum,
+      guardianName: patient.guardianName,
+      guardianPhoneNum: patient.guardianPhoneNum,
+      prescriptionStatus: option as PrescriptionStatus,
+    };
+
+    editPatient(payload);
+  };
 
   const handleEdit = () => {
     router.push(`/prescriptions/patients/${patient.patientId}/edit`);
@@ -40,9 +55,9 @@ export default function PatientInfoCard({
 
   return (
     <div className="flex flex-col rounded-2xl bg-[#F7F9FB] w-full p-6 gap-5 lg:p-8">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap justify-between items-center">
-          <div className="flex  gap-2 items-center shrink-0">
+      <div className="flex flex-wrap justify-between">
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-2 items-center shrink-0">
             <span className="font-bold text-2xl">{patient.name}</span>
             <span className="text-2xl">님</span>
             <button
@@ -54,20 +69,22 @@ export default function PatientInfoCard({
             </button>
           </div>
 
-          {!hidePrescription && (
-            <StatusToggle
-              options={statusOptions}
-              activeOption={patient.prescriptionStatus}
-              className="max-w-[185px]"
-              readOnly
-            />
-          )}
+          <div className="flex text-[var(--aiortho-gray-600)] gap-2 h-5">
+            <span>병원 환자 번호</span>
+            <span className="font-semibold">{patient.hospitalPatientNum}</span>
+          </div>
         </div>
 
-        <div className="flex text-[var(--aiortho-gray-600)] gap-2 h-5">
-          <span>병원 환자 번호</span>
-          <span className="font-semibold">{patient.hospitalPatientNum}</span>
-        </div>
+        {!hidePrescription && (
+          <StatusToggle
+            className="max-w-[185px] h-fit"
+            options={statusOptions}
+            activeOption={patient.prescriptionStatus}
+            disabledButtonClassName="cursor-not-allowed"
+            onOptionChange={handlePrescriptionStatusChange}
+            disabled={isPending}
+          />
+        )}
       </div>
 
       <Divider className="bg-white" />

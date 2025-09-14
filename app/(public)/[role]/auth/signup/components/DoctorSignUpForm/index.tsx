@@ -199,7 +199,14 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
       setCertSent(false);
       setIsActive(false);
       setTimer(DEFAULT_TIMER);
-      clearErrors('phoneNumber');
+
+      // FIXME: 폼 처리 관련 기획 보류에 따른 주석 처리
+      // setValue('certificationNumberCheckStatus', false, {
+      //   shouldValidate: true,
+      //   shouldDirty: true,
+      //   shouldTouch: true,
+      // });
+      // clearErrors('certificationNumber');
     }
   }, [phoneNumber, prevPhoneNumber, phoneNumberCheckStatus, setIsActive, setTimer, clearErrors]);
 
@@ -352,7 +359,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     // 휴대폰 번호 필드 검증
     const isValid = await trigger('phoneNumber');
 
-    if (!isValid) {
+    if (!isValid || phoneNumber === prevPhoneNumber) {
       return; // 검증 실패 시 API 호출하지 않음
     }
 
@@ -369,6 +376,8 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
         onError: error => {
           if (error.statusCode === 4002) {
             setError('phoneNumber', { message: '유효하지 않은 전화번호입니다' });
+          } else if (error.statusSubCode === 4003) {
+            setError('phoneNumber', { message: '이미 가입된 휴대폰 번호예요' });
           } else if (error.statusSubCode === 4017) {
             setError('phoneNumber', { message: '인증 시도 횟수를 초과했습니다' });
           } else {
@@ -534,6 +543,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             label="의사 면허 번호"
             placeholder="의사 면허 번호을 입력해주세요"
             registration={register('medicalLicense')}
+            // maxLength={20} // FIXME: 의사 면허 번호 입력 길이 기획 보류에 따른 주석 처리
             error={errors.medicalLicense?.message}
             apiResponse={
               medicalLicenseCheckStatus !== null ? !medicalLicenseCheckStatus : undefined
@@ -620,7 +630,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                   size="inputCertify"
                   disabled={
                     phoneVerifySendMutation.isPending ||
-                    phoneVerifySendMutation.isError ||
+                    // phoneVerifySendMutation.isError ||
                     !phoneNumber ||
                     isActive
                   }
@@ -647,7 +657,9 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             apiResponseMessage={
               certificationNumberCheckStatus === true ? '인증 번호가 확인되었어요' : ''
             }
-            error={errors.certificationNumber?.message}
+            error={
+              certificationNumberCheckStatus === false ? errors.certificationNumber?.message : ''
+            }
             rightIcon={
               <div className="flex items-center gap-2 md:gap-5 py-2">
                 {certSent && (

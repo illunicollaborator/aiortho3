@@ -56,7 +56,7 @@ export default function PrescriptionHistory({ patientId }: PrescriptionHistoryPr
           ))
         ) : (
           <div className="flex justify-center items-center w-full h-25">
-            <span className="text-[var(--aiortho-gray-500)] ">처방된 내역이 없어요</span>
+            <span className="text-[var(--aiortho-gray-500)] ">처방된 내역이 없어요.</span>
           </div>
         )}
       </div>
