@@ -39,7 +39,7 @@ export default function MedicalLicenseDetails({ patientId, license }: MedicalLic
 
         <Button
           type="button"
-          className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer bg-[var(--aiortho-gray-600)] text-white disabled:bg-[var(--aiortho-gray-200)] disabled:text-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-600)]/80 rounded-xl text-sm font-semibold"
+          className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer bg-[var(--aiortho-gray-600)] text-white disabled:bg-[var(--aiortho-gray-200)] disabled:text-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-600)]/80 rounded-[12px] text-sm font-semibold"
           disabled={isPending || Boolean(license)}
           onClick={handlePostAppLicense}
         >
