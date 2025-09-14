@@ -151,7 +151,7 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
   };
 
   const variantClasses = {
-    default: 'bg-white shadow-sm border border-gray-200',
+    default: 'bg-white border border-gray-200',
     outline: 'bg-transparent border-2 border-gray-300',
     solid: 'bg-gray-100 border border-gray-200',
     minimal: 'bg-transparent',
@@ -174,7 +174,7 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
   return (
     <div
       className={cn(
-        'rounded-full flex items-center font-pretandard font-medium whitespace-nowrap text-center leading-none',
+        'rounded-full flex font-medium whitespace-nowrap text-center leading-none',
         directionClasses[direction],
         fullWidth ? 'w-full' : 'md:w-auto w-full',
         sizeClasses[size],
@@ -197,13 +197,13 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
 
         // 개별 스타일 우선순위: 개별 설정 > 기본 설정 > 기본값
         const buttonStyles = cn(
-          'self-stretch rounded-full my-auto transition-all duration-200 focus:outline-none',
-          fullWidth ? 'flex-1' : 'md:flex-none flex-1',
+          'rounded-full transition-all duration-200 focus:outline-none',
+          fullWidth && 'flex-1',
           buttonSizeClasses[size],
           buttonBaseClassName,
           isActive
             ? cn(
-                'bg-[#0D8EFF] text-white font-bold shadow-sm',
+                'bg-[#0D8EFF] text-white font-bold',
                 activeButtonClassName,
                 isObject && option.activeClassName
               )
@@ -234,15 +234,15 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
                 {icon && <span className="flex-shrink-0">{icon}</span>}
                 <span>{label}</span>
               </div>
-            </button>
 
-            {/* 활성 상태 표시기 */}
-            {showActiveIndicator && isActive && (
-              <div
-                className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full"
-                style={{ backgroundColor: activeIndicatorColor }}
-              />
-            )}
+              {/* 활성 상태 표시기 */}
+              {showActiveIndicator && isActive && (
+                <div
+                  className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-2 h-2 rounded-full"
+                  style={{ backgroundColor: activeIndicatorColor }}
+                />
+              )}
+            </button>
           </div>
         );
       })}

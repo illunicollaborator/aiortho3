@@ -55,9 +55,9 @@ export default function PatientInfoCard({
 
   return (
     <div className="flex flex-col rounded-2xl bg-[#F7F9FB] w-full p-6 gap-5 lg:p-8">
-      <div className="flex flex-col gap-3">
-        <div className="flex flex-wrap justify-between items-center">
-          <div className="flex  gap-2 items-center shrink-0">
+      <div className="flex flex-wrap justify-between">
+        <div className="flex flex-col gap-3">
+          <div className="flex gap-2 items-center shrink-0">
             <span className="font-bold text-2xl">{patient.name}</span>
             <span className="text-2xl">님</span>
             <button
@@ -69,22 +69,22 @@ export default function PatientInfoCard({
             </button>
           </div>
 
-          {!hidePrescription && (
-            <StatusToggle
-              className="max-w-[185px]"
-              options={statusOptions}
-              activeOption={patient.prescriptionStatus}
-              disabledButtonClassName="cursor-not-allowed"
-              onOptionChange={handlePrescriptionStatusChange}
-              disabled={isPending}
-            />
-          )}
+          <div className="flex text-[var(--aiortho-gray-600)] gap-2 h-5">
+            <span>병원 환자 번호</span>
+            <span className="font-semibold">{patient.hospitalPatientNum}</span>
+          </div>
         </div>
 
-        <div className="flex text-[var(--aiortho-gray-600)] gap-2 h-5">
-          <span>병원 환자 번호</span>
-          <span className="font-semibold">{patient.hospitalPatientNum}</span>
-        </div>
+        {!hidePrescription && (
+          <StatusToggle
+            className="max-w-[185px] h-fit"
+            options={statusOptions}
+            activeOption={patient.prescriptionStatus}
+            disabledButtonClassName="cursor-not-allowed"
+            onOptionChange={handlePrescriptionStatusChange}
+            disabled={isPending}
+          />
+        )}
       </div>
 
       <Divider className="bg-white" />
