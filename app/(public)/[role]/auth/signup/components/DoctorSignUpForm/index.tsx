@@ -140,8 +140,6 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     },
   });
 
-  console.log(errors);
-
   const email = watch('email');
   const [prevEmail, setPrevEmail] = useState<string>('');
   const [emailCheckStatus, setEmailCheckStatus] = useState<null | boolean>(null);
@@ -379,7 +377,6 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
           if (error.statusCode === 4002) {
             setError('phoneNumber', { message: '유효하지 않은 전화번호입니다' });
           } else if (error.statusSubCode === 4003) {
-            console.log('here');
             setError('phoneNumber', { message: '이미 가입된 휴대폰 번호예요' });
           } else if (error.statusSubCode === 4017) {
             setError('phoneNumber', { message: '인증 시도 횟수를 초과했습니다' });
@@ -459,8 +456,6 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
       },
     });
   };
-
-  console.log(phoneNumberCheckStatus);
 
   return (
     <div className="flex w-full flex-col items-center bg-white py-20">
