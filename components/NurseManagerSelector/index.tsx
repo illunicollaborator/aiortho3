@@ -7,7 +7,7 @@ import { Nurse } from '@/models';
 import { cn } from '@/lib/utils';
 
 interface NurseManagerProps {
-  nurses: Nurse[];
+  nurses?: Nurse[];
   label: string;
   error?: string;
   onChange?: (nurseIds: string[]) => void;
@@ -15,7 +15,7 @@ interface NurseManagerProps {
 
 const NurseManager: React.FC<NurseManagerProps> = ({ nurses, label, error, onChange }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNurses, setSelectedNurses] = useState<Nurse[]>(nurses);
+  const [selectedNurses, setSelectedNurses] = useState<Nurse[]>(nurses ?? []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
