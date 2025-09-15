@@ -371,14 +371,15 @@ export const isDoctorRole = (role: UserRole): role is 'Doctor' | 'Root' => {
 export const createPhoneNumberSchema = (options?: {
   currentPhoneNumber?: string;
   allowEmpty?: boolean;
+  allowSameNumber?: boolean;
 }) => {
-  const { currentPhoneNumber, allowEmpty = false } = options || {};
+  const { currentPhoneNumber, allowEmpty = false, allowSameNumber = false } = options || {};
 
   return z.string().refine(
     value => {
       if (allowEmpty && !value) return true;
 
-      if (currentPhoneNumber && value === currentPhoneNumber) {
+      if (currentPhoneNumber && value === currentPhoneNumber && !allowSameNumber) {
         return false;
       }
 
@@ -393,9 +394,10 @@ export const createPhoneNumberSchema = (options?: {
       return true;
     },
     {
-      message: currentPhoneNumber
-        ? '현재 휴대폰 번호와 다른 번호를 입력해주세요'
-        : '휴대폰 번호를 다시 확인해주세요',
+      message:
+        currentPhoneNumber && !allowSameNumber
+          ? '현재 휴대폰 번호와 다른 번호를 입력해주세요'
+          : '휴대폰 번호를 다시 확인해주세요',
     }
   );
 };
@@ -403,9 +405,9 @@ export const createPhoneNumberSchema = (options?: {
 // 기본 휴대폰 번호 검증 스키마 (회원가입용)
 export const phoneNumberSchema = createPhoneNumberSchema();
 
-// 프로필 편집용 휴대폰 번호 검증 스키마 생성 함수
+// 프로필 편집용 휴대폰 번호 검증 스키마 생성 함수 (동일한 번호 허용)
 export const createProfilePhoneNumberSchema = (currentPhoneNumber: string) =>
-  createPhoneNumberSchema({ currentPhoneNumber });
+  createPhoneNumberSchema({ currentPhoneNumber, allowSameNumber: true });
 
 // 선택적 휴대폰 번호 검증 스키마 (빈 값 허용)
 export const optionalPhoneNumberSchema = createPhoneNumberSchema({ allowEmpty: true });
