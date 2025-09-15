@@ -233,8 +233,11 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
 
     updateDoctorProfile(payload, {
       onSuccess: () => {
-        showSuccessToast('개인정보 수정완료', '개인정보가 수정되었어요');
-        router.push('/profile');
+        router.replace('/profile');
+
+        setTimeout(() => {
+          showSuccessToast('개인정보 수정완료', '개인정보가 수정되었어요');
+        }, 100);
       },
     });
   };
