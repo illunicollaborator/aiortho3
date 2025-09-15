@@ -20,7 +20,7 @@ const Divider = ({
     height: isHorizontal ? thickness : length,
   };
 
-  return <div className={cn('bg-slate-200', className)} style={style} />;
+  return <div className={cn('bg-aiortho-secondary', className)} style={style} />;
 };
 
 export default Divider;
