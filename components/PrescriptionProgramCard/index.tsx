@@ -233,7 +233,7 @@ export default function PrescriptionProgramCard({
           <Divider className="my-5" />
 
           <form onSubmit={e => e.preventDefault()}>
-            <CardContent className="px-0 pb-3 flex flex-col gap-9">
+            <CardContent className="px-0 flex flex-col gap-9">
               {watchedExercises.map((exercise, idx) => (
                 <div key={`재활운동-${idx + 1}`} className="flex flex-col gap-7">
                   <span className="text-[var(--aiortho-gray-900)] font-semibold">
