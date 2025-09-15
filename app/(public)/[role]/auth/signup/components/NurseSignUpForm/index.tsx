@@ -318,7 +318,7 @@ export default function NurseSignUpForm() {
             회원가입을 위해 아래 항목들을 입력해주세요.
           </p>
         </div>
-        <form className="space-y-10 mt-8" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-12 mt-8" onSubmit={handleSubmit(onSubmit)}>
           <OrthoInput
             label="아이디(이메일)"
             placeholder="아이디(이메일)를 입력해주세요"

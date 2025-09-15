@@ -300,7 +300,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         e.preventDefault();
         handleSubmit(onSubmit)();
       }}
-      className="flex flex-col gap-6"
+      className="flex flex-col gap-12"
     >
       <OrthoInput
         label="아이디 (이메일)"
