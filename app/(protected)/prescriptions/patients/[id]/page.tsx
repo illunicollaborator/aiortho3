@@ -55,6 +55,7 @@ export default function PatientDetailPage() {
       <MedicalLicenseDetails patientId={Number(id)} license={patient.license} />
       <PatientController
         name={patient.name}
+        disabled={Boolean(activePrescription)}
         onClick={handleRoutePrescribe}
         onDelete={handleDeletePatient}
       />
