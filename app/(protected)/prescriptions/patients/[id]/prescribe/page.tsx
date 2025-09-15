@@ -150,7 +150,6 @@ export default function CreatePrescriptionPage() {
   useEffect(() => {
     if (activePrescriptionQuery.data) {
       setPrescriptionProgram(activePrescriptionQuery.data);
-      setIsEditing(true);
     }
 
     if (activePrescriptionQuery.data?.startDate && activePrescriptionQuery.data?.endDate) {
@@ -178,12 +177,10 @@ export default function CreatePrescriptionPage() {
 
   return (
     <section className="flex flex-col max-w-[680px]">
-      <h1 className="text-2xl font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mb-8">
-        처방하기
-      </h1>
+      <h1 className="text-[32px] font-bold text-[var(--aiortho-gray-900)] mb-8">처방하기</h1>
       <PatientInfoCard patient={patient} hideEditButton hidePrescription />
 
-      <h1 className="text-2xl font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mt-22 mb-3">
+      <h1 className="text-[22px] font-bold text-[var(--aiortho-gray-900)] mt-22 mb-3">
         치료 프로그램 구성
       </h1>
       <h2 className="text-[var(--aiortho-gray-600)] mb-8">
@@ -199,9 +196,6 @@ export default function CreatePrescriptionPage() {
             onStopEditing={() => setIsEditing(false)}
             onUpdate={handleSetProgram}
             onDelete={handleDeleteProgram}
-            // FIXME: 조건부 기획 구체화 필요
-            // showControl={patient.prescription ? false : true}
-            // checkIsDirty={patient.prescription ? true : false}
             setIsDirty={setPrescriptionProgramIsDirty}
             defaultIsOpen
             showControl

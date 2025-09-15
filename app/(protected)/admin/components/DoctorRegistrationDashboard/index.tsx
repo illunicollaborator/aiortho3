@@ -21,7 +21,15 @@ export default function DoctorRegistrationDashboard() {
   const debouncedSearch = useDebounce(search, 1000);
   const [columns, setColumns] = useState<TableColumn[]>([]);
 
-  const queryParams = useMemo(
+  const adminQueryParams = useMemo(
+    () => ({
+      sortBy: 'createdAt',
+      ascending: false,
+    }),
+    []
+  );
+
+  const adminsQueryParams = useMemo(
     () => ({
       page: pageNumber,
       limit: PER_PAGE_SIZE,
@@ -32,7 +40,8 @@ export default function DoctorRegistrationDashboard() {
     [pageNumber, sortBy, sortDirection, debouncedSearch]
   );
 
-  const adminsQuery = useAdmins(queryParams);
+  const adminQuery = useAdmins(adminQueryParams);
+  const adminsQuery = useAdmins(adminsQueryParams);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -63,11 +72,21 @@ export default function DoctorRegistrationDashboard() {
     setColumns(savedColumns);
   }, []);
 
-  if (!adminsQuery.data) {
+  if (!adminsQuery.data || !adminQuery.data) {
     return null;
   }
 
-  const { adminListItems, adminCounts } = adminsQuery.data;
+  // FIXME: 최고 관리자 조회를 위해 불필요한 API 호출 발생 api 수정 고도화 필요
+  const { adminListItems: allAdminListItems } = adminQuery.data;
+  let { adminListItems, adminCounts } = adminsQuery.data;
+
+  const admin = allAdminListItems.find(admin => admin.role === 'Root');
+  const hasRootAdmin = adminListItems.some(admin => admin.role === 'Root');
+
+  if (!admin) return null;
+
+  const admins = [admin, ...adminListItems.filter(admin => admin.role !== 'Root')];
+  adminCounts = hasRootAdmin ? adminCounts : adminCounts + 1;
 
   return (
     <div className="flex flex-col gap-6">
@@ -103,7 +122,7 @@ export default function DoctorRegistrationDashboard() {
         </div>
 
         <DoctorRegistrationTable
-          admins={adminListItems}
+          admins={admins}
           columns={columns}
           sortBy={sortBy}
           sortDirection={sortDirection}

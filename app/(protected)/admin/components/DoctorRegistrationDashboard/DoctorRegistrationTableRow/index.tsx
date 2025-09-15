@@ -1,6 +1,6 @@
 import { Admin } from '@/models';
 import { TableColumn } from '../types';
-import { formatISODate } from '@/lib/utils';
+import { cn, formatISODate } from '@/lib/utils';
 
 interface DoctorRegistrationTableRowProps {
   admin: Admin;
@@ -11,9 +11,11 @@ export default function DoctorRegistrationTableRow({
   admin,
   columnOrder,
 }: DoctorRegistrationTableRowProps) {
+  const isRoot = admin.role === 'Root';
+
   const renderCellContent = (columnKey: string) => {
     if (columnKey === 'No') {
-      return admin.no;
+      return isRoot ? '최고관리자' : admin.no;
     }
 
     if (columnKey === '코드 번호') {
@@ -36,13 +38,21 @@ export default function DoctorRegistrationTableRow({
   };
 
   return (
-    <div className="flex items-center w-full min-h-[68px] text-sm text-zinc-900 cursor-default transition-colors">
+    <div className="flex items-center w-full px-3 min-h-[68px] text-sm transition-colors border-b-[0.4px] border-aiortho-gray-100">
       {columnOrder.map(column => (
         <div
           key={column.id}
-          className={`flex justify-center items-center self-stretch px-2.5 py-7 my-auto min-h-[68px] ${column.flex}`}
+          className={cn(
+            'flex items-center px-3 py-[25.5px] self-stretch min-h-[68px] flex-1 whitespace-nowrap',
+            column.className
+          )}
         >
-          <div className="opacity-80 text-zinc-900 truncate text-ellipsis">
+          <div
+            className={cn(
+              'text-aiortho-gray-900 truncate text-ellipsis',
+              isRoot && 'text-aiortho-primary'
+            )}
+          >
             {renderCellContent(column.label)}
           </div>
         </div>

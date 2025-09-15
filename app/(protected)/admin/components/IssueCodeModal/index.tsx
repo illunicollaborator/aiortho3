@@ -6,13 +6,14 @@ import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useInviteCodeSend } from '../../hooks';
 import { showSuccessToast } from '@/components/ui/toast-notification';
+import OrthoInput from '@/components/OrthoInput';
 
 const phoneNumberSchema = z.object({
   phoneNumber: z
     .string()
-    .min(10, '올바른 휴대폰 번호 형식이 아니에요')
-    .max(11, '올바른 휴대폰 번호 형식이 아니에요')
-    .regex(/^01[0-9]{8,9}$/, '올바른 휴대폰 번호 형식이 아니에요'),
+    .min(10, '휴대폰 번호를 다시 확인해주세요')
+    .max(11, '휴대폰 번호를 다시 확인해주세요')
+    .regex(/^01[0-9]{8,9}$/, '휴대폰 번호를 다시 확인해주세요'),
 });
 
 type FormValues = z.infer<typeof phoneNumberSchema>;
@@ -33,7 +34,6 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
     setError,
   } = useForm<FormValues>({
     resolver: zodResolver(phoneNumberSchema),
-    mode: 'onChange',
     defaultValues: {
       phoneNumber: '',
     },
@@ -55,7 +55,6 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
             setError('phoneNumber', {
               message: '이미 가입된 휴대폰 번호예요',
             });
-
             return;
           }
 
@@ -63,7 +62,6 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
             setError('phoneNumber', {
               message: '인증 시도 횟수를 초과했습니다',
             });
-
             return;
           }
 
@@ -95,28 +93,22 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
           </div>
           <button
             onClick={handleClose}
-            className="absolute z-0 rounded-[29px] flex min-h-6 min-w-6 p-1 items-center justify-center right-3 top-3"
+            className="absolute z-0 flex min-h-6 min-w-6 p-1 items-center justify-center right-3 top-3"
           >
-            <X className="w-5 h-5 text-[#66798D]" />
+            <X className="w-5 h-5 text-[#66798D] cursor-pointer" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full px-8 font-pretandard font-normal md:mt-10">
-            <div className="w-full">
-              <label className="text-[#8395AC] text-sm">휴대폰 번호</label>
-              <div className="mt-3 w-full">
-                <input
-                  type="text"
-                  placeholder="휴대폰 번호를 입력해주세요"
-                  {...register('phoneNumber')}
-                  className="w-full rounded-[12px] border border-[#DADFE9] min-h-[48px] px-4 py-[15px] text-base focus:border-[#0054A6] focus:outline-none placeholder:text-[#97A8C4]"
-                />
-                {errors.phoneNumber && (
-                  <div className="text-[#FF0D4E] text-sm mt-2">{errors.phoneNumber.message}</div>
-                )}
-              </div>
-            </div>
+            <OrthoInput
+              label="휴대폰 번호"
+              placeholder="휴대폰 번호를 입력해주세요"
+              registration={register('phoneNumber')}
+              error={errors.phoneNumber?.message}
+              numericOnly={true}
+              maxLength={11}
+            />
           </div>
 
           <div className="rounded-b-[24px] bg-white flex mt-[60px] w-full px-8 pt-14 pb-7 gap-3">
@@ -129,12 +121,12 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
             </Button>
             <Button
               type="submit"
-              disabled={!isValid || isPending}
-              className={`cursor-pointer flex-1 rounded-full min-h-[48px] px-6 py-3 text-sm font-bold text-white ${
-                isValid ? 'bg-[#0054A6] hover:bg-[#0054A6]/90' : 'bg-[#BDD5FF] hover:bg-[#BDD5FF]'
-              }`}
+              disabled={isPending || !isValid}
+              className={
+                'cursor-pointer flex-1 rounded-full min-h-[48px] px-6 py-3 text-sm font-bold text-white bg-aiortho-primary hover:bg-aiortho-primary/90 disabled:bg-aiortho-disabled disabled:cursor-not-allowed'
+              }
             >
-              {isPending ? '전송 중...' : '전송하기'}
+              전송하기
             </Button>
           </div>
         </form>

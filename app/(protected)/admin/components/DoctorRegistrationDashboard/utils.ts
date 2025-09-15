@@ -8,16 +8,23 @@ import {
 export const DEFAULT_COLUMNS: TableColumn[] = [
   {
     id: 'no',
+    className: 'min-w-[124px]',
     label: 'No',
-    flex: 'flex-[0.4]',
+    sortKey: 'no',
   },
-  { id: 'signupCode', label: '코드 번호', flex: 'flex-[0.4]' },
-  { id: 'name', label: '의사명', flex: 'flex-[0.6]' },
-  { id: 'email', label: '아이디(이메일)', flex: 'flex-[1.0]' },
+  {
+    id: 'signupCode',
+    className: 'min-w-[188px]',
+    label: '코드 번호',
+    sortKey: 'signupCode',
+  },
+  { id: 'name', className: 'min-w-[176px]', label: '의사명', sortKey: 'name' },
+  { id: 'email', className: 'min-w-[328px]', label: '아이디(이메일)', sortKey: 'email' },
   {
     id: 'createdAt',
+    className: 'min-w-[256px]',
     label: '가입일',
-    flex: 'flex-[1.0]',
+    sortKey: 'createdAt',
   },
 ];
 

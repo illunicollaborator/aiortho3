@@ -257,7 +257,7 @@ const PatientTable = ({
                 <Button
                   type="button"
                   className={cn(
-                    'cursor-pointer h-12 rounded-[14px] px-[22px] py-3',
+                    'cursor-pointer w-[120px] h-12 rounded-[14px] px-[22px] py-3',
                     clickMode === 'prescribe' &&
                       'bg-aiortho-disabled/50 text-aiortho-primary text-sm hover:bg-aiortho-disabled/60'
                   )}
@@ -268,10 +268,11 @@ const PatientTable = ({
               </div>
             ) : (
               <div
-                className={cn(
-                  'transition-all duration-700 ease-in-out',
-                  isDataChanging && 'opacity-75'
-                )}
+              // FIXME: 테이블 데이터 변경에 따른 애니메이션 기획 논의 필요
+              // className={cn(
+              //   'transition-all duration-700 ease-in-out',
+              //   isDataChanging && 'opacity-75'
+              // )}
               >
                 {patients.map((patient, index) => (
                   <PatientTableRow

@@ -165,6 +165,8 @@ export default function PrescriptionProgramCard({
   };
 
   const handleExerciseDelete = (idx: number) => {
+    if (watchedExercises.length === 1) return;
+
     const updatedExercises = [...watchedExercises];
     updatedExercises.splice(idx, 1);
     setValue('exercises', updatedExercises);
@@ -247,7 +249,7 @@ export default function PrescriptionProgramCard({
                       재활 운동 {idx + 1}
                     </span>
 
-                    {watchedExercises.length > 1 && (
+                    {isEditing && (
                       <button
                         type="button"
                         className="cursor-pointer text-aiortho-gray-600"
@@ -259,7 +261,7 @@ export default function PrescriptionProgramCard({
                   </div>
 
                   <div className="flex flex-col gap-3">
-                    <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0 ">
+                    <Label className="text-[var(--aiortho-gray-400)] text-sm px-0 py-0 ">
                       운동 종류 선택
                     </Label>
 
@@ -276,15 +278,15 @@ export default function PrescriptionProgramCard({
                         >
                           <SelectTrigger
                             className={cn(
-                              'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
+                              'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                               errors.exercises?.[idx]?.exerciseId &&
-                                'border-2 border-[color:var(--aiortho-danger)] focus:border-2 focus:border-[color:var(--aiortho-danger)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0'
+                                'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                             )}
                             disabled={!isEditing || isPending}
                           >
                             <SelectValue placeholder="운동 종류를 선택해주세요." />
                           </SelectTrigger>
-                          <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
+                          <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2 shadow-[0px_0px_32px_rgba(159,171,196,0.3)] border-0">
                             <div className="scrollable h-50 overflow-y-scroll pl-2">
                               <SelectGroup className="flex flex-col gap-1">
                                 {staticExerciseList.map(exercise => (
@@ -351,7 +353,7 @@ export default function PrescriptionProgramCard({
                                 <RadioGroupItem
                                   value="right"
                                   id={`exercise-${idx}-direction-right`}
-                                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-500 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22] h-[22] disabled:data-[state=checked]:text-aiortho-gray-500"
+                                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22] h-[22] disabled:data-[state=checked]:text-aiortho-gray-500"
                                   checked={exercise.direction === ExerciseDirection.Right}
                                   disabled={!isEditing || isPending}
                                 />
@@ -391,9 +393,9 @@ export default function PrescriptionProgramCard({
                           >
                             <SelectTrigger
                               className={cn(
-                                'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
+                                'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                                 errors.exercises?.[idx]?.duration &&
-                                  'border-2 border-[color:var(--aiortho-danger)] focus:border-2 focus:border-[color:var(--aiortho-danger)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0'
+                                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                               )}
                               disabled={!isEditing || isPending}
                             >
@@ -431,10 +433,11 @@ export default function PrescriptionProgramCard({
                 </div>
               ))}
 
-              {watchedExercises.length < MAX_EXERCISE_LENGTH && isEditing && (
+              {isEditing && (
                 <Button
                   type="button"
-                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF80] w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]"
+                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF]/50 w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]/60 disabled:bg-aiortho-gray-200 disabled:text-aiortho-gray-500"
+                  disabled={watchedExercises.length >= MAX_EXERCISE_LENGTH || isPending}
                   onClick={handleAddExercise}
                 >
                   항목 추가

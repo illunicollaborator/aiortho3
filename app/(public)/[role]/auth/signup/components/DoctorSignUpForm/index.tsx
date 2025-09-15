@@ -200,14 +200,6 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
       setCertSent(false);
       setIsActive(false);
       setTimer(DEFAULT_TIMER);
-
-      // FIXME: 폼 처리 관련 기획 보류에 따른 주석 처리
-      // setValue('certificationNumberCheckStatus', false, {
-      //   shouldValidate: true,
-      //   shouldDirty: true,
-      //   shouldTouch: true,
-      // });
-      // clearErrors('certificationNumber');
     }
   }, [phoneNumber, prevPhoneNumber, phoneNumberCheckStatus, setIsActive, setTimer, clearErrors]);
 
