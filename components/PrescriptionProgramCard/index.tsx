@@ -171,8 +171,7 @@ export default function PrescriptionProgramCard({
   return (
     <Card
       className={cn(
-        'relative border border-[var(--aiortho-gray-100)] p-5 transition-all duration-300 ease-in-out min-h-21 flex justify-center',
-        isCardOpen ? 'shadow-md' : 'shadow-sm'
+        'relative border border-[var(--aiortho-gray-100)] p-5 transition-all duration-300 ease-in-out min-h-21 flex'
       )}
     >
       {!isEditing && showControl && (
@@ -211,7 +210,7 @@ export default function PrescriptionProgramCard({
 
       <Collapsible open={isCardOpen} onOpenChange={setIsCardOpen}>
         <CollapsibleTrigger asChild>
-          <div className="flex justify-between items-center cursor-pointer">
+          <div className="flex h-11 justify-between items-center cursor-pointer">
             <div className="flex gap-2">
               <span className="text-[var(--aiortho-gray-900)] text-lg font-semibold font-pretendard">
                 {prescription.name}
@@ -225,7 +224,7 @@ export default function PrescriptionProgramCard({
             </div>
 
             <ChevronUp
-              className={`text-[var(--aiortho-gray-700)] h-5 w-5 transition-transform duration-300 ${isCardOpen ? 'rotate-180' : 'rotate-0'}`}
+              className={`text-[var(--aiortho-gray-700)] h-5 w-5 ${isCardOpen ? 'rotate-0' : 'rotate-180'}`}
             />
           </div>
         </CollapsibleTrigger>
@@ -234,7 +233,7 @@ export default function PrescriptionProgramCard({
           <Divider className="my-5" />
 
           <form onSubmit={e => e.preventDefault()}>
-            <CardContent className="p-0 flex flex-col gap-7">
+            <CardContent className="px-0 pb-3 flex flex-col gap-9">
               {watchedExercises.map((exercise, idx) => (
                 <div key={`재활운동-${idx + 1}`} className="flex flex-col gap-7">
                   <span className="text-[var(--aiortho-gray-900)] font-semibold">
@@ -258,7 +257,7 @@ export default function PrescriptionProgramCard({
                         >
                           <SelectTrigger
                             className={cn(
-                              'w-full border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus-visible:ring-1 focus-visible:ring-[var(--aiortho-primary)] focus-visible:border-[var(--aiortho-primary)] px-4 py-3 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)]',
+                              'w-full border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus-visible:ring-1 focus-visible:ring-[var(--aiortho-primary)] focus-visible:border-[var(--aiortho-primary)] px-4 py-3 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
                               errors.exercises?.[idx]?.exerciseId &&
                                 'border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500'
                             )}
@@ -313,7 +312,7 @@ export default function PrescriptionProgramCard({
                                 <RadioGroupItem
                                   value="left"
                                   id={`exercise-${idx}-direction-left`}
-                                  className="text-[var(--aiortho-gray-500)] border-2 border-[var(--aiortho-gray-200)] data-[state=checked]:border-[var(--aiortho-primary)] data-[state=checked]:bg-transparent cursor-pointer disabled:border-[var(--aiortho-gray-200)] disabled:data-[state=checked]:border-[var(--aiortho-gray-200)]"
+                                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-500 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22] h-[22] disabled:data-[state=checked]:text-aiortho-gray-500"
                                   checked={exercise.direction === ExerciseDirection.Left}
                                   disabled={!isEditing || isPending}
                                 />
@@ -331,7 +330,7 @@ export default function PrescriptionProgramCard({
                                 <RadioGroupItem
                                   value="right"
                                   id={`exercise-${idx}-direction-right`}
-                                  className="text-[var(--aiortho-gray-500)] border-2 border-[var(--aiortho-gray-200)] data-[state=checked]:border-[var(--aiortho-primary)] data-[state=checked]:bg-transparent cursor-pointer disabled:border-[var(--aiortho-gray-200)] disabled:data-[state=checked]:border-[var(--aiortho-gray-200)]"
+                                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-500 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22] h-[22] disabled:data-[state=checked]:text-aiortho-gray-500"
                                   checked={exercise.direction === ExerciseDirection.Right}
                                   disabled={!isEditing || isPending}
                                 />
@@ -354,7 +353,7 @@ export default function PrescriptionProgramCard({
 
                   {exercise.exerciseId && (
                     <div className="flex flex-col gap-3">
-                      <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0 ">
+                      <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0">
                         시간 선택
                       </Label>
                       <Controller
@@ -371,7 +370,7 @@ export default function PrescriptionProgramCard({
                           >
                             <SelectTrigger
                               className={cn(
-                                'w-full border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus-visible:ring-1 focus-visible:ring-[var(--aiortho-primary)] focus-visible:border-[var(--aiortho-primary)] px-4 py-3 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)]',
+                                'w-full border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus-visible:ring-1 focus-visible:ring-[var(--aiortho-primary)] focus-visible:border-[var(--aiortho-primary)] px-4 py-3 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
                                 errors.exercises?.[idx]?.duration &&
                                   'border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500'
                               )}
@@ -419,7 +418,7 @@ export default function PrescriptionProgramCard({
                 </Button>
               )}
 
-              <Divider />
+              <Divider className="mt-3 -mb-3" />
 
               <div className="flex justify-between">
                 <div className="flex flex-col gap-3">
@@ -435,7 +434,7 @@ export default function PrescriptionProgramCard({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="cursor-pointer h-6 w-6 text-[var(--aiortho-gray-500)] bg-[var(--aiortho-gray-100)] hover:text-[var(--aiortho-gray-900)] disabled:text-[#DADFE9] disabled:bg-[#F7F9FC]"
+                    className="cursor-pointer h-6 w-6 text-[var(--aiortho-gray-500)] bg-[var(--aiortho-gray-100)] hover:text-[var(--aiortho-gray-900)] disabled:text-[#DADFE9] disabled:bg-[#F0F3FA] rounded-full"
                     onClick={() => handleRepetitionsChange(-1)}
                     disabled={watchedRepetitions <= 3 || !isEditing || isPending}
                   >
@@ -447,7 +446,7 @@ export default function PrescriptionProgramCard({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="cursor-pointer h-6 w-6 text-[var(--aiortho-gray-500)] bg-[var(--aiortho-gray-100)] hover:text-[var(--aiortho-gray-900)] disabled:text-[#DADFE9] disabled:bg-[#F7F9FC]"
+                    className="cursor-pointer h-6 w-6 text-[var(--aiortho-gray-500)] bg-[var(--aiortho-gray-100)] hover:text-[var(--aiortho-gray-900)] disabled:text-[#DADFE9] disabled:bg-[#F0F3FA] rounded-full"
                     onClick={() => handleRepetitionsChange(1)}
                     disabled={watchedRepetitions >= 12 || !isEditing || isPending}
                   >
@@ -456,8 +455,8 @@ export default function PrescriptionProgramCard({
                 </div>
               </div>
 
-              <div className="flex gap-4">
-                {isEditing && (
+              {isEditing && (
+                <div className="flex gap-4">
                   <Button
                     type="button"
                     className="cursor-pointer w-27 h-11 font-semibold rounded-lg"
@@ -466,10 +465,9 @@ export default function PrescriptionProgramCard({
                   >
                     생성 완료
                   </Button>
-                )}
 
-                {/* FIXME: 필요시 수정 취소 버튼 */}
-                {/* {isEditing && checkIsDirty && !isDirty && (
+                  {/* FIXME: 필요시 수정 취소 버튼 */}
+                  {/* {isEditing && checkIsDirty && !isDirty && (
                   <Button
                     type="button"
                     variant="secondary"
@@ -479,7 +477,8 @@ export default function PrescriptionProgramCard({
                     수정 취소
                   </Button>
                 )} */}
-              </div>
+                </div>
+              )}
             </CardContent>
           </form>
         </CollapsibleContent>

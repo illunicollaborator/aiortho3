@@ -27,9 +27,9 @@ function RadioGroupItem({
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        'cursor-pointer border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
+        'cursor-pointer border-input focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:bg-input/30 aspect-square size-4 shrink-0 rounded-full border shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] disabled:cursor-not-allowed',
         'border-[var(--aiortho-gray-300)] ',
-        'disabled:border-[var(--aiortho-gray-300)] ',
+        'disabled:border-[var(--aiortho-gray-300)]',
         'data-[state=checked]:border-[var(--aiortho-primary)] data-[state=checked]:text-[var(--aiortho-primary)] disabled:data-[state=checked]:text-[var(--aiortho-gray-300)]',
         'group',
         className
@@ -42,7 +42,7 @@ function RadioGroupItem({
       >
         <CircleIcon
           className={cn(
-            'absolute top-1/2 left-1/2 size-2 -translate-x-1/2 -translate-y-1/2',
+            'absolute top-1/2 left-1/2 size-3 -translate-x-1/2 -translate-y-1/2',
             'fill-[var(--aiortho-gray-500)]',
             'group-data-[state=checked]:group-enabled:fill-[var(--aiortho-primary)]',
             'group-disabled:fill-[var(--aiortho-gray-500)]'
