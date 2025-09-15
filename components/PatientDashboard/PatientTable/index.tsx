@@ -268,10 +268,11 @@ const PatientTable = ({
               </div>
             ) : (
               <div
-                className={cn(
-                  'transition-all duration-700 ease-in-out',
-                  isDataChanging && 'opacity-75'
-                )}
+              // FIXME: 테이블 데이터 변경에 따른 애니메이션 기획 논의 필요
+              // className={cn(
+              //   'transition-all duration-700 ease-in-out',
+              //   isDataChanging && 'opacity-75'
+              // )}
               >
                 {patients.map((patient, index) => (
                   <PatientTableRow
