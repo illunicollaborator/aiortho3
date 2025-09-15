@@ -122,8 +122,10 @@ export default function StandardTreatmentProgramPage() {
 
   return (
     <section className="flex flex-col max-w-[680px]">
-      <h1 className="text-3xl font-bold text-[var(--aiortho-gray-900)] mb-5">표준 치료 프로그램</h1>
-      <h2 className=" text-[var(--aiortho-gray-600)] mb-13">
+      <h1 className="text-[32px] font-bold text-[var(--aiortho-gray-900)] mb-5">
+        표준 치료 프로그램
+      </h1>
+      <h2 className="text-[17px] text-[var(--aiortho-gray-600)] mb-13">
         프로그램의 개별 프로그램 생성을 미리 세팅할 수 있어요
       </h2>
 
@@ -151,20 +153,27 @@ export default function StandardTreatmentProgramPage() {
             onUpdate={p => handleUpdateProgram(p, idx)}
             onDelete={() => handleDeleteProgram(idx)}
             isDeleteConfirm
-            checkIsDirty
           />
         ))}
 
-        <Button
-          type="button"
-          variant="outline"
-          className="w-full h-12"
-          onClick={handleAddCustomStandardProgramClick}
-          disabled={isAnyProgramEditing}
-        >
-          <PlusIcon size={24} className="text-[var(--aiortho-primary)]" />
-          <span className="font-semibold text-base">프로그램 추가</span>
-        </Button>
+        <div className="flex flex-col gap-2 mb-12">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 disabled:border-aiortho-disabled disabled:text-aiortho-disabled"
+            onClick={handleAddCustomStandardProgramClick}
+            disabled={isAnyProgramEditing || standardProgram.length === 6}
+          >
+            <PlusIcon size={24} />
+            <span className="font-semibold text-base">프로그램 추가</span>
+          </Button>
+
+          {standardProgram.length === 6 && (
+            <span className="text-aiortho-danger text-sm">
+              프로그램 추가는 최대 6개까지만 가능해요
+            </span>
+          )}
+        </div>
       </div>
     </section>
   );

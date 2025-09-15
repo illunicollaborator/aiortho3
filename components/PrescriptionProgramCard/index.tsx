@@ -165,6 +165,8 @@ export default function PrescriptionProgramCard({
   };
 
   const handleExerciseDelete = (idx: number) => {
+    if (watchedExercises.length === 1) return;
+
     const updatedExercises = [...watchedExercises];
     updatedExercises.splice(idx, 1);
     setValue('exercises', updatedExercises);
@@ -247,7 +249,7 @@ export default function PrescriptionProgramCard({
                       재활 운동 {idx + 1}
                     </span>
 
-                    {watchedExercises.length > 1 && isEditing && (
+                    {isEditing && (
                       <button
                         type="button"
                         className="cursor-pointer text-aiortho-gray-600"
