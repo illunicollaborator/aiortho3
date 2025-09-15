@@ -21,6 +21,7 @@ interface PatientTableProps {
   showMyPatientFilter?: boolean;
   showSearchBar?: boolean;
   clickMode?: 'prescribe' | 'detail';
+  className?: string;
 }
 
 const PatientTable = ({
@@ -28,6 +29,7 @@ const PatientTable = ({
   showMyPatientFilter = true,
   showSearchBar = true,
   clickMode = 'detail',
+  className,
 }: PatientTableProps) => {
   const router = useRouter();
   const tableRef = useRef<HTMLDivElement>(null);
@@ -189,8 +191,9 @@ const PatientTable = ({
       <div
         ref={tableRef}
         className={cn(
-          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl shadow-[6px_6px_54px_rgba(0,0,0,0.05)] max-md:px-5',
-          isDataChanging && 'opacity-90'
+          'flex relative flex-col items-start px-8 py-9 bg-white rounded-2xl max-md:px-5 shadow-[6px_6px_54px_rgba(0,0,0,0.05)]',
+          isDataChanging && 'opacity-90',
+          className
         )}
       >
         <div className="flex w-full flex-col lg:flex-row lg:justify-between lg:items-center gap-5 lg:gap-0">
@@ -234,7 +237,7 @@ const PatientTable = ({
           )}
         </div>
 
-        <div className="mt-3 w-full overflow-x-auto">
+        <div className="mt-7 w-full overflow-x-hidden">
           {/* 드래그 가능한 헤더 */}
           <PatientTableHeader
             columns={columns}

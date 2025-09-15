@@ -51,13 +51,13 @@ function DraggableHeaderCell({
       >
         <FaSortUp
           className={cn(
-            'w-5 h-4 text-aiortho-gray-200 -mb-1',
+            'w-5 h-4 text-aiortho-gray-200 -mb-1.5',
             sortBy && sortDirection === 'asc' && 'text-[var(--aiortho-primary)]'
           )}
         />
         <FaSortDown
           className={cn(
-            'w-5 h-4 text-aiortho-gray-200 -mt-1',
+            'w-5 h-4 text-aiortho-gray-200 -mt-1.5',
             sortBy && sortDirection === 'desc' && 'text-[var(--aiortho-primary)]'
           )}
         />
