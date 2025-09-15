@@ -8,7 +8,6 @@ import { Eye, EyeOff } from 'lucide-react';
 import OrthoInput from '@/components/OrthoInput';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import Spinner from '@/components/Spinner';
 import { useParams, useRouter } from 'next/navigation';
 import { useResetPassword } from '../hooks/useResetPassword';
 import { showSuccessToast } from '@/components/ui/toast-notification';
@@ -54,7 +53,6 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
     watch,
     formState: { errors, isValid },
   } = useForm<FormResetPasswordValues>({
-    mode: 'onChange',
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       password: '',
@@ -119,6 +117,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
             !showPassword ? <EyeOff size={24} color="#97A8C4" /> : <Eye size={24} color="#97A8C4" />
           }
           onRightIconClick={togglePasswordVisibility}
+          maxLength={16}
         />
 
         <OrthoInput
@@ -140,6 +139,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           apiResponseMessage={
             isValid && passwordValue === confirmPasswordValue ? '변경할 비밀번호와 일치해요' : ''
           }
+          maxLength={16}
         />
 
         <div className="grid grid-cols-2 gap-5">
@@ -156,10 +156,10 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           <Button
             type="submit"
             size="confirm"
-            disabled={!isValid || resetPasswordMutation.isPending}
+            disabled={resetPasswordMutation.isPending}
             className="cursor-pointer rounded-full"
           >
-            {resetPasswordMutation.isPending ? <Spinner /> : '변경 완료'}
+            변경 완료
           </Button>
         </div>
       </form>
