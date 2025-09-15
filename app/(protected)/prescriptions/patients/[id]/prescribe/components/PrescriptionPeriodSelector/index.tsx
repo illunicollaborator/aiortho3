@@ -32,10 +32,10 @@ export default function PrescriptionPeriodSelector({
         환자에게 처방할 치료 운동 종류를 선택해주세요
       </h2>
 
-      <FormLabel className="text-sm text-[var(--aiortho-gray-500)] mb-3">기간 선택</FormLabel>
+      <FormLabel className="text-sm text-[var(--aiortho-gray-400)] mb-3">기간 선택</FormLabel>
       <FormControl>
         <Select onValueChange={field.onChange} defaultValue={field.value}>
-          <SelectTrigger className="w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]">
+          <SelectTrigger className="w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]">
             <SelectValue placeholder="기간을 선택해주세요." />
           </SelectTrigger>
           <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
