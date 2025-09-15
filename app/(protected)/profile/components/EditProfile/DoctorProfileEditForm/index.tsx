@@ -85,8 +85,9 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         ),
       medicalLicense: z
         .string()
-        .min(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' })
-        .max(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' }),
+        .min(1, { message: '의사 면허 번호를 입력해주세요' })
+        .min(5, { message: '의사 면허 번호를 다시 확인해주세요' })
+        .max(20, { message: '의사 면허 번호를 다시 확인해주세요' }),
       medicalLicenseCheckStatus: z.boolean().refine(val => val === true, {
         message: '의료 면허 번호를 검증해주세요',
       }),
@@ -248,7 +249,13 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
     if (value === 'nextConfirm') setShowNextPasswordConfirm(!showNextPasswordConfirm);
   };
 
-  const handleMedicalLicenseCheck = () => {
+  const handleMedicalLicenseCheck = async () => {
+    const isValid = await trigger('medicalLicense');
+
+    if (!isValid) {
+      return;
+    }
+
     medicalLicenseCheckMutation.mutate(
       { licenseNumber: medicalLicense, token: profile.signupCode },
       {
@@ -368,10 +375,10 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
   };
 
   const handlePhoneNumberCheck = async () => {
-    // 휴대폰 번호 필드 검증
     const isValid = await trigger('phoneNumber');
+
     if (!isValid) {
-      return; // 검증 실패 시 API 호출하지 않음
+      return;
     }
 
     phoneVerifySend(
