@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import ConfirmModal from '@/components/ConfirmModal';
+import { UserRole } from '@/models';
 
 interface PatientControllerProps {
+  role: UserRole;
   name: string;
   disabled: boolean;
   onClick?: () => void;
@@ -10,6 +12,7 @@ interface PatientControllerProps {
 }
 
 export default function PatientController({
+  role,
   name,
   disabled,
   onClick,
@@ -38,7 +41,7 @@ export default function PatientController({
         disabled={disabled}
         onClick={onClick}
       >
-        처방하기
+        {role === 'Nurse' ? '처방 요청' : '처방하기'}
       </Button>
 
       <button
