@@ -278,7 +278,7 @@ export default function PrescriptionProgramCard({
                             className={cn(
                               'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                               errors.exercises?.[idx]?.exerciseId &&
-                                'border-2 border-[color:var(--aiortho-danger)] focus:border-2 focus:border-[color:var(--aiortho-danger)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0'
+                                'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                             )}
                             disabled={!isEditing || isPending}
                           >
@@ -393,7 +393,7 @@ export default function PrescriptionProgramCard({
                               className={cn(
                                 'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                                 errors.exercises?.[idx]?.duration &&
-                                  'border-2 border-[color:var(--aiortho-danger)] focus:border-2 focus:border-[color:var(--aiortho-danger)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0'
+                                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                               )}
                               disabled={!isEditing || isPending}
                             >
