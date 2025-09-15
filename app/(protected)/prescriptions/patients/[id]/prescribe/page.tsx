@@ -81,7 +81,8 @@ export default function CreatePrescriptionPage() {
   const onSubmit = (data: FormValues) => {
     if (!prescriptionProgram) return;
 
-    const initialStartDate = activePrescriptionQuery.data?.startDate ?? '';
+    const activePrescription = activePrescriptionQuery.data;
+    const initialStartDate = activePrescription?.startDate ?? '';
     const { startDate, endDate } = getPeriodYYYYMMDD(Number(data.period), initialStartDate);
 
     const payload = {
@@ -93,12 +94,10 @@ export default function CreatePrescriptionPage() {
       name: prescriptionProgram.name,
     };
 
-    if (prescriptionProgram) {
+    if (activePrescription && activePrescription.prescriptionId) {
       // 수정
-      if (!prescriptionProgram.prescriptionId) return;
-
       const updatePayload = {
-        prescriptionId: prescriptionProgram.prescriptionId,
+        prescriptionId: activePrescription.prescriptionId,
         params: {
           exercises: prescriptionProgram.exercises,
           repeatCount: prescriptionProgram.repeatCount,
