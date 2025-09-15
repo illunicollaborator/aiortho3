@@ -95,9 +95,14 @@ const OrthoInput: FC<OrthoInputProps> = ({
 
             if (numericOnly) {
               newValue = newValue.replace(/[^0-9]/g, '');
-              e.target.value = newValue;
             }
 
+            // maxLength 체크 - 한글 입력에서도 정확히 동작하도록
+            if (maxLength && newValue.length > maxLength) {
+              newValue = newValue.slice(0, maxLength);
+            }
+
+            e.target.value = newValue;
             setHasValue(newValue.length > 0);
             registration?.onChange && registration.onChange(e);
             onChange && onChange(e);

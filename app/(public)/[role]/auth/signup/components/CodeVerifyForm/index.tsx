@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/button';
 import { useDoctorSignupActivateCode } from '../../hooks';
 import Spinner from '@/components/Spinner';
 import { showSuccessToast } from '@/components/ui/toast-notification';
+import { cn } from '@/lib/utils';
 
-// Define schema with Zod
 const codeVerificationSchema = z.object({
   code: z.string().min(8, '가입코드 8자리를 입력해주세요').max(8, '가입코드 8자리를 입력해주세요'),
 });
@@ -36,7 +36,6 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
     defaultValues: {
       code: '',
     },
-    mode: 'onChange',
   });
 
   const onSubmitCodeVerifyForm = (data: FormValues) => {
@@ -73,10 +72,8 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
 
   return (
     <div className="flex flex-col items-center bg-white w-full justify-start h-full pt-[10vh]">
-      {/* Breadcrumb navigation */}
-
       {/* Main content */}
-      <div className="w-full max-w-[540px] pt-[100px] md:pt-10 sm:pt-5">
+      <div className="w-full h-full max-w-[540px] pt-[100px] md:pt-10 sm:pt-5">
         <h1 className="text-[32px] font-bold text-[#161621] leading-10 mb-5 md:text-[28px] md:leading-9 sm:text-[24px] sm:leading-8">
           의사 가입 코드 인증
         </h1>
@@ -84,17 +81,18 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
           발급받은 의사 가입 코드 번호를 입력해 주세요
         </p>
 
-        <form onSubmit={handleSubmit(onSubmitCodeVerifyForm)} className="w-full space-y-6">
-          <div className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmitCodeVerifyForm)} className="w-full">
+          <div className={cn('flex pb-18', errors.code?.message && 'pb-12')}>
             <OrthoInput
               label="의사 가입 코드"
               placeholder="가입코드 8자리"
               registration={register('code')}
               error={errors.code?.message}
+              maxLength={8}
             />
           </div>
 
-          <div className="flex justify-end mt-18 mb-12">
+          <div className="flex">
             <Button
               type="submit"
               className="w-full rounded-full py-3.5 text-white text-sm font-bold h-12 cursor-pointer"
