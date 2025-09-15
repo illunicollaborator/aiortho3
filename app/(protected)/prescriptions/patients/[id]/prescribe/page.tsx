@@ -150,7 +150,6 @@ export default function CreatePrescriptionPage() {
   useEffect(() => {
     if (activePrescriptionQuery.data) {
       setPrescriptionProgram(activePrescriptionQuery.data);
-      setIsEditing(true);
     }
 
     if (activePrescriptionQuery.data?.startDate && activePrescriptionQuery.data?.endDate) {
@@ -197,9 +196,6 @@ export default function CreatePrescriptionPage() {
             onStopEditing={() => setIsEditing(false)}
             onUpdate={handleSetProgram}
             onDelete={handleDeleteProgram}
-            // FIXME: 조건부 기획 구체화 필요
-            // showControl={patient.prescription ? false : true}
-            // checkIsDirty={patient.prescription ? true : false}
             setIsDirty={setPrescriptionProgramIsDirty}
             defaultIsOpen
             showControl
