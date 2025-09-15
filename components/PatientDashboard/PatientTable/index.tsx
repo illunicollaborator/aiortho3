@@ -256,7 +256,11 @@ const PatientTable = ({
                 </p>
                 <Button
                   type="button"
-                  className="cursor-pointer h-12 rounded-[14px]"
+                  className={cn(
+                    'cursor-pointer h-12 rounded-[14px] px-[22px] py-3',
+                    clickMode === 'prescribe' &&
+                      'bg-aiortho-disabled/50 text-aiortho-primary text-sm hover:bg-aiortho-disabled/60'
+                  )}
                   onClick={() => router.push('/prescriptions/patients/register')}
                 >
                   환자 등록하기
