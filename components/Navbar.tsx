@@ -92,7 +92,7 @@ const Navbar = () => {
                 </button>
               </PopoverTrigger>
               <PopoverContent
-                className="w-[244px] p-0 shadow-[0px_0px_32px_rgba(159, 171, 196, 0.3)"
+                className="shadow-[0px_0px_32px_rgba(159,171,196,0.3)] w-[244px] p-0 border-0 rounded-[12px]"
                 align="end"
                 alignOffset={0}
               >
