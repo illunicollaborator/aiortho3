@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { calculateWeeks } from '@/lib/utils';
-import { ChevronUp, Minus, Plus } from 'lucide-react';
+import { ChevronUp, Minus, Plus, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useStandardProgramStaticExercise } from './hooks';
 import { createDefaultExercise } from './utils';
@@ -164,6 +164,12 @@ export default function PrescriptionProgramCard({
     onDelete?.();
   };
 
+  const handleExerciseDelete = (idx: number) => {
+    const updatedExercises = [...watchedExercises];
+    updatedExercises.splice(idx, 1);
+    setValue('exercises', updatedExercises);
+  };
+
   if (!staticExerciseList) {
     return null;
   }
@@ -236,9 +242,22 @@ export default function PrescriptionProgramCard({
             <CardContent className="px-0 flex flex-col gap-9">
               {watchedExercises.map((exercise, idx) => (
                 <div key={`재활운동-${idx + 1}`} className="flex flex-col gap-7">
-                  <span className="text-[var(--aiortho-gray-900)] font-semibold">
-                    재활 운동 {idx + 1}
-                  </span>
+                  <div className="flex justify-between">
+                    <span className="text-[var(--aiortho-gray-900)] font-semibold">
+                      재활 운동 {idx + 1}
+                    </span>
+
+                    {watchedExercises.length > 1 && (
+                      <button
+                        type="button"
+                        className="cursor-pointer text-aiortho-gray-600"
+                        onClick={() => handleExerciseDelete(idx)}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
                   <div className="flex flex-col gap-3">
                     <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0 ">
                       운동 종류 선택
@@ -459,7 +478,7 @@ export default function PrescriptionProgramCard({
                 <div className="flex gap-4">
                   <Button
                     type="button"
-                    className="cursor-pointer w-27 h-11 font-semibold rounded-lg"
+                    className="cursor-pointer w-27 h-11 font-semibold rounded-[12px]"
                     disabled={isPending || (checkIsDirty && !isDirty)}
                     onClick={handleCreateComplete}
                   >
