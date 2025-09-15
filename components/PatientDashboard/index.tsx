@@ -3,11 +3,14 @@
 import { Button } from '../ui/button';
 import PatientTable from './PatientTable';
 import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/store/authStore';
+import { isDoctorRole } from '@/lib/utils';
 
-interface PatientDashboardProps {}
-
-const PatientDashboard = ({}: PatientDashboardProps) => {
+const PatientDashboard = () => {
   const router = useRouter();
+  const { auth } = useAuthStore();
+
+  if (!auth) return null;
 
   return (
     <section className="flex flex-col gap-6">
@@ -30,7 +33,7 @@ const PatientDashboard = ({}: PatientDashboardProps) => {
         </Button>
       </div>
 
-      <PatientTable />
+      <PatientTable showMyPatientFilter={isDoctorRole(auth.role)} />
     </section>
   );
 };
