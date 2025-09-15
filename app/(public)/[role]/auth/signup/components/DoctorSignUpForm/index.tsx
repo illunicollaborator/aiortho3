@@ -51,8 +51,9 @@ const schema = z
       ),
     medicalLicense: z
       .string()
-      .min(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' })
-      .max(5, { message: '의사 면허 번호 숫자 5자리를 입력해주세요' }),
+      .min(1, { message: '의사 면허 번호를 입력해주세요' })
+      .min(5, { message: '의사 면허 번호를 다시 확인해주세요' })
+      .max(20, { message: '의사 면허 번호를 다시 확인해주세요' }),
     medicalInstitution: z.object({
       hospitalCode: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
       name: z.string().min(1, { message: '의료 기관을 선택해주세요' }),
@@ -256,7 +257,13 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     );
   };
 
-  const handleMedicalLicenseCheck = () => {
+  const handleMedicalLicenseCheck = async () => {
+    const isValid = await trigger('medicalLicense');
+
+    if (!isValid || medicalLicense === prevMedicalLicense) {
+      return;
+    }
+
     medicalLicenseCheckMutation.mutate(
       { licenseNumber: medicalLicense, token: signUpToken },
       {
@@ -356,11 +363,10 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
   };
 
   const handlePhoneNumberCheck = async () => {
-    // 휴대폰 번호 필드 검증
     const isValid = await trigger('phoneNumber');
 
     if (!isValid || phoneNumber === prevPhoneNumber) {
-      return; // 검증 실패 시 API 호출하지 않음
+      return;
     }
 
     phoneVerifySendMutation.mutate(
@@ -543,7 +549,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
             label="의사 면허 번호"
             placeholder="의사 면허 번호을 입력해주세요"
             registration={register('medicalLicense')}
-            // maxLength={20} // FIXME: 의사 면허 번호 입력 길이 기획 보류에 따른 주석 처리
+            maxLength={20}
             error={errors.medicalLicense?.message}
             apiResponse={
               medicalLicenseCheckStatus !== null ? !medicalLicenseCheckStatus : undefined
@@ -557,16 +563,13 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 onClick={() => handleMedicalLicenseCheck()}
                 variant="input"
                 size="inputConfirm"
-                disabled={
-                  medicalLicenseCheckStatus === true ||
-                  Boolean(errors.medicalLicense) ||
-                  !medicalLicense
-                }
+                disabled={medicalLicenseCheckStatus === true || !medicalLicense}
               >
                 중복확인
               </Button>
             }
             required
+            numericOnly
           />
 
           <MedicalInstitutionSelector
