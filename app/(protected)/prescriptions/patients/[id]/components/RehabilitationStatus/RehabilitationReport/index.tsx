@@ -14,8 +14,6 @@ interface RehabilitationReportProps {
   onMonthChange: (month: Date) => void;
 }
 
-const today = getCurrentDateYYYYMMDD(new Date());
-
 export default function RehabilitationReport({
   date,
   month,
@@ -28,7 +26,7 @@ export default function RehabilitationReport({
   const currentReport = useMemo(() => {
     return (
       reports.find(report => report.date === getCurrentDateYYYYMMDD(date)) ?? {
-        date: today,
+        date: getCurrentDateYYYYMMDD(date),
         completionRate: PatientActivityCompletionRate.NONE,
         subTotalTherapyTime: 0,
         subTotalGoodTherapyTime: 0,
