@@ -28,19 +28,11 @@ export function formatDuration(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
 
-  if (minutes === 0 && remainingSeconds === 0) {
-    return '0초';
-  }
+  // 초를 항상 2자리로 표시 (1자리면 앞에 0 추가)
+  const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 
-  if (minutes === 0) {
-    return `${remainingSeconds}초`;
-  }
-
-  if (remainingSeconds === 0) {
-    return `${minutes}분`;
-  }
-
-  return `${minutes}분 ${remainingSeconds}초`;
+  // 항상 M분 SS초 형태로 반환
+  return `${minutes}분 ${formattedSeconds}초`;
 }
 
 // 날짜 형식 변환 함수 (YYYYMMDD -> YYYY.MM.DD 또는 YYYY.MM.DD (요일))
