@@ -33,7 +33,11 @@ export default function AdminPage() {
           </span>
         </div>
 
-        <Button type="button" className="cursor-pointer h-12" onClick={handleIssueCode}>
+        <Button
+          type="button"
+          className="cursor-pointer w-30 h-12 rounded-[14px]"
+          onClick={handleIssueCode}
+        >
           가입 코드 발급
         </Button>
       </div>
