@@ -21,7 +21,7 @@ export default function QuickMenuPage() {
       <h2 className="text-[17px] text-aiortho-gray-600">처방할 환자명을 입력해주세요. </h2>
 
       {/* 검색 폼 */}
-      <div className="flex flex-col items-start gap-3 w-full my-7">
+      <div className="flex flex-col items-start gap-3 w-full mt-7 mb-6">
         <div className="flex flex-col items-start gap-2 w-full">
           {/* PC 레이아웃 - 가로 배치 */}
           <div className="flex flex-wrap items-center gap-2 w-full">
@@ -33,6 +33,7 @@ export default function QuickMenuPage() {
               onKeyDown={e => {
                 if (e.key === 'Enter') {
                   handleSearch();
+                  (e.target as HTMLInputElement).blur();
                 }
               }}
               width="flex-1"
@@ -55,6 +56,7 @@ export default function QuickMenuPage() {
           showMyPatientFilter={false}
           showSearchBar={false}
           clickMode="prescribe"
+          className="shadow-none p-0 mt-14"
         />
       )}
     </section>
