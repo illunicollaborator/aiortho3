@@ -74,6 +74,8 @@ export interface Admin {
   createdAt: string;
 }
 
+export type AdminListSortKey = 'no' | 'signupCode' | 'name' | 'email' | 'createdAt';
+
 export interface Doctor {
   signupCode: string;
   adminId: string;
