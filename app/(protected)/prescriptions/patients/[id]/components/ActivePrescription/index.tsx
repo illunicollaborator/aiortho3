@@ -2,8 +2,6 @@ import { Button } from '@/components/ui/button';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
 import { Prescription, UserRole } from '@/models';
 import { formatDate } from '@/lib/utils';
-import { useAuthStore } from '@/store/authStore';
-import { useRouter } from 'next/navigation';
 
 interface ActivePrescriptionProps {
   role: UserRole;
