@@ -259,7 +259,7 @@ export const arrayMove = <T>(array: T[], from: number, to: number): T[] => {
 // 제네릭 컬럼 타입 정의
 export interface GenericTableColumn<T = any> {
   id: string;
-  flex?: string;
+  className?: string;
   label: string;
   sortKey?: string;
 }
