@@ -247,7 +247,7 @@ export default function PrescriptionProgramCard({
                       재활 운동 {idx + 1}
                     </span>
 
-                    {watchedExercises.length > 1 && (
+                    {watchedExercises.length > 1 && isEditing && (
                       <button
                         type="button"
                         className="cursor-pointer text-aiortho-gray-600"
@@ -351,7 +351,7 @@ export default function PrescriptionProgramCard({
                                 <RadioGroupItem
                                   value="right"
                                   id={`exercise-${idx}-direction-right`}
-                                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-500 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22] h-[22] disabled:data-[state=checked]:text-aiortho-gray-500"
+                                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22] h-[22] disabled:data-[state=checked]:text-aiortho-gray-500"
                                   checked={exercise.direction === ExerciseDirection.Right}
                                   disabled={!isEditing || isPending}
                                 />
@@ -431,10 +431,11 @@ export default function PrescriptionProgramCard({
                 </div>
               ))}
 
-              {watchedExercises.length < MAX_EXERCISE_LENGTH && isEditing && (
+              {isEditing && (
                 <Button
                   type="button"
-                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF80] w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]"
+                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF]/50 w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]/60 disabled:bg-aiortho-gray-200 disabled:text-aiortho-gray-500"
+                  disabled={watchedExercises.length >= MAX_EXERCISE_LENGTH || isPending}
                   onClick={handleAddExercise}
                 >
                   항목 추가

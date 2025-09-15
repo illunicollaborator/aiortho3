@@ -78,7 +78,7 @@ export default function ProgramCreateModal({
             {standardProgram.map(item => (
               <div key={item.name} className={cn('flex items-center w-full h-13 gap-3')}>
                 <RadioGroupItem
-                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-500 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
+                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
                   value={item.name}
                   id={`program-${item.name}`}
                   onClick={() => setSelectedProgram(item)}
@@ -94,7 +94,7 @@ export default function ProgramCreateModal({
 
             <div className={cn('flex items-center w-full h-13 gap-3')}>
               <RadioGroupItem
-                className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-500 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
+                className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
                 value={'개별 프로그램'}
                 id={`개별 프로그램`}
                 onClick={() =>
