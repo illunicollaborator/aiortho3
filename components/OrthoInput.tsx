@@ -114,7 +114,7 @@ const OrthoInput: FC<OrthoInputProps> = ({
         />
         {rightIcon && (
           <div
-            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2"
             onClick={onRightIconClick}
           >
             {rightIcon}

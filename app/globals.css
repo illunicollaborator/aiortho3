@@ -171,13 +171,13 @@ body::-webkit-scrollbar {
 .scrollable::-webkit-scrollbar-button:vertical:start:decrement,
 .scrollable::-webkit-scrollbar-button:vertical:start:increment {
   display: block;
-  height: 6px;
+  height: 2px;
 }
 
 .scrollable::-webkit-scrollbar-button:vertical:end:decrement,
 .scrollable::-webkit-scrollbar-button:vertical:end:increment {
   display: block;
-  height: 6px;
+  height: 2px;
 }
 
 .scrollable::-webkit-scrollbar-button {

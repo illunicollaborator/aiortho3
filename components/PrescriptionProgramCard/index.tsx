@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/select';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { calculateWeeks } from '@/lib/utils';
-import { ChevronUp, Minus, Plus } from 'lucide-react';
+import { ChevronUp, Minus, Plus, X } from 'lucide-react';
 import { Button } from '../ui/button';
 import { useStandardProgramStaticExercise } from './hooks';
 import { createDefaultExercise } from './utils';
@@ -164,6 +164,12 @@ export default function PrescriptionProgramCard({
     onDelete?.();
   };
 
+  const handleExerciseDelete = (idx: number) => {
+    const updatedExercises = [...watchedExercises];
+    updatedExercises.splice(idx, 1);
+    setValue('exercises', updatedExercises);
+  };
+
   if (!staticExerciseList) {
     return null;
   }
@@ -233,12 +239,25 @@ export default function PrescriptionProgramCard({
           <Divider className="my-5" />
 
           <form onSubmit={e => e.preventDefault()}>
-            <CardContent className="px-0 pb-3 flex flex-col gap-9">
+            <CardContent className="px-0 flex flex-col gap-9">
               {watchedExercises.map((exercise, idx) => (
                 <div key={`재활운동-${idx + 1}`} className="flex flex-col gap-7">
-                  <span className="text-[var(--aiortho-gray-900)] font-semibold">
-                    재활 운동 {idx + 1}
-                  </span>
+                  <div className="flex justify-between">
+                    <span className="text-[var(--aiortho-gray-900)] font-semibold">
+                      재활 운동 {idx + 1}
+                    </span>
+
+                    {watchedExercises.length > 1 && (
+                      <button
+                        type="button"
+                        className="cursor-pointer text-aiortho-gray-600"
+                        onClick={() => handleExerciseDelete(idx)}
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
                   <div className="flex flex-col gap-3">
                     <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0 ">
                       운동 종류 선택
@@ -257,28 +276,30 @@ export default function PrescriptionProgramCard({
                         >
                           <SelectTrigger
                             className={cn(
-                              'w-full border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus-visible:ring-1 focus-visible:ring-[var(--aiortho-primary)] focus-visible:border-[var(--aiortho-primary)] px-4 py-3 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
+                              'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
                               errors.exercises?.[idx]?.exerciseId &&
-                                'border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500'
+                                'border-2 border-[color:var(--aiortho-danger)] focus:border-2 focus:border-[color:var(--aiortho-danger)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0'
                             )}
                             disabled={!isEditing || isPending}
                           >
                             <SelectValue placeholder="운동 종류를 선택해주세요." />
                           </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {staticExerciseList.map(exercise => (
-                                <SelectItem
-                                  key={`표준 static 프로그램-${exercise.exerciseId}`}
-                                  value={exercise.exerciseId}
-                                  className={cn(
-                                    'cursor-pointer disabled:text-[var(--aiortho-gray-600)]'
-                                  )}
-                                >
-                                  <span className="truncate">{exercise.name}</span>
-                                </SelectItem>
-                              ))}
-                            </SelectGroup>
+                          <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
+                            <div className="scrollable h-50 overflow-y-scroll pl-2">
+                              <SelectGroup className="flex flex-col gap-1">
+                                {staticExerciseList.map(exercise => (
+                                  <SelectItem
+                                    key={`표준 static 프로그램-${exercise.exerciseId}`}
+                                    value={exercise.exerciseId}
+                                    className={cn(
+                                      'flex w-full items-center cursor-pointer h-12 disabled:text-aiortho-gray-600 justify-center text-center p-0 [&>span:first-child]:hidden font-semibold focus:font-semibold'
+                                    )}
+                                  >
+                                    <span className="truncate">{exercise.name}</span>
+                                  </SelectItem>
+                                ))}
+                              </SelectGroup>
+                            </div>
                           </SelectContent>
                         </Select>
                       )}
@@ -370,29 +391,31 @@ export default function PrescriptionProgramCard({
                           >
                             <SelectTrigger
                               className={cn(
-                                'w-full border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus-visible:ring-1 focus-visible:ring-[var(--aiortho-primary)] focus-visible:border-[var(--aiortho-primary)] px-4 py-3 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
+                                'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]',
                                 errors.exercises?.[idx]?.duration &&
-                                  'border-red-500 focus-visible:ring-red-500 focus-visible:border-red-500'
+                                  'border-2 border-[color:var(--aiortho-danger)] focus:border-2 focus:border-[color:var(--aiortho-danger)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:ring-0'
                               )}
                               disabled={!isEditing || isPending}
                             >
                               <SelectValue placeholder="시간을 선택해주세요." />
                             </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {Array.from({ length: 12 }, (_, i) => (
-                                  <SelectItem
-                                    key={`운동 시간-${i + 1}`}
-                                    value={String(i + 1)}
-                                    className={cn(
-                                      'cursor-pointer',
-                                      !isEditing && 'text-[var(--aiortho-gray-600)]'
-                                    )}
-                                  >
-                                    {i + 1}분
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
+                            <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
+                              <div className="scrollable h-50 overflow-y-scroll pl-2">
+                                <SelectGroup className="flex flex-col gap-1">
+                                  {Array.from({ length: 12 }, (_, i) => (
+                                    <SelectItem
+                                      key={`운동 시간-${i + 1}`}
+                                      value={String(i + 1)}
+                                      className={cn(
+                                        'flex w-full items-center cursor-pointer h-12 disabled:text-aiortho-gray-600 justify-center text-center p-0 [&>span:first-child]:hidden focus:bg-[#F3F5FB] hover:bg-[#F3F5FB] font-semibold focus:font-semibold',
+                                        !isEditing && 'text-[var(--aiortho-gray-600)]'
+                                      )}
+                                    >
+                                      {i + 1}분
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </div>
                             </SelectContent>
                           </Select>
                         )}
@@ -421,7 +444,7 @@ export default function PrescriptionProgramCard({
               <Divider className="mt-3 -mb-3" />
 
               <div className="flex justify-between">
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2">
                   <p className="text-[var(--aiortho-gray-900)] text-lg font-bold">
                     프로그램 반복 수
                   </p>
@@ -440,9 +463,7 @@ export default function PrescriptionProgramCard({
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="text-[var(--aiortho-gray-600)] text-sm mx-2">
-                    {watchedRepetitions}회
-                  </span>
+                  <span className="text-aiortho-gray-900 text-sm mx-2">{watchedRepetitions}회</span>
                   <Button
                     variant="ghost"
                     size="icon"
@@ -456,10 +477,10 @@ export default function PrescriptionProgramCard({
               </div>
 
               {isEditing && (
-                <div className="flex gap-4">
+                <div className="flex gap-4 mt-3">
                   <Button
                     type="button"
-                    className="cursor-pointer w-27 h-11 font-semibold rounded-lg"
+                    className="cursor-pointer w-27 h-11 font-semibold rounded-[12px]"
                     disabled={isPending || (checkIsDirty && !isDirty)}
                     onClick={handleCreateComplete}
                   >

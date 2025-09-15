@@ -78,7 +78,7 @@ export default function CreatePrescriptionPage() {
     setPrescriptionProgram(undefined);
   };
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     if (!prescriptionProgram) return;
 
     const activePrescription = activePrescriptionQuery.data;
@@ -106,32 +106,38 @@ export default function CreatePrescriptionPage() {
         },
       };
 
-      updatePrescriptionMutation.mutateAsync(updatePayload, {
+      await updatePrescriptionMutation.mutateAsync(updatePayload, {
         onSuccess: () => {
-          showSuccessToast(
-            '프로그램 처방 수정 완료',
-            '처방된 프로그램 내역은 처방 상세 내역에서 확인할 수 있어요.'
-          );
           router.push(`/prescriptions/patients/${id}`);
+
+          setTimeout(() => {
+            showSuccessToast(
+              '프로그램 처방 수정 완료',
+              '처방된 프로그램 내역은 처방 상세 내역에서 확인할 수 있어요.'
+            );
+          }, 500);
         },
       });
     } else {
       // 최초 생성
       if (isDoctorRole(auth.role)) {
-        createPrescriptionMutation.mutateAsync(payload, {
+        await createPrescriptionMutation.mutateAsync(payload, {
           onSuccess: () => {
-            showSuccessToast(
-              '프로그램 처방 완료',
-              '처방된 프로그램 내역은 처방 상세 내역에서 확인할 수 있어요.'
-            );
             router.push(`/prescriptions/patients/${id}`);
+
+            setTimeout(() => {
+              showSuccessToast(
+                '프로그램 처방 완료',
+                '처방된 프로그램 내역은 처방 상세 내역에서 확인할 수 있어요.'
+              );
+            }, 500);
           },
           onError: () => {
             showWarningToast('프로그램 처방 실패', '잠시 후 시도하세요.');
           },
         });
       } else {
-        createPrescriptionRequestMutation.mutateAsync(payload, {
+        await createPrescriptionRequestMutation.mutateAsync(payload, {
           onSuccess: () => {
             showSuccessToast('프로그램 처방 요청 완료', '처방 요청이 완료되었습니다.');
             router.push(`/prescriptions/patients/${id}`);
@@ -144,6 +150,7 @@ export default function CreatePrescriptionPage() {
   useEffect(() => {
     if (activePrescriptionQuery.data) {
       setPrescriptionProgram(activePrescriptionQuery.data);
+      setIsEditing(true);
     }
 
     if (activePrescriptionQuery.data?.startDate && activePrescriptionQuery.data?.endDate) {
@@ -159,10 +166,6 @@ export default function CreatePrescriptionPage() {
 
       form.setValue('period', String(initialPeriod));
       setMinPeriod(minPeriod);
-    }
-
-    if (activePrescriptionQuery.data) {
-      setIsEditing(true);
     }
   }, [activePrescriptionQuery.data]);
 
@@ -204,20 +207,22 @@ export default function CreatePrescriptionPage() {
             showControl
           />
 
-          <Form {...form}>
-            <form onSubmit={e => e.preventDefault()}>
-              <FormField
-                control={form.control}
-                name="period"
-                render={({ field }) => (
-                  <FormItem>
-                    <PrescriptionPeriodSelector field={field} minPeriod={minPeriod} />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </form>
-          </Form>
+          {!isEditing && (
+            <Form {...form}>
+              <form onSubmit={e => e.preventDefault()}>
+                <FormField
+                  control={form.control}
+                  name="period"
+                  render={({ field }) => (
+                    <FormItem>
+                      <PrescriptionPeriodSelector field={field} minPeriod={minPeriod} />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </form>
+            </Form>
+          )}
         </>
       ) : (
         <button
@@ -233,8 +238,8 @@ export default function CreatePrescriptionPage() {
       <div className="flex gap-5 w-full mt-18">
         <Button
           type="button"
-          variant="secondary"
-          className="flex-1 h-12 rounded-full cursor-pointer bg-[var(--aiortho-gray-600)] text-white hover:bg-[var(--aiortho-gray-600)]/80"
+          className="flex-1 h-12 rounded-full cursor-pointer bg-[var(--aiortho-gray-600)] text-white hover:bg-[var(--aiortho-gray-600)]/80 disabled:bg-aiortho-gray-200"
+          disabled={isEditing}
           onClick={() => router.back()}
         >
           취소

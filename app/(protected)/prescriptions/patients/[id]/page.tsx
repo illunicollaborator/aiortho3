@@ -44,9 +44,11 @@ export default function PatientDetailPage() {
   };
 
   const patient = patientQuery.data;
+  const isPatientPending = patientQuery.isPending;
   const activePrescription = activePrescriptionQuery.data;
+  const isActivePrescriptionPending = activePrescriptionQuery.isPending;
 
-  if (!patient || !auth) return null;
+  if (!patient || !auth || isPatientPending || isActivePrescriptionPending) return null;
 
   return (
     <div className="flex flex-col gap-30 max-w-[572px] pb-17">

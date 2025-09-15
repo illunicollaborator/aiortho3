@@ -6,6 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  SelectGroup,
 } from '@/components/ui/select';
 import { FormValues } from '../../page';
 
@@ -34,15 +35,23 @@ export default function PrescriptionPeriodSelector({
       <FormLabel className="text-sm text-[var(--aiortho-gray-500)] mb-3">기간 선택</FormLabel>
       <FormControl>
         <Select onValueChange={field.onChange} defaultValue={field.value}>
-          <SelectTrigger className="w-full cursor-pointer">
+          <SelectTrigger className="w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px]">
             <SelectValue placeholder="기간을 선택해주세요." />
           </SelectTrigger>
-          <SelectContent>
-            {period.map(value => (
-              <SelectItem className="cursor-pointer" key={`period-${value}`} value={String(value)}>
-                {`${value}주`}
-              </SelectItem>
-            ))}
+          <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
+            <div className="scrollable h-50 overflow-y-scroll pl-2">
+              <SelectGroup className="flex flex-col gap-1">
+                {period.map(value => (
+                  <SelectItem
+                    key={`period-${value}`}
+                    className="flex w-full items-center cursor-pointer h-12 disabled:text-aiortho-gray-600 justify-center text-center p-0 [&>span:first-child]:hidden font-semibold focus:font-semibold"
+                    value={String(value)}
+                  >
+                    {`${value}주`}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </div>
           </SelectContent>
         </Select>
       </FormControl>
