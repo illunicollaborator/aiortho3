@@ -60,7 +60,7 @@ const PatientTableRow = ({ patient, columnOrder, onClick }: PatientTableRowProps
 
   return (
     <div
-      className="flex items-center w-full px-3 min-h-[68px] text-sm text-zinc-900 cursor-pointer hover:bg-gray-50 transition-colors border-b-[0.4px] border-aiortho-gray-100"
+      className="flex items-center w-full px-3 min-h-[68px] text-sm cursor-pointer hover:bg-gray-50 transition-colors border-b-[0.4px] border-aiortho-gray-100"
       onClick={onClick}
     >
       {columnOrder.map(column => (
