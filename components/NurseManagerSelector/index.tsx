@@ -63,7 +63,8 @@ const NurseManager: React.FC<NurseManagerProps> = ({ nurses, label, error, onCha
         type="button"
         onClick={handleOpenModal}
         className={cn(
-          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl border border-[var(--aiortho-gray-200)] cursor-pointer transition-colors mb-2 disabled:cursor-not-allowed disabled:hover:border-[var(--aiortho-gray-200)] disabled:[&_*]:opacity-40 hover:border-[var(--aiortho-primary)] hover:ring-1 hover:ring-[var(--aiortho-primary)]',
+          'flex w-full h-12 px-4 py-3 items-center justify-center gap-2 self-stretch rounded-xl border border-[var(--aiortho-gray-200)] cursor-pointer transition-colors disabled:cursor-not-allowed disabled:hover:border-[var(--aiortho-gray-200)] disabled:[&_*]:opacity-40 hover:border-[var(--aiortho-primary)] hover:ring-1 hover:ring-[var(--aiortho-primary)]',
+          selectedNurses.length > 0 && 'mb-2',
           error && 'border-2 border-[color:var(--aiortho-danger)]'
         )}
         disabled={isMaxNurses}
