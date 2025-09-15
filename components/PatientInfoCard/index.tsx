@@ -8,6 +8,7 @@ import { useEditPatient } from '../PatientInfoForm/hooks';
 
 interface PatientInfoCardProps {
   patient: Patient;
+  hideEditButton?: boolean;
   hidePrescription?: boolean;
 }
 
@@ -31,6 +32,7 @@ const statusOptions = [
 
 export default function PatientInfoCard({
   patient,
+  hideEditButton = false,
   hidePrescription = false,
 }: PatientInfoCardProps) {
   const router = useRouter();
@@ -60,13 +62,15 @@ export default function PatientInfoCard({
           <div className="flex gap-2 items-center shrink-0 h-7">
             <span className="font-bold text-2xl">{patient.name}</span>
             <span className="text-2xl">님</span>
-            <button
-              type="button"
-              className="cursor-pointer hover:scale-120 transition-all duration-115"
-              onClick={handleEdit}
-            >
-              <EditIcon />
-            </button>
+            {!hideEditButton && (
+              <button
+                type="button"
+                className="cursor-pointer hover:scale-120 transition-all duration-115"
+                onClick={handleEdit}
+              >
+                <EditIcon />
+              </button>
+            )}
           </div>
 
           <div className="flex text-[var(--aiortho-gray-600)] gap-2 h-4">
