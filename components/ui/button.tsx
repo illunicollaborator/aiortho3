@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-[var(--aiortho-primary)] text-primary-foreground shadow-xs hover:bg-[color:var(--aiortho-primary)]/80 disabled:bg-[color:var(--aiortho-disabled)] font-bold',
+          'bg-[var(--aiortho-primary)] text-primary-foreground hover:bg-[color:var(--aiortho-primary)]/80 disabled:bg-[color:var(--aiortho-disabled)] font-bold',
         destructive:
-          'bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+          'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border border-[var(--aiortho-primary)] bg-background shadow-xs rounded-[12px] text-[var(--aiortho-primary)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50 cursor-pointer disabled:cursor-not-allowed',
+          'border border-[var(--aiortho-primary)] bg-background rounded-[12px] text-[var(--aiortho-primary)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50 cursor-pointer disabled:cursor-not-allowed',
         secondary:
-          'bg-[var(--aiortho-secondary)] text-aiortho-gray-700 shadow-xs hover:bg-[var(--aiortho-secondary)]/80 font-bold',
+          'bg-[var(--aiortho-secondary)] text-aiortho-gray-700 hover:bg-[var(--aiortho-secondary)]/80 font-bold',
         ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         input:
