@@ -171,8 +171,11 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
 
     updateNurseProfile(payload, {
       onSuccess: () => {
-        showSuccessToast('개인정보 수정완료', '개인정보가 수정되었어요');
         router.replace('/profile');
+
+        setTimeout(() => {
+          showSuccessToast('개인정보 수정완료', '개인정보가 수정되었어요');
+        }, 500);
       },
     });
   };
@@ -470,7 +473,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         <Button
           type="submit"
           className="flex-1 h-12 rounded-full cursor-pointer"
-          disabled={isUpdateNurseProfilePending || !isDirty || !isValid}
+          disabled={isUpdateNurseProfilePending || !isValid}
         >
           수정 완료
         </Button>

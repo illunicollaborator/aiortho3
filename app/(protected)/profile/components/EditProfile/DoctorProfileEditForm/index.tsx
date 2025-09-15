@@ -237,7 +237,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
 
         setTimeout(() => {
           showSuccessToast('개인정보 수정완료', '개인정보가 수정되었어요');
-        }, 100);
+        }, 500);
       },
     });
   };
@@ -608,6 +608,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
 
       <NurseManagerSelector
         label="담당 간호사"
+        nurses={profile.nurseInfos}
         error={errors.nurseIds?.message}
         onChange={handleNurseIdsChange}
       />
