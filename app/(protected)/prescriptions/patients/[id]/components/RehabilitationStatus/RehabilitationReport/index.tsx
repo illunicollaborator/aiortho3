@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { PatientActivityReport } from '@/models';
+import { useMemo } from 'react';
+import { PatientActivityCompletionRate, PatientActivityReport } from '@/models';
 import { formatDuration, getCurrentDateYYYYMMDD } from '@/lib/utils';
 import RehabilitationCalendar from '../RehabilitationCalendar';
 import RehabilitationExercises from '../RehabilitationExercises';
@@ -14,6 +14,8 @@ interface RehabilitationReportProps {
   onMonthChange: (month: Date) => void;
 }
 
+const today = getCurrentDateYYYYMMDD(new Date());
+
 export default function RehabilitationReport({
   date,
   month,
@@ -24,7 +26,15 @@ export default function RehabilitationReport({
   onMonthChange,
 }: RehabilitationReportProps) {
   const currentReport = useMemo(() => {
-    return reports.find(report => report.date === getCurrentDateYYYYMMDD(date));
+    return (
+      reports.find(report => report.date === getCurrentDateYYYYMMDD(date)) ?? {
+        date: today,
+        completionRate: PatientActivityCompletionRate.NONE,
+        subTotalTherapyTime: 0,
+        subTotalGoodTherapyTime: 0,
+        exercises: [],
+      }
+    );
   }, [date]);
 
   return (
@@ -45,11 +55,9 @@ export default function RehabilitationReport({
       </div>
 
       {/* Exercise Section */}
-      {currentReport && (
-        <div className="mt-3">
-          <RehabilitationExercises report={currentReport} />
-        </div>
-      )}
+      <div className="mt-3">
+        <RehabilitationExercises report={currentReport} />
+      </div>
     </div>
   );
 }
