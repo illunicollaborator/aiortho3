@@ -85,7 +85,7 @@ export default function DoctorRegistrationDashboard() {
 
   if (!admin) return null;
 
-  const admins = [admin, ...adminListItems];
+  const admins = [admin, ...adminListItems.filter(admin => admin.role !== 'Root')];
   adminCounts = hasRootAdmin ? adminCounts : adminCounts + 1;
 
   return (
