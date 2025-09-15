@@ -93,7 +93,7 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
           </div>
           <button
             onClick={handleClose}
-            className="absolute z-0 rounded-[29px] flex min-h-6 min-w-6 p-1 items-center justify-center right-3 top-3"
+            className="absolute z-0 flex min-h-6 min-w-6 p-1 items-center justify-center right-3 top-3"
           >
             <X className="w-5 h-5 text-[#66798D] cursor-pointer" />
           </button>
