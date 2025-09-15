@@ -179,7 +179,7 @@ export default function CreatePrescriptionPage() {
       <h1 className="text-2xl font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mb-8">
         처방하기
       </h1>
-      <PatientInfoCard patient={patient} hidePrescription />
+      <PatientInfoCard patient={patient} hideEditButton hidePrescription />
 
       <h1 className="text-2xl font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mt-22 mb-3">
         치료 프로그램 구성

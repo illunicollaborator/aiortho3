@@ -1,24 +1,23 @@
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import ConfirmModal from '@/components/ConfirmModal';
+import { UserRole } from '@/models';
 
 interface PatientControllerProps {
+  role: UserRole;
   name: string;
+  disabled: boolean;
   onClick?: () => void;
   onDelete?: () => void;
 }
 
-export default function PatientController({ name, onClick, onDelete }: PatientControllerProps) {
+export default function PatientController({
+  role,
+  name,
+  disabled,
+  onClick,
+  onDelete,
+}: PatientControllerProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
@@ -39,9 +38,10 @@ export default function PatientController({ name, onClick, onDelete }: PatientCo
       <Button
         type="button"
         className="w-full h-12 rounded-full font-bold cursor-pointer"
+        disabled={disabled}
         onClick={onClick}
       >
-        처방하기
+        {role === 'Nurse' ? '처방 요청' : '처방하기'}
       </Button>
 
       <button

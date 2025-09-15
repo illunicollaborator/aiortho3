@@ -31,15 +31,17 @@ export default function ConfirmModal({
 }: ConfirmModalProps) {
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="flex flex-col justify-between h-60">
-        <DialogHeader>
-          <DialogTitle className="font-bold text-2xl">{title}</DialogTitle>
-          <DialogDescription className="text-[var(--aiortho-gray-600)]">
+      <DialogContent className="flex flex-col justify-between h-60 pt-12 px-8 pb-7 rounded-3xl">
+        <DialogHeader className="flex flex-col gap-5">
+          <DialogTitle className="font-bold text-2xl text-aiortho-gray-900 m-0">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="text-[var(--aiortho-gray-600)] m-0">
             {description}
           </DialogDescription>
           <button
             onClick={onClose}
-            className="absolute z-0 rounded-[29px] flex min-h-6 min-w-6 p-1 items-center justify-center right-3 top-3 cursor-pointer"
+            className="absolute z-0 rounded-[29px] flex min-h-6 min-w-6 items-center justify-center right-3 top-3 cursor-pointer"
           >
             <X className="w-5 h-5 text-[#66798D]" />
           </button>
@@ -49,7 +51,7 @@ export default function ConfirmModal({
             <Button
               type="button"
               variant="secondary"
-              className="cursor-pointer flex-1 h-12 font-bold m-0 rounded-full"
+              className="cursor-pointer flex-1 h-12 font-bold m-0 rounded-full text-aiortho-gray-800 bg-[#ECEFF4]"
               onClick={onClose}
             >
               {cancelText ?? '취소'}

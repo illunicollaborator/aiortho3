@@ -14,6 +14,7 @@ import { usePatient } from '@/hooks';
 import { useDeletePatient } from './hooks';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { showWarningToast } from '@/components/ui/toast-warning';
+import { useAuthStore } from '@/store/authStore';
 
 export default function PatientDetailPage() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ export default function PatientDetailPage() {
   const patientQuery = usePatient(Number(id));
   const activePrescriptionQuery = useActivePrescription(Number(id));
   const deletePatientMutation = useDeletePatient();
+  const { auth } = useAuthStore();
 
   const handleRoutePrescribe = () => {
     router.push(`/prescriptions/patients/${id}/prescribe`);
@@ -44,17 +46,23 @@ export default function PatientDetailPage() {
   const patient = patientQuery.data;
   const activePrescription = activePrescriptionQuery.data;
 
-  if (!patient) return null;
+  if (!patient || !auth) return null;
 
   return (
     <div className="flex flex-col gap-30 max-w-[572px] pb-17">
-      <PatientInfoCard patient={patient} />
-      <ActivePrescription prescription={activePrescription} onClick={handleRoutePrescribe} />
+      <PatientInfoCard patient={patient} hidePrescription={auth.role === 'Nurse'} />
+      <ActivePrescription
+        role={auth.role}
+        prescription={activePrescription}
+        onClick={handleRoutePrescribe}
+      />
       <PrescriptionHistory patientId={Number(id)} />
       <RehabilitationStatus patientId={Number(id)} license={patient.license} />
       <MedicalLicenseDetails patientId={Number(id)} license={patient.license} />
       <PatientController
+        role={auth.role}
         name={patient.name}
+        disabled={Boolean(activePrescription)}
         onClick={handleRoutePrescribe}
         onDelete={handleDeletePatient}
       />

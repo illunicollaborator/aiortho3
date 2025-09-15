@@ -1,14 +1,21 @@
 import { Button } from '@/components/ui/button';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
-import { Prescription } from '@/models';
+import { Prescription, UserRole } from '@/models';
 import { formatDate } from '@/lib/utils';
+import { useAuthStore } from '@/store/authStore';
+import { useRouter } from 'next/navigation';
 
 interface ActivePrescriptionProps {
+  role: UserRole;
   prescription?: Prescription;
   onClick?: () => void;
 }
 
-export default function ActivePrescription({ prescription, onClick }: ActivePrescriptionProps) {
+export default function ActivePrescription({
+  role,
+  prescription,
+  onClick,
+}: ActivePrescriptionProps) {
   return (
     <div className="w-full">
       <div className="w-full flex flex-col md:flex-row justify-between">
@@ -22,20 +29,22 @@ export default function ActivePrescription({ prescription, onClick }: ActivePres
         </div>
 
         {prescription ? (
-          <Button
-            type="button"
-            className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
-            onClick={onClick}
-          >
-            수정
-          </Button>
+          role !== 'Nurse' && (
+            <Button
+              type="button"
+              className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
+              onClick={onClick}
+            >
+              수정
+            </Button>
+          )
         ) : (
           <Button
             type="button"
             className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold"
             onClick={onClick}
           >
-            처방하기
+            {role === 'Nurse' ? '처방 요청' : '처방하기'}
           </Button>
         )}
       </div>

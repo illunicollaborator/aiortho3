@@ -90,7 +90,7 @@ const Breadcrumb = () => {
   const breadcrumbs = generateBreadcrumbs(pathname);
 
   return (
-    <nav className="w-full h-12 py-3 mb-8 flex items-center">
+    <nav className="w-full h-12 py-3 mb-13 flex items-center">
       <div className="flex items-center">
         {breadcrumbs.map((breadcrumb, index) => {
           const isLast = index === breadcrumbs.length - 1;

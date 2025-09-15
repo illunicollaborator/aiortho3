@@ -47,12 +47,12 @@ export default function MedicalDepartmentSelector({
           label={label}
           registration={registration}
           placeholder={placeholder}
-          value={medicalDepartmentInfo ? medicalDepartmentInfo.name : ''}
+          value={medicalDepartmentInfo?.name || ''}
           rightIcon={<ChevronDown size={20} color="#97A8C4" />}
           error={error}
           required={required}
           isDirty={isDirty}
-          className="cursor-pointer hover:border-[var(--aiortho-primary)] hover:ring-1 hover:ring-[var(--aiortho-primary)] transition-colors"
+          className="text-aiortho-gray-900 cursor-pointer hover:border-[var(--aiortho-primary)] hover:ring-1 hover:ring-[var(--aiortho-primary)] transition-colors"
           readOnly
         />
       </div>

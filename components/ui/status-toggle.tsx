@@ -151,7 +151,7 @@ export const StatusToggle: React.FC<StatusToggleProps> = ({
   };
 
   const variantClasses = {
-    default: 'bg-white border border-gray-200',
+    default: 'bg-white',
     outline: 'bg-transparent border-2 border-gray-300',
     solid: 'bg-gray-100 border border-gray-200',
     minimal: 'bg-transparent',

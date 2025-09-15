@@ -56,13 +56,21 @@ export default function ProfilePage() {
               value={(profile as Doctor).specialistLicenseNumber ?? '전문 면허 번호가 없습니다'}
               readOnly
             />
-            {(profile as Doctor).nurseInfos.length ? (
-              (profile as Doctor).nurseInfos.map(nurse => (
-                <OrthoInput key={nurse.adminId} label="담당 간호사" value={nurse.name} readOnly />
-              ))
-            ) : (
-              <OrthoInput label="담당 간호사" value="담당 간호사가 없습니다" readOnly />
-            )}
+
+            <div className="flex flex-col gap-2">
+              {(profile as Doctor).nurseInfos.length ? (
+                (profile as Doctor).nurseInfos.map((nurse, idx) => (
+                  <OrthoInput
+                    key={nurse.adminId}
+                    label={`${idx === 0 ? '담당 간호사' : ''}`}
+                    value={nurse.name}
+                    readOnly
+                  />
+                ))
+              ) : (
+                <OrthoInput label="담당 간호사" value="담당 간호사가 없습니다" readOnly />
+              )}
+            </div>
           </>
         )}
 

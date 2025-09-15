@@ -16,7 +16,7 @@ export const ToastWarning: React.FC<ToastWarningProps> = ({
   icon = warningIcon,
 }) => {
   return (
-    <div className="flex  p-[14px_16px] items-center gap-4 rounded-xl border border-[#F3F2F8] shadow-[0px_4px_32px_0px_rgba(159,171,196,0.30)] h-[66px] box-border bg-white min-w-[320px] sm:w-[50vw] sm:p-[12px_14px] sm:gap-3">
+    <div className="flex p-[14px_16px] items-center gap-4 rounded-xl border border-[#F3F2F8] shadow-[0px_4px_32px_01px_rgba(159,171,196,0.30)] w-[672px] h-[66px] box-border bg-white min-w-[320px] sm:w-[50vw] sm:p-[12px_14px] sm:gap-3">
       {icon}
       <div className="flex flex-col items-start flex-1">
         <div className="text-[#343F4E] font-medium text-[14.5px] leading-[140%] sm:text-[13.5px]">
