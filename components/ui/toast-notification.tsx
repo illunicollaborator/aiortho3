@@ -32,7 +32,7 @@ export const ToastNotification: React.FC<ToastNotificationProps> = ({
   icon = successIcon,
 }) => {
   return (
-    <div className="flex  p-[14px_16px] items-center gap-4 rounded-xl border border-[#F3F2F8] shadow-[0px_4px_32px_0px_rgba(159,171,196,0.30)] h-[66px] box-border bg-white min-w-[320px] sm:w-[40vw] sm:p-[12px_14px] sm:gap-3">
+    <div className="flex p-[14px_16px] items-center gap-4 rounded-xl border border-[#F3F2F8] shadow-[0px_4px_32px_0px_rgba(159,171,196,0.30)] w-[672px] h-[66px] box-border bg-white min-w-[320px]">
       <div className="flex w-8 h-8 p-[7px] justify-center items-center flex-shrink-0 rounded-xl bg-[#2DD06E] sm:w-7 sm:h-7 sm:p-[6px]">
         {icon}
       </div>
