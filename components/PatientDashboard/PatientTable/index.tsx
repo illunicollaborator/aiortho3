@@ -257,7 +257,7 @@ const PatientTable = ({
                 <Button
                   type="button"
                   className={cn(
-                    'cursor-pointer h-12 rounded-[14px] px-[22px] py-3',
+                    'cursor-pointer w-[120px] h-12 rounded-[14px] px-[22px] py-3',
                     clickMode === 'prescribe' &&
                       'bg-aiortho-disabled/50 text-aiortho-primary text-sm hover:bg-aiortho-disabled/60'
                   )}
