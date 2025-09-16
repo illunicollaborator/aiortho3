@@ -436,7 +436,7 @@ export default function PrescriptionProgramCard({
               {isEditing && (
                 <Button
                   type="button"
-                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF]/50 w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]/60 disabled:bg-aiortho-gray-200 disabled:text-aiortho-gray-500"
+                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF]/50 w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]/60 disabled:bg-aiortho-gray-200 disabled:text-aiortho-gray-500 -mt-4"
                   disabled={watchedExercises.length >= MAX_EXERCISE_LENGTH || isPending}
                   onClick={handleAddExercise}
                 >
