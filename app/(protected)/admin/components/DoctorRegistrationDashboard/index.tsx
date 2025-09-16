@@ -113,11 +113,11 @@ export default function DoctorRegistrationDashboard() {
               <Search className="w-5 h-5 text-aiortho-gray-400" />
               <input
                 type="text"
-                placeholder="검색"
+                placeholder="의사명 검색"
                 value={search}
                 onChange={handleSearchChange}
                 className="flex-1 bg-transparent border-none outline-none text-[#343F4E] placeholder:text-aiortho-gray-500"
-                aria-label="환자 검색"
+                aria-label="의사 검색"
               />
             </div>
           </div>
