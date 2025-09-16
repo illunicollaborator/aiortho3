@@ -15,8 +15,11 @@ const schema = z.object({
   email: z.string(),
   password: z
     .string()
-    .min(8, {
+    .min(1, {
       message: '비밀번호를 입력해주세요',
+    })
+    .min(8, {
+      message: '비밀번호가 일치하지 않아요',
     })
     .max(16, {
       message: '비밀번호가 일치하지 않아요',

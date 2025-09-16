@@ -21,7 +21,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogDescription,
-  DialogOverlay,
   DialogTitle,
   DialogFooter,
   DialogClose,
@@ -31,15 +30,27 @@ const schema = z.object({
   email: z.string(),
   password: z
     .string()
+    .min(1, {
+      message: '비밀번호를 입력해주세요',
+    })
     .min(8, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+      message: '비밀번호가 일치하지 않아요',
     })
     .max(16, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+      message: '비밀번호가 일치하지 않아요',
     })
     .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/, {
-      message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+      message: '비밀번호가 일치하지 않아요',
     }),
+  // .min(8, {
+  //   message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+  // })
+  // .max(16, {
+  //   message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+  // })
+  // .regex(/^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/, {
+  //   message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+  // }),
 });
 
 type FormValues = z.infer<typeof schema>;
