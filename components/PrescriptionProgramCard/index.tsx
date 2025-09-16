@@ -186,7 +186,7 @@ export default function PrescriptionProgramCard({
         <div
           className={cn(
             'flex absolute top-[30px] -right-5 translate-x-full gap-3 text-[var(--aiortho-gray-400)]',
-            isCardOpen && 'top-[22px]'
+            isCardOpen && 'top-[30px]'
           )}
         >
           <button
