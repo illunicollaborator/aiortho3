@@ -171,7 +171,7 @@ export default function PatientInfoForm({ mode }: PatientInfoFormProps) {
               type="text"
               placeholder="생년월일 6자리"
               className={cn(
-                'w-full placeholder:text-[var(--aiortho-gray-400)] h-12',
+                'w-full placeholder:text-[var(--aiortho-gray-400)] h-12 rounded-[12px]',
                 errors.birthDate?.message &&
                   'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0'
               )}
