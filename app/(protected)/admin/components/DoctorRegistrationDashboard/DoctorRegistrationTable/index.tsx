@@ -21,7 +21,7 @@ export default function DoctorRegistrationTable({
   admins,
 }: DoctorRegistrationTableProps) {
   return (
-    <div className="w-full overflow-x-hidden mt-7">
+    <div className="w-full overflow-x-hidden mt-3">
       {/* 드래그 가능한 헤더 */}
       <DoctorRegistrationTableHeader
         columns={columns}
