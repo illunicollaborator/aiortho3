@@ -230,7 +230,11 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleEmailCheck = (email: string) => {
+  const handleEmailCheck = async (email: string) => {
+    const isValid = await trigger('email');
+
+    if (!isValid) return;
+
     emailCheckMutation.mutate(
       { email },
       {
@@ -484,7 +488,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 variant="input"
                 size="inputConfirm"
                 onClick={() => handleEmailCheck(email)}
-                disabled={emailCheckStatus || Boolean(errors.email) || !email}
+                disabled={Boolean(emailCheckStatus)}
               >
                 중복확인
               </Button>
@@ -555,7 +559,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                 onClick={() => handleMedicalLicenseCheck()}
                 variant="input"
                 size="inputConfirm"
-                disabled={medicalLicenseCheckStatus === true || !medicalLicense}
+                disabled={medicalLicenseCheckStatus === true}
               >
                 중복확인
               </Button>
@@ -623,12 +627,7 @@ export default function DoctorSignUpForm({ signUpToken }: DoctorSignupFormProps)
                   type="button"
                   variant="input"
                   size="inputCertify"
-                  disabled={
-                    phoneVerifySendMutation.isPending ||
-                    // phoneVerifySendMutation.isError ||
-                    !phoneNumber ||
-                    isActive
-                  }
+                  disabled={phoneVerifySendMutation.isPending || isActive}
                   onClick={handlePhoneNumberCheck}
                 >
                   인증번호 전송
