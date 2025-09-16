@@ -401,7 +401,7 @@ export default function PrescriptionProgramCard({
                             >
                               <SelectValue placeholder="시간을 선택해주세요." />
                             </SelectTrigger>
-                            <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
+                            <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2 shadow-[0px_0px_32px_rgba(159,171,196,0.3)] border-0">
                               <div className="scrollable h-50 overflow-y-scroll pl-2">
                                 <SelectGroup className="flex flex-col gap-1">
                                   {Array.from({ length: 12 }, (_, i) => (
