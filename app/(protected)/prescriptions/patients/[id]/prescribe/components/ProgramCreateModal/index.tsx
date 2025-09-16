@@ -53,7 +53,7 @@ export default function ProgramCreateModal({
             <DialogTitle className="text-2xl font-bold text-[var(--aiortho-gray-900)]">
               생성할 프로그램을 선택해주세요
             </DialogTitle>
-            <DialogDescription className="text-aiortho-gray-600">
+            <DialogDescription className="text-aiortho-gray-600 text-[16px]">
               선택된 프로그램은 수정할 수 있어요.
             </DialogDescription>
           </div>
