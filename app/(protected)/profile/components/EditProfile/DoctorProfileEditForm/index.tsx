@@ -554,12 +554,6 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
             type="button"
             variant="input"
             size="inputConfirm"
-            disabled={
-              medicalLicenseCheckStatus === true ||
-              Boolean(errors.medicalLicense) ||
-              !dirtyFields.medicalLicense ||
-              !medicalLicense
-            }
             onClick={() => handleMedicalLicenseCheck()}
           >
             중복확인
