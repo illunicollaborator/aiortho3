@@ -17,7 +17,7 @@ const buttonVariants = cva(
           'border border-[var(--aiortho-primary)] bg-background rounded-[12px] text-[var(--aiortho-primary)] dark:bg-input/30 dark:border-input dark:hover:bg-input/50 cursor-pointer disabled:cursor-not-allowed',
         secondary:
           'bg-[var(--aiortho-secondary)] text-aiortho-gray-700 hover:bg-[var(--aiortho-secondary)]/80 font-bold',
-        ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
+        ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         input:
           'text-white bg-[var(--aiortho-gray-500)] hover:bg-[var(--aiortho-gray-500)]/90 disabled:bg-[var(--aiortho-gray-100)] rounded-md h-8 font-normal text-[13px] disabled:opacity-100 disabled:text-[var(--aiortho-gray-400)] cursor-pointer',

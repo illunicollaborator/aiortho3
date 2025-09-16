@@ -446,7 +446,7 @@ export default function PrescriptionProgramCard({
 
               <Divider className="mt-3 -mb-3" />
 
-              <div className="flex justify-between">
+              <div className={cn('flex justify-between pb-3', isEditing && 'pb-0')}>
                 <div className="flex flex-col gap-2">
                   <p className="text-[var(--aiortho-gray-900)] text-lg font-bold">
                     프로그램 반복 수
@@ -466,7 +466,7 @@ export default function PrescriptionProgramCard({
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="text-aiortho-gray-900 text-sm mx-2">{watchedRepetitions}회</span>
+                  <span className="text-aiortho-gray-600 text-sm mx-2">{watchedRepetitions}회</span>
                   <Button
                     variant="ghost"
                     size="icon"
