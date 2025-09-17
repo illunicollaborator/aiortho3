@@ -36,7 +36,7 @@ export default function ConfirmModal({
           <DialogTitle className="font-bold text-2xl text-aiortho-gray-900 m-0">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-[var(--aiortho-gray-600)] m-0">
+          <DialogDescription className="text-[var(--aiortho-gray-600)] text-[16px] m-0">
             {description}
           </DialogDescription>
           <button

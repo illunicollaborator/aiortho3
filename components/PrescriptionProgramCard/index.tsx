@@ -186,7 +186,7 @@ export default function PrescriptionProgramCard({
         <div
           className={cn(
             'flex absolute top-[30px] -right-5 translate-x-full gap-3 text-[var(--aiortho-gray-400)]',
-            isCardOpen && 'top-[22px]'
+            isCardOpen && 'top-[30px]'
           )}
         >
           <button
@@ -401,7 +401,7 @@ export default function PrescriptionProgramCard({
                             >
                               <SelectValue placeholder="시간을 선택해주세요." />
                             </SelectTrigger>
-                            <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2">
+                            <SelectContent className="w-full max-h-55 data-[side=bottom]:translate-y-2 shadow-[0px_0px_32px_rgba(159,171,196,0.3)] border-0">
                               <div className="scrollable h-50 overflow-y-scroll pl-2">
                                 <SelectGroup className="flex flex-col gap-1">
                                   {Array.from({ length: 12 }, (_, i) => (
@@ -436,7 +436,7 @@ export default function PrescriptionProgramCard({
               {isEditing && (
                 <Button
                   type="button"
-                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF]/50 w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]/60 disabled:bg-aiortho-gray-200 disabled:text-aiortho-gray-500"
+                  className="font-bold text-[var(--aiortho-primary)] bg-[#BDD5FF]/50 w-20 h-10 rounded-lg cursor-pointer hover:bg-[#BDD5FF]/60 disabled:bg-aiortho-gray-200 disabled:text-aiortho-gray-500 -mt-4"
                   disabled={watchedExercises.length >= MAX_EXERCISE_LENGTH || isPending}
                   onClick={handleAddExercise}
                 >
@@ -446,7 +446,7 @@ export default function PrescriptionProgramCard({
 
               <Divider className="mt-3 -mb-3" />
 
-              <div className="flex justify-between">
+              <div className={cn('flex justify-between pb-3', isEditing && 'pb-0')}>
                 <div className="flex flex-col gap-2">
                   <p className="text-[var(--aiortho-gray-900)] text-lg font-bold">
                     프로그램 반복 수
@@ -466,7 +466,7 @@ export default function PrescriptionProgramCard({
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="text-aiortho-gray-900 text-sm mx-2">{watchedRepetitions}회</span>
+                  <span className="text-aiortho-gray-600 text-sm mx-2">{watchedRepetitions}회</span>
                   <Button
                     variant="ghost"
                     size="icon"

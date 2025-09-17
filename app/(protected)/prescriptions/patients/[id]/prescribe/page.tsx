@@ -210,7 +210,6 @@ export default function CreatePrescriptionPage() {
                   render={({ field }) => (
                     <FormItem>
                       <PrescriptionPeriodSelector field={field} minPeriod={minPeriod} />
-                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -229,7 +228,7 @@ export default function CreatePrescriptionPage() {
         </button>
       )}
 
-      <div className="flex gap-5 w-full mt-18">
+      <div className="flex gap-5 w-full mt-18 mb-[176px]">
         <Button
           type="button"
           className="flex-1 h-12 rounded-full cursor-pointer bg-[var(--aiortho-gray-600)] text-white hover:bg-[var(--aiortho-gray-600)]/80 disabled:bg-aiortho-gray-200"

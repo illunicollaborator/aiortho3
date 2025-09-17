@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useFunnel, useDoctorProfile, useNurseProfile } from '@/hooks';
 import { VerifyProfile, EditProfile } from '../components';
 import { useAuthStore } from '@/store/authStore';
@@ -11,7 +12,7 @@ export default function ProfileEditPage() {
   const { auth } = useAuthStore();
   if (!auth) return null;
 
-  const [Funnel, nextStep] = useFunnel(EDIT_PROFILE_STEPS, {
+  const [Funnel, setStep, currentStep] = useFunnel(EDIT_PROFILE_STEPS, {
     initialStep: 'verify-profile',
   });
 
@@ -22,8 +23,27 @@ export default function ProfileEditPage() {
   const profileQuery = isDoctor ? doctorProfileQuery : nurseProfileQuery;
 
   const handleVerifyProfileSuccess = () => {
-    nextStep('edit-profile');
+    setStep('edit-profile');
+    window.history.pushState({ step: 'edit-profile' }, '', window.location.href);
   };
+
+  // 브라우저 뒤로가기 이벤트 제어
+  useEffect(() => {
+    const handlePopState = () => {
+      // edit-profile에서 뒤로가기를 누르면 verify-profile로 step만 변경
+      // verify-profile에서는 자연스럽게 이전 페이지로 이동 (기본 동작)
+
+      if (currentStep === 'edit-profile') {
+        setStep('verify-profile');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [currentStep, setStep]);
 
   const profile = profileQuery.data;
 

@@ -52,6 +52,7 @@ export const showSuccessToast = (title: string, description: string) => {
   toast.custom(() => <ToastNotification title={title} description={description} />, {
     position: 'top-center',
     style: {
+      width: '672px',
       position: 'fixed',
       top: '100%',
       left: '50%',

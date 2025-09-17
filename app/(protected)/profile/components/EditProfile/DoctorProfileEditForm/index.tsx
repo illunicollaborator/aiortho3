@@ -138,14 +138,57 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
     )
     .refine(
       data => {
-        // 비밀번호 변경 시 일치 확인
-        if (data.nextPassword || data.nextPasswordConfirm) {
+        // 현재 비밀번호가 입력된 경우 변경할 비밀번호 필수
+        if (data.password && data.password.trim() !== '') {
+          if (!data.nextPassword || data.nextPassword.trim() === '') {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: '비밀번호를 입력해주세요',
+        path: ['nextPassword'],
+      }
+    )
+    .refine(
+      data => {
+        // 변경할 비밀번호가 입력된 경우 재입력 필수
+        if (data.nextPassword && data.nextPassword.trim() !== '') {
+          if (!data.nextPasswordConfirm || data.nextPasswordConfirm.trim() === '') {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: '비밀번호를 입력해주세요',
+        path: ['nextPasswordConfirm'],
+      }
+    )
+    .refine(
+      data => {
+        // 현재 비밀번호와 변경할 비밀번호가 달라야함
+        if (data.password && data.nextPassword) {
+          return data.password !== data.nextPassword;
+        }
+        return true;
+      },
+      {
+        message: '현재 비밀번호와 다르게 입력해주세요',
+        path: ['nextPassword'],
+      }
+    )
+    .refine(
+      data => {
+        // 변경할 비밀번호와 재입력이 일치해야 함
+        if (data.nextPassword && data.nextPasswordConfirm) {
           return data.nextPassword === data.nextPasswordConfirm;
         }
         return true;
       },
       {
-        message: '변경할 비밀번호가 일치하지 않습니다',
+        message: '변경할 비밀번호와 일치하지 않아요',
         path: ['nextPasswordConfirm'],
       }
     );
@@ -477,6 +520,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
             <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
+        autoComplete="new-password"
         onRightIconClick={() => togglePasswordVisibility('current')}
       />
 
@@ -508,6 +552,8 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
           !errors.password &&
           !errors.nextPassword &&
           !errors.nextPasswordConfirm &&
+          nextPassword &&
+          nextPasswordConfirm &&
           nextPassword === nextPasswordConfirm
             ? '변경할 비밀번호와 일치해요'
             : undefined
@@ -554,12 +600,6 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
             type="button"
             variant="input"
             size="inputConfirm"
-            disabled={
-              medicalLicenseCheckStatus === true ||
-              Boolean(errors.medicalLicense) ||
-              !dirtyFields.medicalLicense ||
-              !medicalLicense
-            }
             onClick={() => handleMedicalLicenseCheck()}
           >
             중복확인

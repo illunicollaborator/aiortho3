@@ -24,12 +24,12 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
         .optional()
         .refine(
           value => {
-            if (!value) return true; // required 체크
+            if (!value) return true; // 미입력 허용
             if (value.length < 8 || value.length > 16) return false;
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+            message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
           }
         ),
       nextPassword: z
@@ -37,12 +37,12 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
         .optional()
         .refine(
           value => {
-            if (!value) return true; // required 체크
+            if (!value) return true; // 미입력 허용 (cross-field validation에서 처리)
             if (value.length < 8 || value.length > 16) return false;
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+            message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
           }
         ),
       nextPasswordConfirm: z
@@ -50,12 +50,12 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
         .optional()
         .refine(
           value => {
-            if (!value) return true; // required 체크
+            if (!value) return true; // 미입력 허용 (cross-field validation에서 처리)
             if (value.length < 8 || value.length > 16) return false;
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+            message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
           }
         ),
       name: z
@@ -97,6 +97,62 @@ const createNurseProfileSchema = (currentPhoneNumber: string) =>
         message: '6자리로 입력해주세요',
         path: ['certificationNumber'],
       }
+    )
+    .refine(
+      data => {
+        // 현재 비밀번호가 입력된 경우 변경할 비밀번호 필수
+        if (data.password && data.password.trim() !== '') {
+          if (!data.nextPassword || data.nextPassword.trim() === '') {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: '비밀번호를 입력해주세요',
+        path: ['nextPassword'],
+      }
+    )
+    .refine(
+      data => {
+        // 변경할 비밀번호가 입력된 경우 재입력 필수
+        if (data.nextPassword && data.nextPassword.trim() !== '') {
+          if (!data.nextPasswordConfirm || data.nextPasswordConfirm.trim() === '') {
+            return false;
+          }
+        }
+        return true;
+      },
+      {
+        message: '비밀번호를 입력해주세요',
+        path: ['nextPasswordConfirm'],
+      }
+    )
+    .refine(
+      data => {
+        // 현재 비밀번호와 변경할 비밀번호가 달라야함
+        if (data.password && data.nextPassword) {
+          return data.password !== data.nextPassword;
+        }
+        return true;
+      },
+      {
+        message: '현재 비밀번호와 다르게 입력해주세요',
+        path: ['nextPassword'],
+      }
+    )
+    .refine(
+      data => {
+        // 변경할 비밀번호와 재입력이 일치해야 함
+        if (data.nextPassword && data.nextPasswordConfirm) {
+          return data.nextPassword === data.nextPasswordConfirm;
+        }
+        return true;
+      },
+      {
+        message: '변경할 비밀번호와 일치하지 않아요',
+        path: ['nextPasswordConfirm'],
+      }
     );
 
 interface NurseProfileEditFormProps {
@@ -117,7 +173,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
     setError,
     setFocus,
     trigger,
-    formState: { errors, isValid, isDirty, dirtyFields },
+    formState: { errors, dirtyFields },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -324,6 +380,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
             <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
+        autoComplete="new-password"
         onRightIconClick={() => togglePasswordVisibility('current')}
       />
 
@@ -355,6 +412,8 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
           !errors.password &&
           !errors.nextPassword &&
           !errors.nextPasswordConfirm &&
+          nextPassword &&
+          nextPasswordConfirm &&
           nextPassword === nextPasswordConfirm
             ? '변경할 비밀번호와 일치해요'
             : undefined
@@ -473,7 +532,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
         <Button
           type="submit"
           className="flex-1 h-12 rounded-full cursor-pointer"
-          disabled={isUpdateNurseProfilePending || !isValid}
+          disabled={isUpdateNurseProfilePending}
         >
           수정 완료
         </Button>

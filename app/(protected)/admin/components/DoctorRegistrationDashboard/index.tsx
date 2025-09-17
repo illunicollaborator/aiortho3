@@ -98,23 +98,25 @@ export default function DoctorRegistrationDashboard() {
         <div className="flex w-full flex-col lg:flex-row lg:justify-between lg:items-center gap-5 lg:gap-0">
           <div className="flex flex-row gap-5">
             <div className="flex gap-2 items-center self-start text-2xl font-bold leading-none whitespace-nowrap">
-              <h1 className="self-stretch my-auto text-zinc-900">가입 내역</h1>
+              <h1 className="self-stretch my-auto text-aiortho-gray-900">가입 내역</h1>
               <div className="flex items-center self-stretch my-auto">
-                <span className="self-stretch my-auto text-sky-700">{adminCounts ?? 0}</span>
-                <span className="self-stretch my-auto text-zinc-900">건</span>
+                <span className="self-stretch my-auto text-aiortho-primary">
+                  {adminCounts ?? 0}
+                </span>
+                <span className="self-stretch my-auto text-aiortho-gray-900">건</span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col justify-center px-3 py-2.5 rounded-2xl bg-slate-100 fill-slate-100 border border-transparent focus-within:border-[#0054A6] focus-within:border-2 focus-within:bg-white transition-colors">
+          <div className="flex flex-col justify-center px-3 py-2.5 rounded-full bg-slate-100 fill-slate-100 border border-transparent focus-within:border-[#0054A6] focus-within:border-2 focus-within:bg-white transition-colors">
             <div className="flex gap-2 items-center">
-              <Search className="w-5 h-5 text-slate-400" />
+              <Search className="w-5 h-5 text-aiortho-gray-400" />
               <input
                 type="text"
-                placeholder="검색"
+                placeholder="의사명 검색"
                 value={search}
                 onChange={handleSearchChange}
-                className="flex-1 bg-transparent border-none outline-none text-slate-400 placeholder:text-slate-400 focus:text-[#161621]"
+                className="flex-1 bg-transparent border-none outline-none text-[#343F4E] placeholder:text-aiortho-gray-500"
                 aria-label="의사 검색"
               />
             </div>

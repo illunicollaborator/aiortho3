@@ -20,5 +20,5 @@ export default function useFunnel<Steps extends NonEmptyArray<string>>(
     return Component;
   }, [step, steps]);
 
-  return [FunnelComponent, setStep] as const;
+  return [FunnelComponent, setStep, step] as const;
 }

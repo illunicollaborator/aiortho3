@@ -99,9 +99,7 @@ const Navbar = () => {
                 <div className="flex flex-col">
                   <div className="flex flex-col gap-2 p-4">
                     <span className="font-bold text-[#343A47]">
-                      {auth.role === 'Nurse'
-                        ? `${profile.name}간호사 님`
-                        : `${profile.name}의사 님`}
+                      {auth.role === 'Nurse' ? `${profile.name} 님` : `${profile.name} 님`}
                     </span>
                     <span className="text-[13px] text-aiortho-gray-600 font-medium">
                       {auth.role === 'Nurse'
