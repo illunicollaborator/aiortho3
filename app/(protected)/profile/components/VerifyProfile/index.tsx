@@ -120,6 +120,7 @@ export default function VerifyProfile({ role, profile, onClick }: VerifyProfileP
               <Eye size={24} className="text-[var(--aiortho-gray-400)]" />
             )
           }
+          autoComplete="new-password"
           onRightIconClick={togglePasswordVisibility}
           required
         />

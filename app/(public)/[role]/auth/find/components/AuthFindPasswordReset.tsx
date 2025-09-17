@@ -116,6 +116,7 @@ const AuthFindPasswordReset = ({ token, onCancel }: AuthFindPasswordResetProps) 
           rightIcon={
             !showPassword ? <EyeOff size={24} color="#97A8C4" /> : <Eye size={24} color="#97A8C4" />
           }
+          autoComplete="new-password"
           onRightIconClick={togglePasswordVisibility}
           maxLength={16}
         />

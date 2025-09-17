@@ -157,6 +157,7 @@ export default function ProfileDeletePage() {
             )
           }
           onRightIconClick={togglePasswordVisibility}
+          autoComplete="new-password"
           required
         />
 

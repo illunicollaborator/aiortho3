@@ -122,6 +122,7 @@ export default function AuthPage() {
                 <Eye size={24} color="#97A8C4" />
               )
             }
+            autoComplete="new-password"
             onRightIconClick={togglePasswordVisibility}
             hideErrorBorder={loginMutation.isError}
           />

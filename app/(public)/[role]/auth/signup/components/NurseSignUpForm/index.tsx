@@ -357,6 +357,7 @@ export default function NurseSignUpForm() {
                 <Eye size={24} color="#97A8C4" />
               )
             }
+            autoComplete="new-password"
             onRightIconClick={togglePasswordVisibility}
             required
           />

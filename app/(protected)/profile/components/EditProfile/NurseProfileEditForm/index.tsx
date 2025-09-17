@@ -324,6 +324,7 @@ export default function NurseProfileEditForm({ profile }: NurseProfileEditFormPr
             <Eye size={24} className="text-[var(--aiortho-gray-400)] cursor-pointer" />
           )
         }
+        autoComplete="new-password"
         onRightIconClick={() => togglePasswordVisibility('current')}
       />
 
