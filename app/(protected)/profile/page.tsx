@@ -31,30 +31,30 @@ export default function ProfilePage() {
 
       <div className="flex flex-col gap-6">
         {isDoctor && (
-          <OrthoInput label="의사 가입 코드" value={(profile as Doctor).signupCode} readOnly />
+          <OrthoInput label="의사 가입 코드" value={(profile as Doctor).signupCode} disabled />
         )}
 
-        <OrthoInput label="아이디(이메일)" value={profile.email} readOnly />
-        <OrthoInput label="이름" value={profile.name} readOnly />
+        <OrthoInput label="아이디(이메일)" value={profile.email} disabled />
+        <OrthoInput label="이름" value={profile.name} disabled />
 
         {isDoctor && (
-          <OrthoInput label="의사 면허 번호" value={(profile as Doctor).licenseNumber} readOnly />
+          <OrthoInput label="의사 면허 번호" value={(profile as Doctor).licenseNumber} disabled />
         )}
 
-        <OrthoInput label="의료 기관명" value={profile.hospitalInfo.name} readOnly />
+        <OrthoInput label="의료 기관명" value={profile.hospitalInfo.name} disabled />
 
         {isDoctor && (
           <>
-            <OrthoInput label="진료과" value={(profile as Doctor).departmentInfo.name} readOnly />
+            <OrthoInput label="진료과" value={(profile as Doctor).departmentInfo.name} disabled />
             <OrthoInput
               label="전문의 과목"
               value={(profile as Doctor).specialityFieldInfo?.name ?? '전문의 과목이 없습니다'}
-              readOnly
+              disabled
             />
             <OrthoInput
               label="전문 면허 번호"
               value={(profile as Doctor).specialistLicenseNumber ?? '전문 면허 번호가 없습니다'}
-              readOnly
+              disabled
             />
 
             <div className="flex flex-col gap-2">
@@ -64,17 +64,17 @@ export default function ProfilePage() {
                     key={nurse.adminId}
                     label={`${idx === 0 ? '담당 간호사' : ''}`}
                     value={nurse.name}
-                    readOnly
+                    disabled
                   />
                 ))
               ) : (
-                <OrthoInput label="담당 간호사" value="담당 간호사가 없습니다" readOnly />
+                <OrthoInput label="담당 간호사" value="담당 간호사가 없습니다" disabled />
               )}
             </div>
           </>
         )}
 
-        <OrthoInput label="휴대폰 번호" value={profile.phoneNumber} readOnly />
+        <OrthoInput label="휴대폰 번호" value={profile.phoneNumber} disabled />
       </div>
 
       <div className="flex flex-col items-center gap-5 mt-12">
