@@ -31,7 +31,8 @@ export default function QuickMenuPage() {
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
               onKeyDown={e => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !(e.nativeEvent as any).isComposing) {
+                  e.preventDefault(); // 기본 동작 방지
                   handleSearch();
                   (e.target as HTMLInputElement).blur();
                 }
