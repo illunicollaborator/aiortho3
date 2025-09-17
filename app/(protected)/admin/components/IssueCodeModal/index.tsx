@@ -29,7 +29,8 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    watch,
+    formState: { errors },
     reset,
     setError,
   } = useForm<FormValues>({
@@ -78,6 +79,8 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
     onClose();
   };
 
+  const phoneNumber = watch('phoneNumber');
+
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogOverlay className="bg-black/40" />
@@ -121,7 +124,7 @@ export default function IssueCodeModal({ isOpen, onClose }: IssueCodeModalProps)
             </Button>
             <Button
               type="submit"
-              disabled={isPending || !isValid}
+              disabled={isPending || !phoneNumber}
               className={
                 'cursor-pointer flex-1 rounded-full min-h-[48px] px-6 py-3 text-sm font-bold text-white bg-aiortho-primary hover:bg-aiortho-primary/90 disabled:bg-aiortho-disabled disabled:cursor-not-allowed'
               }
