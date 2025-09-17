@@ -37,12 +37,12 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         .optional()
         .refine(
           value => {
-            if (!value) return true; // required 체크
+            if (!value) return true; // 미입력 허용
             if (value.length < 8 || value.length > 16) return false;
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+            message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
           }
         ),
       nextPassword: z
@@ -50,12 +50,12 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         .optional()
         .refine(
           value => {
-            if (!value) return true; // required 체크
+            if (!value) return true; // 미입력 허용 (cross-field validation에서 처리)
             if (value.length < 8 || value.length > 16) return false;
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+            message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
           }
         ),
       nextPasswordConfirm: z
@@ -63,12 +63,12 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         .optional()
         .refine(
           value => {
-            if (!value) return true; // required 체크
+            if (!value) return true; // 미입력 허용 (cross-field validation에서 처리)
             if (value.length < 8 || value.length > 16) return false;
             return /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^\w\s])/.test(value);
           },
           {
-            message: '8~16자리 영문/숫자/특수문자 조합만 입력할 수 있어요',
+            message: '영문/숫자/특수문자 2가지 이상 조합 (8~16자)만 입력할 수 있어요',
           }
         ),
       name: z
@@ -748,7 +748,7 @@ export default function DoctorProfileEditForm({ profile }: DoctorProfileEditForm
         <Button
           type="submit"
           className="flex-1 h-12 rounded-full cursor-pointer"
-          disabled={isUpdateDoctorProfilePending || !isValid}
+          disabled={isUpdateDoctorProfilePending}
         >
           수정 완료
         </Button>
