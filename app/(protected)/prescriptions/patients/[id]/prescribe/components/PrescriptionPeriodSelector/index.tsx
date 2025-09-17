@@ -25,9 +25,7 @@ export default function PrescriptionPeriodSelector({
 
   return (
     <div className="flex flex-col w-full">
-      <h1 className="text-[22px] font-bold text-[var(--aiortho-gray-900)] lg:text-3xl mt-22 mb-3">
-        처방 기간
-      </h1>
+      <h1 className="text-[22px] font-bold text-[var(--aiortho-gray-900)] mt-22 mb-3">처방 기간</h1>
       <h2 className="text-[var(--aiortho-gray-600)] mb-8">처방할 기간을 선택해주세요</h2>
 
       <FormLabel className="text-sm text-[var(--aiortho-gray-400)] mb-3">기간 선택</FormLabel>
