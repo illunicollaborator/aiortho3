@@ -81,6 +81,7 @@ aiortho2/
 ├── constants/              # 공통 상수
 ├── hooks/                  # 공통 훅
 ├── lib/                    # 유틸리티 및 설정
+├── apis/                   # fetch api 및 설정
 ├── models/                 # 공통 모델(스키마)
 ├── public/                 # 정적 파일
 └── store/                  # 클라이언트 전역 상태 관리
