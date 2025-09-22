@@ -61,6 +61,7 @@ type FormValues = z.infer<typeof formSchema>;
 const INITIAL_REPEAT_COUNT = 3;
 const MAX_EXERCISE_LENGTH = 4;
 
+
 export default function PrescriptionProgramCard({
   prescription,
   defaultIsOpen = false,
@@ -90,7 +91,7 @@ export default function PrescriptionProgramCard({
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      programName: prescription.name,
+      programName: prescription.isPreset ? prescription.name : "",
       exercises: prescription.exercises,
       repetitions: prescription.repeatCount ?? INITIAL_REPEAT_COUNT,
     },
@@ -233,7 +234,7 @@ export default function PrescriptionProgramCard({
           <div className="flex h-11 justify-between items-center cursor-pointer">
             <div className="flex gap-2">
               <span className="text-[var(--aiortho-gray-900)] text-lg font-semibold font-pretendard">
-                {prescription.name}
+                {prescription.name == "" ? "프로그램 생성" : prescription.name}
               </span>
 
               {prescription.startDate && prescription.endDate && (

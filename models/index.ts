@@ -141,9 +141,10 @@ export interface Prescription {
   repeatCount: number;
   startDate?: string;
   endDate?: string;
+  isPreset: boolean;
 }
 
-export type Program = Pick<Prescription, 'name' | 'exercises' | 'repeatCount'>;
+export type Program = Pick<Prescription, 'name' | 'exercises' | 'repeatCount' | 'isPreset'>;
 
 export interface Exercise {
   exerciseId: string;
