@@ -24,6 +24,7 @@ import { createDefaultExercise } from './utils';
 import { z } from 'zod';
 import { EditIcon, DeleteIcon } from './icons';
 import ConfirmModal from '../ConfirmModal';
+import { Input } from '../ui/input';
 
 interface PrescriptionProgramCardProps {
   prescription: Prescription;
@@ -50,6 +51,7 @@ const exerciseSchema = z.object({
 });
 
 const formSchema = z.object({
+  programName: z.string().min(1, '프로그램 이름을 입력해주세요'),
   exercises: z.array(exerciseSchema).min(1, '최소 1개의 운동이 필요합니다'),
   repetitions: z.number().min(3).max(12),
 });
@@ -88,13 +90,22 @@ export default function PrescriptionProgramCard({
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      programName: prescription.name,
       exercises: prescription.exercises,
       repetitions: prescription.repeatCount ?? INITIAL_REPEAT_COUNT,
     },
   });
 
+  const watchedProgramName = watch('programName');
   const watchedExercises = watch('exercises');
   const watchedRepetitions = watch('repetitions');
+
+  const handleProgramNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const hasChanged = e.target.value !== watchedProgramName;
+
+    setValue('programName', e.target.value, { shouldDirty: hasChanged });
+  }
+
 
   const handleExerciseChange = (value: string, idx: number) => {
     if (!staticExerciseList) return;
@@ -139,6 +150,8 @@ export default function PrescriptionProgramCard({
   };
 
   const onSubmit = () => {
+    prescription.name = watchedProgramName;
+    setValue('programName', watchedProgramName);
     onUpdate?.({
       ...prescription,
       exercises: watchedExercises,
@@ -240,6 +253,23 @@ export default function PrescriptionProgramCard({
         <CollapsibleContent>
           <Divider className="my-5" />
 
+          {isEditing && (
+            <div >
+              <Label className="text-[var(--aiortho-gray-500)] text-sm px-0 py-0 mb-3">
+                프로그램명
+              </Label>
+
+              <Input
+                type="text"
+                placeholder="프로그램명을 입력해주세요"
+                value={watchedProgramName}
+                onChange={handleProgramNameChange}
+                className='mb-11 h-12 rounded-xl'
+                aria-label="프로그램명"
+              />
+            </div>
+          )}
+
           <form onSubmit={e => e.preventDefault()}>
             <CardContent className="px-0 flex flex-col gap-9">
               {watchedExercises.map((exercise, idx) => (
@@ -280,7 +310,7 @@ export default function PrescriptionProgramCard({
                             className={cn(
                               'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                               errors.exercises?.[idx]?.exerciseId &&
-                                'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
+                              'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                             )}
                             disabled={!isEditing || isPending}
                           >
@@ -395,7 +425,7 @@ export default function PrescriptionProgramCard({
                               className={cn(
                                 'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                                 errors.exercises?.[idx]?.duration &&
-                                  'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
+                                'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                               )}
                               disabled={!isEditing || isPending}
                             >
