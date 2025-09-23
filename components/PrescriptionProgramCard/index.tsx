@@ -233,7 +233,7 @@ export default function PrescriptionProgramCard({
           <div className="flex h-11 justify-between items-center cursor-pointer">
             <div className="flex gap-2">
               <span className="text-[var(--aiortho-gray-900)] text-lg font-semibold font-pretendard">
-                {prescription.name == '' ? '프로그램 생성' : prescription.name}
+                {isEditing ? '치료 프로그램' : prescription.name}
               </span>
 
               {prescription.startDate && prescription.endDate && (
