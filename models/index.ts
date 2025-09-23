@@ -141,7 +141,7 @@ export interface Prescription {
   repeatCount: number;
   startDate?: string;
   endDate?: string;
-  isPreset: boolean;
+  isPreset?: boolean;
 }
 
 export type Program = Pick<Prescription, 'name' | 'exercises' | 'repeatCount' | 'isPreset'>;

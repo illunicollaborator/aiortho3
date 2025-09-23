@@ -75,24 +75,25 @@ export default function ProgramCreateModal({
           </div>
 
           <RadioGroup className="grid grid-cols-2 gap-x-6 gap-y-0">
-            {standardProgram.map(item => 
-            (item.isPreset = true) &&
-            (
-              <div key={item.name} className={cn('flex items-center w-full h-13 gap-3')}>
-                <RadioGroupItem
-                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
-                  value={item.name}
-                  id={`program-${item.name}`}
-                  onClick={() => setSelectedProgram(item)}
-                />
-                <Label
-                  htmlFor={`program-${item.name}`}
-                  className="text-sm text-aiortho-gray-900 cursor-pointer"
-                >
-                  {item.name}
-                </Label>
-              </div>
-            ))}
+            {standardProgram.map(
+              item =>
+                (item.isPreset = true) && (
+                  <div key={item.name} className={cn('flex items-center w-full h-13 gap-3')}>
+                    <RadioGroupItem
+                      className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
+                      value={item.name}
+                      id={`program-${item.name}`}
+                      onClick={() => setSelectedProgram(item)}
+                    />
+                    <Label
+                      htmlFor={`program-${item.name}`}
+                      className="text-sm text-aiortho-gray-900 cursor-pointer"
+                    >
+                      {item.name}
+                    </Label>
+                  </div>
+                )
+            )}
 
             <div className={cn('flex items-center w-full h-13 gap-3')}>
               <RadioGroupItem
@@ -104,7 +105,7 @@ export default function ProgramCreateModal({
                     name: '',
                     exercises: [createDefaultExercise()],
                     repeatCount: 3,
-                    isPreset: false
+                    isPreset: false,
                   })
                 }
               />
