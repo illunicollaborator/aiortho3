@@ -30,6 +30,7 @@ export default function StandardTreatmentProgramPage() {
     useState<number>(1);
   const [editingPrograms, setEditingPrograms] = useState<boolean[]>([]);
   const [newProgramIndices, setNewProgramIndices] = useState<Set<number>>(new Set());
+  const [showMaxLimitError, setShowMaxLimitError] = useState(false);
 
   const removeFromNewProgramIndices = (index: number) => {
     setNewProgramIndices(prev => {
@@ -40,6 +41,11 @@ export default function StandardTreatmentProgramPage() {
   };
 
   const handleAddCustomStandardProgramClick = () => {
+    if (standardProgram.length >= 10) {
+      setShowMaxLimitError(true);
+      return;
+    }
+
     const newIndex = standardProgram.length;
 
     setStandardProgram(prev => [
@@ -54,6 +60,7 @@ export default function StandardTreatmentProgramPage() {
     setCurrentCustomStandardProgramNumber(currentCustomStandardProgramNumber + 1);
     setEditingPrograms(prev => [...prev, true]);
     setNewProgramIndices(prev => new Set([...prev, newIndex]));
+    setShowMaxLimitError(false);
   };
 
   const handleStartEditing = (index: number) => {
@@ -95,6 +102,7 @@ export default function StandardTreatmentProgramPage() {
       {
         onSuccess: () => {
           showSuccessToast(`${standardProgram[index].name} 삭제 완료`, '프로그램이 삭제되었어요.');
+          setShowMaxLimitError(false);
         },
         onError: () => {
           showWarningToast('프로그램 삭제 실패', '잠시 후 시도해주세요.');
@@ -162,15 +170,15 @@ export default function StandardTreatmentProgramPage() {
             variant="outline"
             className="w-full h-12 disabled:border-aiortho-disabled disabled:text-aiortho-disabled"
             onClick={handleAddCustomStandardProgramClick}
-            disabled={isAnyProgramEditing || standardProgram.length === 6}
+            disabled={isAnyProgramEditing}
           >
             <PlusIcon size={24} />
             <span className="font-semibold text-base">프로그램 추가</span>
           </Button>
 
-          {standardProgram.length === 6 && (
+          {showMaxLimitError && (
             <span className="text-aiortho-danger text-sm">
-              프로그램 추가는 최대 6개까지만 가능해요
+              표준 치료 프로그램 생성은 최대 10개까지만 가능해요
             </span>
           )}
         </div>
