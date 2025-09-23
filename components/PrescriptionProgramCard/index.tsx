@@ -45,7 +45,7 @@ interface PrescriptionProgramCardProps {
 const exerciseSchema = z.object({
   exerciseId: z.string().min(1, '운동 종류를 선택해주세요'),
   duration: z.number().min(1, '운동 시간을 선택해주세요'),
-  direction: z.nativeEnum(ExerciseDirection),
+  direction: z.nativeEnum(ExerciseDirection).optional(),
   description: z.string().optional(),
   name: z.string(),
 });
@@ -115,6 +115,9 @@ export default function PrescriptionProgramCard({
     const updatedExercises = [...watchedExercises];
 
     updatedExercises[idx] = { ...updatedExercises[idx], ...newExercise };
+    if (!newExercise.direction) {
+      delete updatedExercises[idx].direction;
+    }
 
     if (!('description' in newExercise)) {
       delete updatedExercises[idx].description;

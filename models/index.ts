@@ -150,7 +150,7 @@ export interface Exercise {
   exerciseId: string;
   name: string;
   duration: number;
-  direction: ExerciseDirection;
+  direction?: ExerciseDirection;
   description?: string;
 }
 
