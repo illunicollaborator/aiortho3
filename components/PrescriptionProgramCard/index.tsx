@@ -495,7 +495,12 @@ export default function PrescriptionProgramCard({
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="text-aiortho-gray-900 text-sm mt-0.5 mx-2">
+                  <span
+                    className={cn(
+                      'text-sm mt-0.5 mx-2',
+                      isEditing ? 'text-aiortho-gray-900' : 'text-[var(--aiortho-gray-600)]'
+                    )}
+                  >
                     {watchedRepetitions}회
                   </span>
                   <Button
