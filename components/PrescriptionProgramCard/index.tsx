@@ -263,7 +263,7 @@ export default function PrescriptionProgramCard({
                 placeholder="프로그램명을 입력해주세요"
                 value={watchedProgramName}
                 onChange={handleProgramNameChange}
-                className="mb-11 h-12 rounded-xl"
+                className="mb-11 h-12 rounded-xl placeholder:text-[var(--aiortho-gray-400)] text-[var(--aiortho-gray-900)]"
                 aria-label="프로그램명"
               />
             </div>
@@ -307,7 +307,7 @@ export default function PrescriptionProgramCard({
                         >
                           <SelectTrigger
                             className={cn(
-                              'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
+                              'w-full h-12 border border-[var(--aiortho-gray-200)] text-base text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                               errors.exercises?.[idx]?.exerciseId &&
                                 'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                             )}
@@ -422,7 +422,7 @@ export default function PrescriptionProgramCard({
                           >
                             <SelectTrigger
                               className={cn(
-                                'w-full h-12 border border-[var(--aiortho-gray-200)] text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
+                                'w-full h-12 border border-[var(--aiortho-gray-200)] text-base text-[var(--aiortho-gray-900)] focus:ring-0 focus:ring-offset-0 focus:border-2 focus:border-[color:var(--aiortho-primary)] data-[state=open]:border-2 data-[state=open]:border-[color:var(--aiortho-primary)] data-[state=open]:ring-0 px-4 data-[disabled]:opacity-100 disabled:bg-[#F0F3FA99] cursor-pointer disabled:text-[var(--aiortho-gray-600)] rounded-[12px] data-[placeholder]:text-[var(--aiortho-gray-400)]',
                                 errors.exercises?.[idx]?.duration &&
                                   'border-2 border-[color:var(--aiortho-danger)] focus:border-[color:var(--aiortho-danger)] focus:ring-0 focus:ring-offset-0 data-[state=open]:border-[color:var(--aiortho-danger)] data-[state=open]:ring-0'
                               )}
@@ -495,7 +495,9 @@ export default function PrescriptionProgramCard({
                   >
                     <Minus className="h-4 w-4" />
                   </Button>
-                  <span className="text-aiortho-gray-600 text-sm mx-2">{watchedRepetitions}회</span>
+                  <span className="text-aiortho-gray-900 text-sm mt-0.5 mx-2">
+                    {watchedRepetitions}회
+                  </span>
                   <Button
                     variant="ghost"
                     size="icon"
