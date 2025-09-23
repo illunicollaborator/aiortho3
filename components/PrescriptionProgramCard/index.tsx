@@ -90,7 +90,7 @@ export default function PrescriptionProgramCard({
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      programName: prescription.isPreset ? prescription.name : '',
+      programName: prescription.isPreset == false ? '' : prescription.name,
       exercises: prescription.exercises,
       repetitions: prescription.repeatCount ?? INITIAL_REPEAT_COUNT,
     },

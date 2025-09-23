@@ -51,7 +51,7 @@ export default function StandardTreatmentProgramPage() {
     setStandardProgram(prev => [
       ...prev,
       {
-        name: `표준 프로그램 ${currentCustomStandardProgramNumber}`,
+        name: ``,
         exercises: [createDefaultExercise()],
         repeatCount: 3,
       },
