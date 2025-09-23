@@ -219,7 +219,7 @@ export default function PrescriptionProgramCard({
 
           <ConfirmModal
             isOpen={isConfirmModalOpen}
-            title="표준 프로그램 5를 삭제하시겠어요?"
+            title={`${prescription.name}를 삭제하시겠어요?`}
             description="삭제된 프로그램 내역은 복구할 수 없어요."
             confirmText="네, 삭제할게요"
             onClose={() => setIsConfirmModalOpen(false)}
