@@ -174,4 +174,5 @@ export interface PatientActivity {
   totalTherapyTime: number;
   prescriptionStartDate: string;
   prescriptionEndDate: string;
+  prescriptions: Prescription[];
 }

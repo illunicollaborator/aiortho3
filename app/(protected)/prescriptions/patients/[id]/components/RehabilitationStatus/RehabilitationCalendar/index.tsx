@@ -3,7 +3,7 @@ import { format } from 'date-fns';
 import { ko } from 'react-day-picker/locale';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
-import { PatientActivityReport } from '@/models';
+import { PatientActivityReport, Prescription } from '@/models';
 import { getCurrentDateYYYYMMDD } from '@/lib/utils';
 import DotStatus from '../DotStatus';
 
@@ -11,9 +11,18 @@ interface RehabilitationCalendarProps {
   date: Date;
   month: Date;
   reports: PatientActivityReport[];
+  prescriptions: Prescription[];
   onDateChange: (date: Date) => void;
   onMonthChange: (month: Date) => void;
 }
+
+const isDateInPrescriptionPeriod = (date: Date, prescriptions: Prescription[]) => {
+  const dateStr = getCurrentDateYYYYMMDD(date);
+  return prescriptions.some(prescription => {
+    if (!prescription.startDate || !prescription.endDate) return false;
+    return dateStr >= prescription.startDate && dateStr <= prescription.endDate;
+  });
+};
 
 const today = new Date();
 
@@ -21,6 +30,7 @@ export default function RehabilitationCalendar({
   date,
   month,
   reports,
+  prescriptions,
   onDateChange,
   onMonthChange,
 }: RehabilitationCalendarProps) {
@@ -60,7 +70,10 @@ export default function RehabilitationCalendar({
       onSelect={handleDateChange}
       onMonthChange={handleMonthChange}
       className="bg-transparent w-full p-0"
-      disabled={{ after: today }}
+      disabled={(disabledDate) => {
+        if (disabledDate > today) return true;
+        return !isDateInPrescriptionPeriod(disabledDate, prescriptions);
+      }}
       fixedWeeks={true}
       classNames={{
         button_previous:
