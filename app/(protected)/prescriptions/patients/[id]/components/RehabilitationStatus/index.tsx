@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
+import { calculateDateProgress, getCurrentDateYYYYMM, getCurrentDateYYYYMMDD } from '@/lib/utils';
+import { useCallback, useState } from 'react';
 import { useActivities } from '../../hooks';
 import RehabilitationProgress from './RehabilitationProgress';
 import RehabilitationReport from './RehabilitationReport';
-import { getCurrentDateYYYYMM, calculateDateProgress, getCurrentDateYYYYMMDD } from '@/lib/utils';
 
 interface RehabilitationStatusProps {
   patientId: number;
@@ -84,9 +84,7 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
         </div>
       ) : (
         <div className="flex justify-center items-center w-full h-25 mt-[56px]">
-          <span className="text-[var(--aiortho-gray-500)] ">
-            라이센스 번호로 앱 연동이 필요해요.
-          </span>
+          <span className="text-[var(--aiortho-gray-500)] ">가입 코드로 앱 연동이 필요해요.</span>
         </div>
       )}
     </div>
