@@ -1,21 +1,21 @@
 import {
   Dialog,
-  DialogHeader,
   DialogContent,
   DialogDescription,
-  DialogTitle,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from '@/components/ui/dialog';
 
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
-import { X } from 'lucide-react';
+import { createDefaultExercise } from '@/components/PrescriptionProgramCard/utils';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Program } from '@/models';
-import { createDefaultExercise } from '@/components/PrescriptionProgramCard/utils';
+import { X } from 'lucide-react';
+import { useState } from 'react';
 
 interface ProgramCreateModalProps {
   standardProgram: Program[];
@@ -47,47 +47,47 @@ export default function ProgramCreateModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-[528px] w-[95vw] sm:w-full rounded-[24px] max-h-[560px] data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 px-8 pt-12 pb-7 gap-0">
+      <DialogContent className="w-[528px] max-w-[95vw] rounded-3xl data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-300 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-200 data-[state=open]:zoom-in-95 data-[state=closed]:zoom-out-95 px-8 pt-12 pb-7 gap-0">
         <DialogHeader className="relative flex flex-row justify-between">
           <div className="flex flex-col gap-5">
-            <DialogTitle className="text-2xl font-bold text-[var(--aiortho-gray-900)]">
+            <DialogTitle className="text-2xl leading-[1.4] font-bold text-[#161621]">
               생성할 프로그램을 선택해주세요
             </DialogTitle>
-            <DialogDescription className="text-aiortho-gray-600 text-[16px]">
+            <DialogDescription className="text-left text-[#66798D] text-base leading-[22px]">
               선택된 프로그램은 수정할 수 있어요.
             </DialogDescription>
           </div>
 
           <X
-            className="absolute -top-9 -right-5 w-6 h-6 text-[var(--aiortho-gray-600)] cursor-pointer"
+            className="absolute -top-9 -right-5 size-6 text-[#66798D] cursor-pointer"
             onClick={handleClose}
           />
         </DialogHeader>
 
-        <div className="flex flex-col gap-4 mt-10">
-          <div className="flex gap-2 font-bold">
-            <span className="text-aiortho-gray-900">항목</span>
+        <div className="flex flex-col mt-10">
+          <div className="flex gap-2 font-bold leading-5">
+            <span className="text-lg text-[#161621]">항목</span>
 
             <div className="flex">
-              <span className="text-aiortho-primary">{standardProgram.length + 1}</span>
-              <span className="text-aiortho-gray-900">개</span>
+              <span className="text-lg text-[#0054A6]">{standardProgram.length + 1}</span>
+              <span className="text-lg text-[#161621]">개</span>
             </div>
           </div>
 
-          <RadioGroup className="grid grid-cols-2 gap-x-6 gap-y-0">
+          <RadioGroup className="grid grid-cols-2 gap-x-6 gap-y-0 max-h-78 overflow-y-auto overflow-x-hidden mt-4">
             {standardProgram.map(
               item =>
                 (item.isPreset = true) && (
-                  <div key={item.name} className={cn('flex items-center w-full h-13 gap-3')}>
+                  <div key={item.name} className={cn('flex items-center w-[220px] h-13 gap-2')}>
                     <RadioGroupItem
-                      className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
+                      className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 size-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
                       value={item.name}
                       id={`program-${item.name}`}
                       onClick={() => setSelectedProgram(item)}
                     />
                     <Label
                       htmlFor={`program-${item.name}`}
-                      className="text-sm text-aiortho-gray-900 cursor-pointer"
+                      className="text-sm text-[#161621] opacity-80 cursor-pointer truncate"
                     >
                       {item.name}
                     </Label>
@@ -95,9 +95,9 @@ export default function ProgramCreateModal({
                 )
             )}
 
-            <div className={cn('flex items-center w-full h-13 gap-3')}>
+            <div className={cn('flex items-center w-[220px] h-13 gap-2')}>
               <RadioGroupItem
-                className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 w-[22px] h-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
+                className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 size-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
                 value={'개별 프로그램'}
                 id={`개별 프로그램`}
                 onClick={() =>
@@ -111,7 +111,7 @@ export default function ProgramCreateModal({
               />
               <Label
                 htmlFor={`개별 프로그램`}
-                className="text-sm text-aiortho-gray-900 cursor-pointer"
+                className="text-sm text-[#161621] opacity-80 cursor-pointer truncate"
               >
                 개별 프로그램
               </Label>
@@ -121,7 +121,7 @@ export default function ProgramCreateModal({
 
         <DialogFooter className="mt-7">
           <Button
-            className="h-12 cursor-pointer w-full rounded-full text-sm"
+            className="h-12 cursor-pointer w-full rounded-full text-sm font-bold disabled:bg-[#BDD5FF] disabled:text-white disabled:opacity-100"
             disabled={selectedProgram === null}
             onClick={handleSelect}
           >
