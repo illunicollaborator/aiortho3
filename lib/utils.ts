@@ -228,7 +228,9 @@ export function calculateDateProgress({
   currentDate,
 }: CalculateDateProgressProps) {
   const totalDays = calculateTotalDays(startDate, endDate);
-  const elapsedDays = calculateElapsedDays(startDate, currentDate);
+  const rawElapsedDays = calculateElapsedDays(startDate, currentDate);
+  // elapsedDays가 totalDays를 초과하지 않도록 제한
+  const elapsedDays = Math.min(rawElapsedDays, totalDays);
   const remainingDays = Math.max(0, totalDays - elapsedDays);
   const progressPercentage = calculateProgressPercentage(startDate, endDate, currentDate);
 

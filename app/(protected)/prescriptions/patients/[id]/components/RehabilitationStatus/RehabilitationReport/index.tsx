@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { PatientActivityCompletionRate, PatientActivityReport } from '@/models';
 import { formatDuration, getCurrentDateYYYYMMDD } from '@/lib/utils';
+import { PatientActivityCompletionRate, PatientActivityReport, Prescription } from '@/models';
+import { useMemo } from 'react';
 import RehabilitationCalendar from '../RehabilitationCalendar';
 import RehabilitationExercises from '../RehabilitationExercises';
 
@@ -8,6 +8,7 @@ interface RehabilitationReportProps {
   date: Date;
   month: Date;
   reports: PatientActivityReport[];
+  prescriptions: Prescription[];
   totalDays: number;
   totalTherapyTime: number;
   onDateChange: (date: Date) => void;
@@ -18,6 +19,7 @@ export default function RehabilitationReport({
   date,
   month,
   reports,
+  prescriptions,
   totalDays,
   totalTherapyTime,
   onDateChange,
@@ -47,6 +49,7 @@ export default function RehabilitationReport({
           date={date}
           month={month}
           reports={reports}
+          prescriptions={prescriptions}
           onDateChange={onDateChange}
           onMonthChange={onMonthChange}
         />

@@ -1,5 +1,5 @@
 import { calculateDateProgress, getCurrentDateYYYYMM, getCurrentDateYYYYMMDD } from '@/lib/utils';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useActivities } from '../../hooks';
 import RehabilitationProgress from './RehabilitationProgress';
 import RehabilitationReport from './RehabilitationReport';
@@ -14,6 +14,7 @@ const initialDate = new Date();
 export default function RehabilitationStatus({ patientId, license }: RehabilitationStatusProps) {
   const [date, setDate] = useState(initialDate);
   const [month, setMonth] = useState(initialDate);
+  const isInitialized = useRef(false);
 
   const {
     data: activities = {
@@ -22,6 +23,7 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
       totalTherapyTime: 0,
       prescriptionStartDate: '',
       prescriptionEndDate: '',
+      prescriptions: [],
     },
   } = useActivities({
     patientId,
@@ -34,6 +36,7 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
     reports,
     totalDays: totalDaysFromActivities,
     totalTherapyTime,
+    prescriptions = [],
   } = activities;
 
   const {
@@ -53,6 +56,27 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
   const handleMonthChange = useCallback((month: Date) => {
     setMonth(month);
   }, []);
+
+  useEffect(() => {
+    if (isInitialized.current || prescriptions.length === 0) return;
+
+    // 모든 처방의 endDate 중 가장 최신인 날짜 찾기
+    const validEndDates = prescriptions
+      .map(p => p.endDate)
+      .filter((endDate): endDate is string => !!endDate)
+      .sort((a, b) => b.localeCompare(a));
+
+    if (validEndDates.length > 0) {
+      const dateStr = validEndDates[0];
+      const year = parseInt(dateStr.substring(0, 4));
+      const month = parseInt(dateStr.substring(4, 6)) - 1;
+      const day = parseInt(dateStr.substring(6, 8));
+      const latestDate = new Date(year, month, day);
+      setDate(latestDate);
+      setMonth(latestDate);
+      isInitialized.current = true;
+    }
+  }, [prescriptions]);
 
   return (
     <div className="w-full">
@@ -76,6 +100,7 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
             date={date}
             month={month}
             reports={reports}
+            prescriptions={prescriptions}
             totalDays={totalDaysFromActivities}
             totalTherapyTime={totalTherapyTime}
             onDateChange={handleDateChange}
