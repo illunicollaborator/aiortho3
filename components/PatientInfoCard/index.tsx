@@ -1,10 +1,10 @@
-import { Patient, PrescriptionStatus, PrescriptionStatusLabel } from '@/models';
 import Divider from '@/components/Divider';
-import StatusToggle from '../ui/status-toggle';
-import EditIcon from './icon';
 import { formatPhoneNumber } from '@/lib/utils';
+import { Patient, PrescriptionStatus, PrescriptionStatusLabel } from '@/models';
 import { useRouter } from 'next/navigation';
 import { useEditPatient } from '../PatientInfoForm/hooks';
+import StatusToggle from '../ui/status-toggle';
+import EditIcon from './icon';
 
 interface PatientInfoCardProps {
   patient: Patient;
@@ -123,7 +123,7 @@ export default function PatientInfoCard({
         </div>
 
         <div className="flex flex-col gap-1">
-          <span className="text-[var(--aiortho-gray-600)] ">라이센스번호</span>
+          <span className="text-[var(--aiortho-gray-600)] ">가입 코드번호</span>
           <span className="text-[var(--aiortho-gray-800)] font-semibold">
             {patient.license ?? '-'}
           </span>

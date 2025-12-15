@@ -15,10 +15,10 @@ export default function MedicalLicenseDetails({ patientId }: MedicalLicenseDetai
       { patientId: patientId },
       {
         onSuccess: () => {
-          showSuccessToast('라이센스 번호 전송 완료', '라이센스 번호가 전송되었습니다.');
+          showSuccessToast('가입 코드 전송 완료', '가입 코드가 전송되었습니다.');
         },
         onError: () => {
-          showWarningToast('라이센스 번호 전송 실패', '잠시 후 시도해주세요.');
+          showWarningToast('가입 코드 전송 실패', '잠시 후 시도해주세요.');
         },
       }
     );
@@ -29,10 +29,10 @@ export default function MedicalLicenseDetails({ patientId }: MedicalLicenseDetai
       <div className="w-full flex flex-col md:flex-row justify-between">
         <div className="flex flex-col mb-9">
           <span className="text-[var(--aiortho-gray-900)] text-[22px] font-bold leading-[1.4]">
-            라이센스 번호
+            가입 코드
           </span>
           <span className="whitespace-pre-line text-[var(--aiortho-gray-600)] mt-3">
-            {`보호자 휴대폰 번호로 전송된 라이센스 번호를 입력해,\nAIOrtho App에서 자가 치료를 할 수 있습니다.`}
+            {`보호자 휴대폰 번호로 전송된 가입 코드를 입력해,\nAIOrtho App에서 자가 치료를 할 수 있습니다.`}
           </span>
         </div>
 
