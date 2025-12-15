@@ -1,6 +1,12 @@
 {
   "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.codeActionsOnSave": ["source.fixAll", "source.fixAll.eslint"],
-  "files.eol": "\n"
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  "prettier.requireConfig": true
 }
