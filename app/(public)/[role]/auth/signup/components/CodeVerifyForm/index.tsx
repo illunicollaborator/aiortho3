@@ -102,7 +102,11 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
             </Button>
           </div>
           <p className="text-left text-[13px] text-[color:var(--aiortho-gray-400)] mt-6">
-            의사 가입 코드 문의: <a href="mailto:contact@aibrio.net" className="underline">contact@aibrio.net</a> | 010-2639-8237
+            의사 가입 코드 문의:{' '}
+            <a href="mailto:contact@aibrio.net" className="underline">
+              contact@aibrio.net
+            </a>{' '}
+            | 010-2639-8237
           </p>
         </form>
       </div>
