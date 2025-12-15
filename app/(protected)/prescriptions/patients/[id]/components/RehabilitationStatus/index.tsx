@@ -60,13 +60,10 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
   useEffect(() => {
     if (isInitialized.current || prescriptions.length === 0) return;
 
-    const today = new Date();
-    const todayStr = getCurrentDateYYYYMMDD(today);
-
-    // 모든 처방의 endDate 중 오늘 이전이면서 가장 최신인 날짜 찾기
+    // 모든 처방의 endDate 중 가장 최신인 날짜 찾기
     const validEndDates = prescriptions
       .map(p => p.endDate)
-      .filter((endDate): endDate is string => !!endDate && endDate <= todayStr)
+      .filter((endDate): endDate is string => !!endDate)
       .sort((a, b) => b.localeCompare(a));
 
     if (validEndDates.length > 0) {

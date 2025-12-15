@@ -71,7 +71,6 @@ export default function RehabilitationCalendar({
       onMonthChange={handleMonthChange}
       className="bg-transparent w-full p-0"
       disabled={(disabledDate) => {
-        if (disabledDate > today) return true;
         return !isDateInPrescriptionPeriod(disabledDate, prescriptions);
       }}
       fixedWeeks={true}
