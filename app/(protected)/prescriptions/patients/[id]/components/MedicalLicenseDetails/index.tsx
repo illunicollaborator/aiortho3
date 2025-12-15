@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
-import { usePostAppLicense } from '../../hooks';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { showWarningToast } from '@/components/ui/toast-warning';
+import { usePostAppLicense } from '../../hooks';
 
 interface MedicalLicenseDetailsProps {
   patientId: number;
