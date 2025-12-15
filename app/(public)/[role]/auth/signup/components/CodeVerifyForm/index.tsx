@@ -1,15 +1,15 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import OrthoInput from '@/components/OrthoInput';
-import { Button } from '@/components/ui/button';
-import { useDoctorSignupActivateCode } from '../../hooks';
 import Spinner from '@/components/Spinner';
+import { Button } from '@/components/ui/button';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { cn } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useParams, useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useDoctorSignupActivateCode } from '../../hooks';
 
 const codeVerificationSchema = z.object({
   code: z.string().min(8, '가입코드 8자리를 입력해주세요').max(8, '가입코드 8자리를 입력해주세요'),
@@ -101,6 +101,13 @@ const CodeVerifyForm = ({ onSubmit }: CodeVerifyFormProps) => {
               {doctorSignupActivateCodeMutation.isPending ? <Spinner /> : '다음'}
             </Button>
           </div>
+          <p className="text-left text-[13px] text-[color:var(--aiortho-gray-400)] mt-6">
+            의사 가입 코드 문의:{' '}
+            <a href="mailto:contact@aibrio.net" className="underline">
+              contact@aibrio.net
+            </a>{' '}
+            | 010-2639-8237
+          </p>
         </form>
       </div>
     </div>

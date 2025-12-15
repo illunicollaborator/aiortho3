@@ -109,9 +109,7 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
         </div>
       ) : (
         <div className="flex justify-center items-center w-full h-25 mt-[56px]">
-          <span className="text-[var(--aiortho-gray-500)] ">
-            라이센스 번호로 앱 연동이 필요해요.
-          </span>
+          <span className="text-[var(--aiortho-gray-500)] ">가입 코드로 앱 연동이 필요해요.</span>
         </div>
       )}
     </div>
