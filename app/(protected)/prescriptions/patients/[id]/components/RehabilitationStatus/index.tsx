@@ -24,7 +24,7 @@ export default function RehabilitationStatus({ patientId, license }: Rehabilitat
       prescriptionStartDate: '',
       prescriptionEndDate: '',
       prescriptions: [],
-    }
+    },
   } = useActivities({
     patientId,
     date: getCurrentDateYYYYMM(month),

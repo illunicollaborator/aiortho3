@@ -1,10 +1,8 @@
-import { useState } from 'react';
+import { Calendar } from '@/components/ui/calendar';
+import { cn, getCurrentDateYYYYMMDD } from '@/lib/utils';
+import { PatientActivityReport, Prescription } from '@/models';
 import { format } from 'date-fns';
 import { ko } from 'react-day-picker/locale';
-import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
-import { PatientActivityReport, Prescription } from '@/models';
-import { getCurrentDateYYYYMMDD } from '@/lib/utils';
 import DotStatus from '../DotStatus';
 
 interface RehabilitationCalendarProps {
@@ -70,7 +68,7 @@ export default function RehabilitationCalendar({
       onSelect={handleDateChange}
       onMonthChange={handleMonthChange}
       className="bg-transparent w-full p-0"
-      disabled={(disabledDate) => {
+      disabled={disabledDate => {
         return !isDateInPrescriptionPeriod(disabledDate, prescriptions);
       }}
       fixedWeeks={true}
@@ -106,7 +104,6 @@ export default function RehabilitationCalendar({
             <button
               className={cn(
                 'relative w-8 h-8 rounded-full font-normal text-base bg-transparent shadow-none border-none hover:bg-gray-100 text-aiortho-gray-800 cursor-pointer',
-
                 modifiers.selected &&
                   'bg-aiortho-primary text-white hover:bg-aiortho-primary/90 font-bold',
                 modifiers.outside && !modifiers.selected && 'text-[#B6C2D9]',
