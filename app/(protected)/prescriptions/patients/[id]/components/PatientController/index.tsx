@@ -35,7 +35,7 @@ export default function PatientController({
 
   return (
     <div className="flex flex-col gap-4 items-center">
-      {role === 'Doctor' && (
+      {role === 'Doctor' || role === 'Root' && (
         <Button
           type="button"
           className="w-full h-12 rounded-full font-bold cursor-pointer"

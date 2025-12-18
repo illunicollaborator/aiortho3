@@ -26,7 +26,7 @@ export default function ActivePrescription({
           </span>
         </div>
 
-        {role === 'Doctor' &&
+        {role === 'Doctor' || role === 'Root' &&
           (prescription ? (
             <Button
               type="button"
