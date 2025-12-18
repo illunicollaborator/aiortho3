@@ -24,7 +24,7 @@ import { showWarningToast } from '@/components/ui/toast-warning';
 import { showSuccessToast } from '@/components/ui/toast-notification';
 import { useAuthStore } from '@/store/authStore';
 import { useCreatePrescriptionRequest } from './hooks/useCreatePrescriptionRequest';
-import { useActivePrescription } from '../hooks';
+import { useActivePrescription, usePrescriptionHistory } from '../hooks';
 import { useUpdatePrescription } from './hooks/useUpdatePrescription';
 
 const formSchema = z.object({
@@ -41,6 +41,10 @@ export default function CreatePrescriptionPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const patientQuery = usePatient(Number(id));
   const activePrescriptionQuery = useActivePrescription(Number(id));
+  const prescriptionHistoryQuery = usePrescriptionHistory({
+    patientId: Number(id),
+    params: { page: 1, count: 1 },
+  });
   const standardProgramQuery = useStandardProgram();
   const createPrescriptionMutation = useCreatePrescription();
   const createPrescriptionRequestMutation = useCreatePrescriptionRequest();
@@ -172,6 +176,7 @@ export default function CreatePrescriptionPage() {
 
   const { data: patient } = patientQuery;
   const { data: standardProgram } = standardProgramQuery;
+  const lastPrescription = prescriptionHistoryQuery.data?.prescriptions[0];
 
   const isDirty = prescriptionProgramIsDirty || form.formState.isDirty;
 
@@ -256,6 +261,7 @@ export default function CreatePrescriptionPage() {
       <ProgramCreateModal
         isOpen={isModalOpen}
         standardProgram={standardProgram.presets}
+        lastPrescription={lastPrescription}
         onClose={handleCloseModal}
         onSelect={handleSetProgram}
       />

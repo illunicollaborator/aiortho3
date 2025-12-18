@@ -1,10 +1,10 @@
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
 } from '@/components/ui/dialog';
 
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -13,12 +13,13 @@ import { createDefaultExercise } from '@/components/PrescriptionProgramCard/util
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
-import { Program } from '@/models';
+import { Prescription, Program } from '@/models';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
 interface ProgramCreateModalProps {
   standardProgram: Program[];
+  lastPrescription?: Prescription;
   isOpen: boolean;
   onClose: () => void;
   onSelect: (program: Program) => void;
@@ -27,6 +28,7 @@ interface ProgramCreateModalProps {
 export default function ProgramCreateModal({
   isOpen,
   standardProgram,
+  lastPrescription,
   onClose,
   onSelect,
 }: ProgramCreateModalProps) {
@@ -69,7 +71,9 @@ export default function ProgramCreateModal({
             <span className="text-lg text-[#161621]">항목</span>
 
             <div className="flex">
-              <span className="text-lg text-[#0054A6]">{standardProgram.length + 1}</span>
+              <span className="text-lg text-[#0054A6]">
+                {standardProgram.length + 1 + (lastPrescription ? 1 : 0)}
+              </span>
               <span className="text-lg text-[#161621]">개</span>
             </div>
           </div>
@@ -116,6 +120,30 @@ export default function ProgramCreateModal({
                 개별 프로그램
               </Label>
             </div>
+
+            {lastPrescription && (
+              <div className={cn('flex items-center w-[220px] h-13 gap-2')}>
+                <RadioGroupItem
+                  className="border-2 border-aiortho-gray-200 data-[state=checked]:border-aiortho-primary data-[state=checked]:bg-transparent cursor-pointer disabled:border-aiortho-gray-200 disabled:data-[state=checked]:border-aiortho-gray-500 size-[22px] disabled:data-[state=checked]:text-aiortho-gray-500"
+                  value={'직전 처방 불러오기'}
+                  id={`직전 처방 불러오기`}
+                  onClick={() =>
+                    setSelectedProgram({
+                      name: lastPrescription.name,
+                      exercises: lastPrescription.exercises,
+                      repeatCount: lastPrescription.repeatCount,
+                      isPreset: false,
+                    })
+                  }
+                />
+                <Label
+                  htmlFor={`직전 처방 불러오기`}
+                  className="text-sm text-[#161621] opacity-80 cursor-pointer truncate"
+                >
+                  직전 처방 불러오기
+                </Label>
+              </div>
+            )}
           </RadioGroup>
         </div>
 
