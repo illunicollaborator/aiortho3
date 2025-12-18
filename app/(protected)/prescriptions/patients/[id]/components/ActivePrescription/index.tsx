@@ -26,29 +26,24 @@ export default function ActivePrescription({
           </span>
         </div>
 
-        {
-          role === 'Doctor' && (
-            prescription ? (
-              (
-                <Button
-                  type="button"
-                  className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
-                  onClick={onClick}
-                >
-                  수정
-                </Button>
-              )
-            ) : (
-              <Button
-                type="button"
-                className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold"
-                onClick={onClick}
-              >
-                처방하기
-              </Button>
-            )
-          )
-        }
+        {role === 'Doctor' &&
+          (prescription ? (
+            <Button
+              type="button"
+              className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
+              onClick={onClick}
+            >
+              수정
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold"
+              onClick={onClick}
+            >
+              처방하기
+            </Button>
+          ))}
       </div>
 
       {prescription ? (
