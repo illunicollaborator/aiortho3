@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import PrescriptionProgramCard from '@/components/PrescriptionProgramCard';
-import { Prescription, UserRole } from '@/models';
+import { Button } from '@/components/ui/button';
 import { formatDate } from '@/lib/utils';
+import { Prescription, UserRole } from '@/models';
 
 interface ActivePrescriptionProps {
   role: UserRole;
@@ -26,25 +26,29 @@ export default function ActivePrescription({
           </span>
         </div>
 
-        {prescription ? (
-          role !== 'Nurse' && (
-            <Button
-              type="button"
-              className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
-              onClick={onClick}
-            >
-              수정
-            </Button>
+        {
+          role === 'Doctor' && (
+            prescription ? (
+              (
+                <Button
+                  type="button"
+                  className="w-[64px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold text-[var(--aiortho-primary)] bg-[var(--aiortho-disabled)]/50 hover:bg-[var(--aiortho-disabled)]/80"
+                  onClick={onClick}
+                >
+                  수정
+                </Button>
+              )
+            ) : (
+              <Button
+                type="button"
+                className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold"
+                onClick={onClick}
+              >
+                처방하기
+              </Button>
+            )
           )
-        ) : (
-          <Button
-            type="button"
-            className="w-[84px] h-10 px-4 py-[11.5px] cursor-pointer rounded-[12px] text-sm font-semibold"
-            onClick={onClick}
-          >
-            {role === 'Nurse' ? '처방 요청' : '처방하기'}
-          </Button>
-        )}
+        }
       </div>
 
       {prescription ? (
